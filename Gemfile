@@ -65,3 +65,5 @@ group :test do
 end
 
 gem "whatsapp_sdk"
+
+gem "devise", "~> 4.9"

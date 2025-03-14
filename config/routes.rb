@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get "/webhooks", to: "webhooks#index"
+  post "/webhooks", to: "webhooks#create"
+
+  get "/dashboard", to: "dashboard#index"
+  resources :chatbots, only: [ :index, :new, :create ]
+  namespace :chatbots do
+    resources :settings, only: [ :show, :update, :destroy ]
+  end
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -12,9 +20,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
-
-  get "/webhooks", to: "webhooks#index"
-  post "/webhooks", to: "webhooks#create"
-
-  get "/dashboard", to: "dashboard#index"
 end

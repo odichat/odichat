@@ -1,0 +1,46 @@
+<% content_for :title, "Chatbots" %>
+
+<div class="w-full container mx-auto">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center pb-4 mb-2">
+    <div class="flex items-center">
+      <h1 class="font-bold text-2xl text-gray-800">Chatbots</h1>
+    </div>
+    <%= link_to new_chatbot_path, class: "rounded-md px-4 py-2 bg-black hover:bg-stone-900 text-white font-medium flex items-center" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      New chatbot
+    <% end %>
+  </div>
+
+  <div id="chatbots" class="py-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <% if @chatbots.any?%>
+        <% @chatbots.each do |chatbot| %>
+          <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <%= link_to chatbots_setting_path(chatbot), class: "block" do %>
+              <div class="h-48 bg-gray-200 flex items-center justify-center">
+                <% if chatbot.respond_to?(:image) && chatbot.image.present? %>
+                  <%= image_tag chatbot.image, class: "w-full h-full object-cover" %>
+                <% else %>
+                  <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                  </svg>
+                <% end %>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium text-lg mb-1"><%= chatbot.name %></h3>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-center my-10">No chatbots found.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

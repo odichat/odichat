@@ -1,12 +1,24 @@
 <%= render "shared/header" %>
 
-<div>
-  <h1 class="text-8xl text-gray-950 tracking-tighter text-balance">Dashboard#index</h1>
-  <p>Find me in app/views/dashboard/index.html.erb</p>
-
-  <hr>
-
-  <p>Email: <%= current_user.email %></p>
-
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+<div class="container mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <% @chatbots.each do |chatbot| %>
+      <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <%= link_to chatbot_path(chatbot), class: "block" do %>
+          <div class="h-48 bg-gray-200 flex items-center justify-center">
+            <% if chatbot.respond_to?(:image) && chatbot.image.present? %>
+              <%= image_tag chatbot.image, class: "w-full h-full object-cover" %>
+            <% else %>
+              <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+              </svg>
+            <% end %>
+          </div>
+          <div class="p-4">
+            <h3 class="font-medium text-lg mb-1"><%= chatbot.name %></h3>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

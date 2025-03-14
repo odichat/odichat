@@ -1,4 +1,37 @@
-<div>
-  <h1 class="font-bold text-4xl">Chatbots::Settings#show</h1>
-  <p><%= @chatbot.name %></p>
+<!-- Main container with full width -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Settings heading -->
+  <h1 class="text-3xl font-bold mb-8">Settings</h1>
+  
+  <!-- Flex container for sidebar and main content -->
+  <div class="flex gap-6">
+    <!-- Left sidebar -->
+    <div class="w-64 shrink-0">
+      <nav class="space-y-1">
+        <a href="#" class="block px-4 py-2 rounded-md bg-gray-100 text-gray-900 font-medium">General</a>
+        <a href="#" class="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-medium">AI</a>
+      </nav>
+    </div>
+    
+    <!-- Main content area -->
+    <div class="flex-1">
+      <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h2 class="text-2xl font-bold mb-6">General</h2>
+        
+        <!-- Form -->
+        <%= form_with(model: @chatbot, url: chatbots_setting_path(@chatbot), method: :patch, class: "space-y-6") do |form| %>
+          <!-- Name field -->
+          <div>
+            <label for="chatbot_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <%= form.text_field :name, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", value: @chatbot.name %>
+          </div>
+          
+          <!-- Save button -->
+          <div class="flex justify-end">
+            <%= form.submit "Save", class: "px-4 py-2 bg-black text-white rounded-md hover:bg-stone-900 cursor-pointer" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

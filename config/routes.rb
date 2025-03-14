@@ -15,4 +15,6 @@ Rails.application.routes.draw do
 
   get "/webhooks", to: "webhooks#index"
   post "/webhooks", to: "webhooks#create"
+
+  get "/dashboard", to: "dashboard#index"
 end

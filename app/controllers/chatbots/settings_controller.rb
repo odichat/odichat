@@ -1,4 +1,4 @@
-class Chatbots::SettingsController < ApplicationController
+class Chatbots::SettingsController < Chatbots::BaseController
   before_action :set_chatbot
 
   def show
@@ -10,6 +10,6 @@ class Chatbots::SettingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_chatbot
-      @chatbot = Chatbot.find(params.expect(:id))
+      @chatbot = Chatbot.find(params[:id])
     end
 end

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Odisea - Chatbots" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <main class="">
+      <!-- 1. Notice and alert messages -->
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      
+      <!-- 2. Navbar -->
+      <%= render "shared/navbar" %>
+      
+      <!-- 3. Header with tabs -->
+      <%= render "shared/chatbot_header" %>
+
+      <!-- 4. Main content -->
+      <%= yield %>
+
+      <!-- 5. Facebook related stuff -->
+      <% if user_signed_in? %>
+        <button onclick="launchWhatsAppSignup()" class="bg-[#1877f2] border-0 rounded text-white cursor-pointer font-bold h-10 px-6">Login with Facebook</button>
+        <p>Session info response:</p>
+        <pre id="session-info-response"></pre>
+        <br>
+        <p>SDK response:</p>
+        <pre id="sdk-response"></pre>
+      <% else %>
+        
+      <% end %>
+
+      <%= javascript_include_tag "facebook_sdk", defer: true %>
+      <%= javascript_include_tag "embedded_signup", defer: true %>
+    </main>
+  </body>
+</html> 

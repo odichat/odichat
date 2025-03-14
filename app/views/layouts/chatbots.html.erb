@@ -20,13 +20,7 @@
 
   <body>
     <main class="">
-      <% if notice.present? %>
-        <p class="banner-success"><%= notice %></p>
-      <% end %>
-      <% if alert.present? %>
-        <p class="banner-error"><%= alert %></p>
-      <% end %>
-      
+      <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>
       <%= render "shared/chatbot_header" %>
       <%= yield %>

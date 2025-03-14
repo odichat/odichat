@@ -29,16 +29,14 @@
       <%= render "shared/navbar" %>
       <%= yield %>
 
-      <% if user_signed_in? %>
-        <button onclick="launchWhatsAppSignup()" style="background-color: #1877f2; border: 0; border-radius: 4px; color: #fff; cursor: pointer; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; height: 40px; padding: 0 24px;">Login with Facebook</button>
-        <p>Session info response:</p>
-        <pre id="session-info-response"></pre>
-        </br>
-        <p>SDK response:</p>
-        <pre id="sdk-response"></pre>
-      <% else %>
-        
-      <% end %>
+      <%# <% if user_signed_in? %>
+        <!-- <button onclick="launchWhatsAppSignup()" style="background-color: #1877f2; border: 0; border-radius: 4px; color: #fff; cursor: pointer; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; height: 40px; padding: 0 24px;">Login with Facebook</button> -->
+        <!-- <p>Session info response:</p> -->
+        <!-- <pre id="session-info-response"></pre> -->
+        <!-- </br> -->
+        <!-- <p>SDK response:</p> -->
+        <!-- <pre id="sdk-response"></pre> -->
+      <%# end %>
 
       <%= javascript_include_tag "facebook_sdk", defer: true %>
       <%= javascript_include_tag "embedded_signup", defer: true %>

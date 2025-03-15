@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_15_004542) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_15_011730) do
   create_table "chatbots", force: :cascade do |t|
     t.string "name", null: false
     t.string "assistant_id", null: false
@@ -19,6 +19,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_15_004542) do
     t.datetime "updated_at", null: false
     t.integer "model_id"
     t.float "temperature", default: 0.5
+    t.string "system_instructions"
     t.index ["model_id"], name: "index_chatbots_on_model_id"
     t.index ["user_id"], name: "index_chatbots_on_user_id"
   end

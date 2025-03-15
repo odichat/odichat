@@ -1,17 +1,22 @@
 <%= form_with(model: chatbot, class: "contents") do |form| %>
-  <% if chatbot.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(chatbot.errors.count, "error") %> prohibited this chatbot from being saved:</h2>
+  <div class="space-y-12">
+    <div class="border-b border-gray-900/10 pb-12">
+      <h2 class="text-base/7 font-semibold text-gray-900">Chatbot Details</h2>
+      <p class="mt-1 text-sm/6 text-gray-600">Enter the basic information for your chatbot.</p>
 
-      <ul class="list-disc ml-6">
-        <% chatbot.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <div class="sm:col-span-4">
+          <%= form.label :name, class: "block text-sm/6 font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= form.text_field :name, class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6" %>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <%= link_to "Cancel", chatbots_path, class: "text-sm/6 font-semibold text-gray-900" %>
+    <%= form.submit class: "rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-stone-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
   </div>
 <% end %>

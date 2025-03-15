@@ -1,7 +1,9 @@
 <div class="border-b border-gray-200 mb-4">
   <div class="flex justify-center px-4">
     <% if @chatbot %>
-    <a href="#" class="py-4 px-4 text-gray-700 text-sm font-medium hover:text-stone-900">Playground</a>
+      <%= link_to "Playground", 
+          chatbots_playground_path(@chatbot), 
+          class: "py-4 px-4 text-gray-700 text-sm font-medium border-b-2 #{current_page?(chatbots_playground_path(@chatbot)) ? 'text-black border-black' : 'border-transparent hover:text-stone-900'}" %>
     <a href="#" class="py-4 px-4 text-gray-700 text-sm font-medium hover:text-stone-900">Integrations</a>
       <%= link_to "Settings", 
           chatbots_setting_path(@chatbot), 

@@ -10,14 +10,19 @@
 
 if Rails.env.development?
   # Create a test user
-  user = User.find_or_create_by!(email: 'user@example.com') do |u|
+  user = User.find_or_create_by!(email: 'aeum3893@gmail.com') do |u|
     u.password = '123456'
     u.password_confirmation = '123456'
   end
+
+  # Create a model
+  Model.find_or_create_by!(name: "gpt-4o-mini", provider: "openai")
+  Model.find_or_create_by!(name: "gpt-4o", provider: "openai")
 
   # Create a chatbot for the user
   Chatbot.find_or_create_by!(assistant_id: 'asst_AFGyRQRz0BgEOW0kmjFg9wsg') do |chatbot|
     chatbot.name = 'My Assistant'
     chatbot.user = user
+    chatbot.model_id = Model.find_by(name: "gpt-4o-mini")
   end
 end

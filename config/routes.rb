@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboard#index"
   resources :chatbots, only: [ :index, :new, :create ]
   namespace :chatbots do
+    get "playground/show"
+    get "playground/update"
     resources :settings, only: [ :show, :update, :destroy ]
   end
   devise_for :users

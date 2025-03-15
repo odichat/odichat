@@ -2,32 +2,110 @@
 <div class="min-h-screen bg-gray-50">
   <!-- Header section with title -->
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="py-6">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Playground</h1>
-      <p class="mt-2 text-sm text-gray-600">Test and experiment with your chatbot in real-time.</p>
+    <div class="flex items-center justify-between py-6">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Playground</h1>
+        <p class="mt-2 text-sm text-gray-600">Test and experiment with your chatbot in real-time.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Chat interface placeholder -->
+  <!-- Main content area with sidebar and chat -->
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <!-- Chat messages area -->
-      <div class="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg">
-        <div class="text-center text-gray-500 mt-32">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4z"/>
-          </svg>
-          <p class="mt-2">Start a conversation with your chatbot</p>
+    <div class="flex gap-6">
+      <!-- Left sidebar with form -->
+      <div class="w-96 shrink-0">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <%= form_with(model: @chatbot, url: chatbots_playground_path, method: :patch, class: "space-y-6", data: { turbo: true }) do |f| %>
+            <!-- Model selection -->
+            <div>
+              <label for="model_id" class="block text-sm font-medium text-gray-900 mb-2">Model</label>
+              <div class="relative">
+                <%= f.collection_select :model_id, 
+                    Model.all, 
+                    :id, 
+                    :name, 
+                    {}, 
+                    class: "appearance-none w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 shadow-xs hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black cursor-pointer" %>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <svg class="size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Temperature slider -->
+            <div>
+              <label for="temperature" class="block text-sm font-medium text-gray-900 mb-2">Temperature</label>
+              <div class="flex items-center gap-4">
+                <%= f.range_field :temperature, 
+                    min: 0, 
+                    max: 1, 
+                    step: 0.1, 
+                    class: "w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2" %>
+                <span class="text-sm font-semibold text-gray-900 w-12 text-right tabular-nums" id="temperature-value">
+                  <%= @chatbot.temperature %>
+                </span>
+              </div>
+            </div>
+
+            <!-- System instructions -->
+            <div>
+              <label for="system_instructions" class="block text-sm font-medium text-gray-900 mb-2">System Instructions</label>
+              <%= f.text_area :system_instructions, 
+                  rows: 10,
+                  class: "w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 shadow-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black" %>
+            </div>
+
+            <!-- Submit button -->
+            <div>
+              <%= f.submit "Save Changes", 
+                  class: "w-full flex justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2" %>
+            </div>
+          <% end %>
         </div>
       </div>
 
-      <!-- Input area -->
-      <div class="flex items-center space-x-3">
-        <input type="text" placeholder="Type your message..." class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-          Send
-        </button>
+      <!-- Right side chat interface -->
+      <div class="flex-1">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 h-[calc(100vh-12rem)]">
+          <!-- Chat messages area -->
+          <div class="h-[calc(100%-5rem)] overflow-y-auto p-6">
+            <div class="text-center text-gray-500 mt-32">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4z"/>
+              </svg>
+              <p class="mt-2">Start a conversation with your chatbot</p>
+            </div>
+          </div>
+
+          <!-- Input area -->
+          <div class="border-t border-gray-200 p-4">
+            <div class="flex items-center space-x-3">
+              <input type="text" 
+                placeholder="Type your message..." 
+                class="flex-1 rounded-md bg-white px-3 py-2 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 shadow-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black">
+              <button class="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<%# JavaScript to update temperature value display %>
+<%# TODO: Move to a stimulus controller %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const temperatureInput = document.querySelector('input[type="range"]');
+  const temperatureValue = document.getElementById('temperature-value');
+  
+  temperatureInput.addEventListener('input', function() {
+    temperatureValue.textContent = Number(this.value).toFixed(1);
+  });
+});
+</script>

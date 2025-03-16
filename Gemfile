@@ -71,3 +71,6 @@ gem "devise", "~> 4.9"
 gem "tailwindcss-ruby", "~> 4.0"
 
 gem "ruby-openai"
+
+# Front end for background jobs
+gem "mission_control-jobs"

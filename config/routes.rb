@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
+
   get "/webhooks", to: "webhooks#index"
   post "/webhooks", to: "webhooks#create"
 

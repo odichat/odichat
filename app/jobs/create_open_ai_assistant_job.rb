@@ -10,8 +10,9 @@ class CreateOpenAiAssistantJob < ApplicationJob
         parameters: {
           model: Model.find(chatbot.model_id).name,
           name: chatbot.name,
-          instructions: nil,
-          tools: []
+          instructions: chatbot.system_instructions,
+          tools: [],
+          temperature: chatbot.temperature
         }
       )
       chatbot.update!(assistant_id: assistant["id"])

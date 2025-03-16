@@ -1,8 +1,8 @@
 <%= form_with(model: chatbot, class: "contents") do |form| %>
-  <div class="space-y-12">
+  <div class="space-y-12 mt-8">
     <div class="border-b border-gray-900/10 pb-12">
       <h2 class="text-base/7 font-semibold text-gray-900">Chatbot Details</h2>
-      <p class="mt-1 text-sm/6 text-gray-600">Enter the basic information for your chatbot.</p>
+      <p class="mt-1 text-base text-gray-600">Enter the basic information for your chatbot.</p>
 
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="sm:col-span-4">
@@ -16,7 +16,10 @@
   </div>
 
   <div class="mt-6 flex items-center justify-end gap-x-6">
-    <%= link_to "Cancel", chatbots_path, class: "text-sm/6 font-semibold text-gray-900" %>
-    <%= form.submit class: "rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-stone-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
+    <%= link_to "Cancel", chatbots_path, class: "text-base font-semibold text-gray-900" %>
+    <%= form.submit class: "rounded-md bg-black px-3 py-2 font-semibold text-base text-white shadow-xs hover:bg-stone-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
   </div>
+
+  <%= form.hidden_field :model_id, value: Model.first.id %>
+  <%= form.hidden_field :temperature, value: 0.5 %>
 <% end %>

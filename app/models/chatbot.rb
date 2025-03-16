@@ -1,16 +1,16 @@
 class Chatbot < ApplicationRecord
   belongs_to :user
 
-  before_validation :set_default_model_id, on: :create
-
   validates :model_id, presence: true
   validates :temperature, presence: true
   validates :temperature, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
+  after_create :create_assistant
+
   private
 
-  def set_default_model_id
-    # gpt-4o-mini is the default model
-    self.model_id ||= Model.first&.id
+  def create_assistant
+    return if self.assistant_id.present?
+    # TODO: Enqueue a job to create the assistant
   end
 end

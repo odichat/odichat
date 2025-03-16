@@ -8,6 +8,7 @@ class Chatbot < ApplicationRecord
   validates :temperature, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
   after_create :create_assistant
+  after_update :update_assistant
 
   private
 
@@ -16,11 +17,13 @@ class Chatbot < ApplicationRecord
   end
 
   def create_assistant
-    puts "Creating assistant for chatbot #{self.id}"
     return if self.assistant_id.present?
-    puts "Assistant ID is present for chatbot #{self.id}"
-
     # Enqueue job to create the assistant
     CreateOpenAiAssistantJob.perform_later(self.id)
+  end
+
+  def update_assistant
+    return if self.assistant_id.blank?
+    # TODO: Update the assistant
   end
 end

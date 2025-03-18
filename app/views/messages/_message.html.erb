@@ -1,0 +1,22 @@
+<div id="<%= dom_id message %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Chat:</strong>
+    <%= message.chat_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Sender:</strong>
+    <%= message.sender %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Wa message:</strong>
+    <%= message.wa_message_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Assistant message:</strong>
+    <%= message.assistant_message_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Content:</strong>
+    <%= message.content %>
+  </div>
+</div>

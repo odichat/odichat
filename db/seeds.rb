@@ -20,9 +20,9 @@ if Rails.env.development?
   Model.find_or_create_by!(name: "gpt-4o", provider: "openai")
 
   # Create a chatbot for the user
-  Chatbot.find_or_create_by!(assistant_id: 'asst_AFGyRQRz0BgEOW0kmjFg9wsg') do |chatbot|
-    chatbot.name = 'My Assistant'
-    chatbot.user = user
-    chatbot.model_id = Model.find_by(name: "gpt-4o-mini")
-  end
+  # Chatbot.find_or_create_by!(assistant_id: 'asst_AFGyRQRz0BgEOW0kmjFg9wsg') do |chatbot|
+  #   chatbot.name = 'My Assistant'
+  #   chatbot.user = user
+  #   chatbot.model_id = Model.find_by(name: "gpt-4o-mini")
+  # end
 end

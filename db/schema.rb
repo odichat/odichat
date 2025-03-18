@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_16_191705) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_18_005401) do
   create_table "chatbots", force: :cascade do |t|
     t.string "name", null: false
     t.string "assistant_id"
@@ -22,6 +22,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_191705) do
     t.string "system_instructions"
     t.index ["model_id"], name: "index_chatbots_on_model_id"
     t.index ["user_id"], name: "index_chatbots_on_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.integer "chatbot_id", null: false
+    t.string "contact_phone"
+    t.string "thread_id"
+    t.string "source", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_chats_on_chatbot_id"
   end
 
   create_table "models", force: :cascade do |t|
@@ -47,4 +57,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_191705) do
 
   add_foreign_key "chatbots", "models"
   add_foreign_key "chatbots", "users"
+  add_foreign_key "chats", "chatbots"
 end

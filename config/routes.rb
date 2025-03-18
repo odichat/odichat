@@ -1,16 +1,19 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
-  get "/webhooks", to: "webhooks#index"
-  post "/webhooks", to: "webhooks#create"
+  resources :chats, only: [ :index, :show ]
 
-  get "/dashboard", to: "dashboard#index"
   resources :chatbots, only: [ :index, :new, :create ]
   namespace :chatbots do
     resources :playground, only: [ :show, :update ]
     resources :settings, only: [ :show, :update, :destroy ]
   end
   devise_for :users
+
+  get "/webhooks", to: "webhooks#index"
+  post "/webhooks", to: "webhooks#create"
+
+  get "/dashboard", to: "dashboard#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

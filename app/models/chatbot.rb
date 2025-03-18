@@ -1,5 +1,6 @@
 class Chatbot < ApplicationRecord
   belongs_to :user
+  has_many :chats, dependent: :destroy
 
   before_create :set_default_system_instructions
 
@@ -8,7 +9,7 @@ class Chatbot < ApplicationRecord
   validates :temperature, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
 
   after_create :create_assistant
-  after_update :update_assistant
+  after_create :create_playground_chat
 
   private
 
@@ -22,8 +23,8 @@ class Chatbot < ApplicationRecord
     CreateOpenAiAssistantJob.perform_later(self.id)
   end
 
-  def update_assistant
-    return if self.assistant_id.blank?
-    # TODO: Update the assistant
+  def create_playground_chat
+    return if self.chats.one?
+    chats.create!(source: "playground")
   end
 end

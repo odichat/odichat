@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  chatbot: one
+  contact_phone: MyString
+  thread_id: MyString
+  source: MyString
+
+two:
+  chatbot: two
+  contact_phone: MyString
+  thread_id: MyString
+  source: MyString

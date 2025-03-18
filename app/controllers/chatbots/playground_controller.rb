@@ -1,5 +1,6 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
   def show
+    @chat = @chatbot.chats.where(source: "playground").last
   end
 
   def update

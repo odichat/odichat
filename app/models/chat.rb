@@ -6,10 +6,14 @@ class Chat < ApplicationRecord
 
   after_create :create_thread
 
+  def assistant_id
+    self.chatbot.assistant_id
+  end
+
   private
 
   def create_thread
     return if self.thread_id.present?
-    CreateChatThreadJob.perform_later(self.id)
+    CreateThreadJob.perform_later(self.id)
   end
 end

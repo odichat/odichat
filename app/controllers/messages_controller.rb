@@ -26,10 +26,15 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         format.html { redirect_to @message, notice: "Message was successfully created." }
-        format.json { render :show, status: :created, location: @message }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.append("playground-messages", partial: "messages/message", locals: { message: @message })
+        }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
+        format.html { redirect_to chatbots_playground_path(@chatbot), status: :unprocessable_entity, alert: @message.errors.full_messages.join(", ") }
+        format.turbo_stream {
+          flash.now[:alert] = @message.errors.full_messages.to_sentence
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
+        }
       end
     end
   end

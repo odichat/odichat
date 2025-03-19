@@ -1,6 +1,7 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
   def show
     @chat = @chatbot.chats.where(source: "playground").last
+    @messages = @chat.messages.order(created_at: :asc) if @chat.present?
   end
 
   def update
@@ -8,7 +9,7 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
       respond_to do |format|
         format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Settings updated successfully." }
         format.turbo_stream {
-          flash.now[:notice] = "Settings updated successfully."
+          flash.now[:notice] = "Chatbot settings updated successfully."
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
         }
       end

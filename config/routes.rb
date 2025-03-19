@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
-  resources :messages
+  resources :messages, only: [ :create ]
   resources :chats, only: [ :index, :show ]
 
   resources :chatbots, only: [ :index, :new, :create ]

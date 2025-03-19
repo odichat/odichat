@@ -1,22 +1,24 @@
-<div id="<%= dom_id message %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Chat:</strong>
-    <%= message.chat_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Sender:</strong>
-    <%= message.sender %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Wa message:</strong>
-    <%= message.wa_message_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Assistant message:</strong>
-    <%= message.assistant_message_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Content:</strong>
-    <%= message.content %>
-  </div>
-</div>
+<% if message.sender == "user" %>
+  <%= turbo_frame_tag dom_id(message) do %>
+    <div class="flex justify-end">
+      <div class="inline-block">
+        <div class="bg-black rounded-[20px] rounded-tr-[4px] px-4 py-3">
+          <p class="text-white text-base"><%= message.content %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if message.sender == "assistant" %>
+  <%= turbo_frame_tag dom_id(message) do %>
+    <div class="flex justify-start">
+      <div class="inline-block">
+        <div class="bg-gray-200 rounded-[20px] rounded-tl-[4px] px-4 py-3">
+          <p class="text-gray-900 text-base"><%= message.content %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+

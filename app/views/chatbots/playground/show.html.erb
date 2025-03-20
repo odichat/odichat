@@ -20,7 +20,7 @@
       <%= render "chatbots/playground/sidebar" %>
 
       <!-- Right side chat interface -->
-      <%= render "chatbots/playground/chat" %>
+      <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
     </div>
   </div>
 </div>

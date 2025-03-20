@@ -22,10 +22,11 @@ class MessagesController < ApplicationController
   # POST /messages or /messages.json
   def create
     @message = Message.new(message_params)
+    @chatbot = @message.chat.chatbot
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to @message, notice: "Message was successfully created." }
+        format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Message was successfully created." }
         format.turbo_stream {
           render turbo_stream: turbo_stream.append("playground-messages", partial: "messages/message", locals: { message: @message })
         }

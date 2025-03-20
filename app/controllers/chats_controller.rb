@@ -10,9 +10,33 @@ class ChatsController < ApplicationController
   def show
   end
 
+  def create
+    @chat = Chat.new(chat_params)
+
+    respond_to do |format|
+      if @chat.save
+        format.html { redirect_to chatbots_playground_path(@chat.chatbot), notice: "Chat was successfully created." }
+        format.turbo_stream {
+          @chatbot = @chat.chatbot
+          render template: "chatbots/playground/show"
+        }
+      else
+        format.html { redirect_to chatbots_playground_path(@chat.chatbot), status: :unprocessable_entity, alert: @chat.errors.full_messages.join(", ") }
+        format.turbo_stream {
+          flash.now[:alert] = @chat.errors.full_messages.to_sentence
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
+        }
+      end
+    end
+  end
+
   private
 
   def set_chat
-    @chat = Chat.find(params.expect(:id))
+    @chat = Chat.find(params[:id])
+  end
+
+  def chat_params
+    params.require(:chat).permit(:chatbot_id, :source)
   end
 end

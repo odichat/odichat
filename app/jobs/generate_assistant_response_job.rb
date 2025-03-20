@@ -33,6 +33,12 @@ class GenerateAssistantResponseJob < ApplicationJob
     #   locals: { message: message }
     # )
     # ================================
+    Turbo::StreamsChannel.broadcast_append_to(
+      "messages",
+      target: "playground-messages",
+      partial: "messages/message",
+      locals: { message: message }
+    )
   rescue StandardError => e
     Rails.logger.error("Error adding message to chat_id: #{message.chat.id} and thread_id: #{thread_id}: #{e.message}")
     raise "Error adding message to chat_id: #{message.chat.id} and thread_id: #{thread_id}: #{e.message}"

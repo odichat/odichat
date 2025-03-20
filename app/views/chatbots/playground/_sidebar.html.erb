@@ -54,3 +54,16 @@
     <% end %>
   </div>
 </div>
+
+<%# JavaScript to update temperature value display %>
+<%# TODO: Move to a stimulus controller %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const temperatureInput = document.querySelector('input[type="range"]');
+  const temperatureValue = document.getElementById('temperature-value');
+  
+  temperatureInput.addEventListener('input', function() {
+    temperatureValue.textContent = Number(this.value).toFixed(1);
+  });
+});
+</script>

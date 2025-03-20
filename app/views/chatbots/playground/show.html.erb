@@ -1,5 +1,5 @@
-<!-- At the top of your playground show view -->
 <%= turbo_stream_from "messages" %>
+<%= turbo_stream_from "playground_sidebar" %>
 
 <!-- Main playground container -->
 <div class="bg-gray-50">
@@ -17,7 +17,7 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex gap-6">
       <!-- Left sidebar with form -->
-      <%= render "chatbots/playground/sidebar" %>
+        <%= render "chatbots/playground/sidebar", chatbot: @chatbot, is_loading_sidebar: @is_loading_sidebar %>
 
       <!-- Right side chat interface -->
       <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>

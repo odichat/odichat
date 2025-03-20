@@ -2,16 +2,14 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
   def show
     @chat = @chatbot.chats.where(source: "playground").last
     @messages = @chat.messages.order(created_at: :asc) if @chat.present?
+    @is_loading_sidebar = true
+    FetchAssistantJob.perform_later(@chatbot.id)
   end
 
   def update
     if @chatbot.update(chatbot_params)
       respond_to do |format|
         format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Settings updated successfully." }
-        format.turbo_stream {
-          flash.now[:notice] = "Chatbot settings updated successfully."
-          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
-        }
       end
     else
       respond_to do |format|

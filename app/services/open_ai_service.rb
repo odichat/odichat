@@ -77,6 +77,14 @@ class OpenAiService
     raise "API call to OpenAI failed: #{e.message}"
   end
 
+  def self.get_assistant(assistant_id)
+    client = OpenAI::Client.new
+    client.assistants.retrieve(id: assistant_id)
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI error getting assistant: #{e.message}")
+    raise "OpenAI error getting assistant: #{e.message}"
+  end
+
   private
 
   def self.fetch_assistant_messages(thread_id, run_id)

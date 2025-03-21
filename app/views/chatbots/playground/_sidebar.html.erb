@@ -1,9 +1,9 @@
-<div class="w-96 shrink-0">
-  <div id="playground_sidebar" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <% if is_loading_sidebar %>
-      <%= render "chatbots/playground/sidebar_skeleton" %>
-    <% else %>
-      <%= render "chatbots/playground/sidebar_content", chatbot: chatbot, assistant: nil %>
-    <% end %>
+
+  <div class="w-96 shrink-0">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <%= turbo_frame_tag "playground_sidebar" do %>    
+        <%= render "chatbots/playground/sidebar_skeleton" %>
+      <% end %>
+    </div>
   </div>
-</div>
+

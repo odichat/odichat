@@ -25,7 +25,7 @@ class ChatsController < ApplicationController
                 chat: @chat,
                 messages: [],
                 chatbot: @chat.chatbot,
-                loading: true
+                is_loading: true
               }
             )
           ]

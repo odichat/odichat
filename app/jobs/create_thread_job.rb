@@ -14,7 +14,7 @@ class CreateThreadJob < ApplicationJob
         chat: chat,
         messages: chat.messages || [],
         chatbot: chat.chatbot,
-        loading: false
+        is_loading: false
       }
     )
   rescue StandardError => e

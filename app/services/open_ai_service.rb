@@ -85,6 +85,22 @@ class OpenAiService
     raise "OpenAI error getting assistant: #{e.message}"
   end
 
+  def self.update_assistant(assistant_id, model_id, temperature, system_instructions)
+    client = OpenAI::Client.new
+    model_name = Model.find(model_id).name
+    client.assistants.modify(
+      id: assistant_id,
+      parameters: {
+        model: model_name,
+        temperature: temperature.to_f,
+        instructions: system_instructions
+      }
+    )
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI error updating assistant: #{e.message}")
+    raise "OpenAI error updating assistant: #{e.message}"
+  end
+
   private
 
   def self.fetch_assistant_messages(thread_id, run_id)

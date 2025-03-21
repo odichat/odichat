@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :chatbots, only: [ :index, :new, :create ]
   namespace :chatbots do
-    resources :playground, only: [ :show, :update ]
+    resources :playground, only: [ :edit, :update ]
     resources :settings, only: [ :show, :update, :destroy ]
   end
   devise_for :users

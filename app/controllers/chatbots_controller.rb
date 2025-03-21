@@ -28,9 +28,29 @@ class ChatbotsController < ApplicationController
     end
   end
 
+  def update
+    @chatbot = Chatbot.find(params[:id])
+
+    respond_to do |format|
+      if @chatbot.update(chatbot_params)
+        format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
+        format.turbo_stream {
+          flash.now[:notice] = "Chatbot was successfully updated."
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
+        }
+      else
+        format.html { redirect_to chatbots_playground_path(@chatbot), alert: @chatbot.errors.full_messages.join(", ") }
+        format.turbo_stream {
+          flash.now[:alert] = @chatbot.errors.full_messages.join(", ")
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
+        }
+      end
+    end
+  end
+
   private
     # Only allow a list of trusted parameters through.
     def chatbot_params
-      params.require(:chatbot).permit(:name, :model_id, :temperature)
+      params.require(:chatbot).permit(:name, :model_id, :assistant_id)
     end
 end

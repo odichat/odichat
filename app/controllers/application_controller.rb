@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   rescue_from NoMethodError, ArgumentError do |exception|
-    error_message = Rails.env.production? ? "Sorry, something went wrong. If the error persists, please contact support." : "Error: #{exception.message}"
+    error_message = "Error: #{exception.message}"
     respond_to do |format|
       format.html { redirect_to root_path, alert: error_message }
       format.turbo_stream {

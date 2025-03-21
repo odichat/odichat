@@ -1,4 +1,4 @@
-<div class="h-full min-h-[400px] max-h-[400px] overflow-y-auto p-6">
+<div class="h-full min-h-[400px] max-h-[400px] overflow-y-auto p-6" data-controller="chat-scroll">
   <div class="space-y-4" id="playground-messages">
     <% if local_assigns[:is_loading] || !chat.thread_id.present? %>
       <div class="flex items-center justify-center h-full">

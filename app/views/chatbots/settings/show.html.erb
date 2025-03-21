@@ -9,13 +9,12 @@
     <div class="w-64 shrink-0">
       <nav class="space-y-1">
         <a href="#" class="block px-4 py-2 rounded-md bg-gray-100 text-gray-900 font-medium">General</a>
-        <a href="#" class="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-medium">AI</a>
       </nav>
     </div>
     
     <!-- Main content area -->
     <div class="flex-1">
-      <div class="bg-white rounded-lg border border-gray-200 p-6">
+      <div class="bg-white rounded-lg border shadow-sm border-gray-200 p-6">
         <h2 class="text-2xl font-bold mb-6">General</h2>
         
         <!-- Form with Turbo attributes -->
@@ -35,6 +34,29 @@
             <%= form.submit "Save", class: "px-4 py-2 bg-black text-white rounded-md hover:bg-stone-900 cursor-pointer" %>
           </div>
         <% end %>
+      </div>
+
+      <div class="relative my-10">
+        <div class="absolute inset-0 flex items-center">
+          <span class="w-full border-gray-200 border-t"></span>
+        </div>
+        <div class="relative flex justify-center text-xs uppercase">
+          <span class="bg-white px-2 font-bold text-red-400">
+            Danger Zone
+          </span>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-lg border bg-white shadow-sm border-red-200">
+        <h2 class="text-2xl text-red-500 font-bold mb-6">Delete Agent</h2>
+        <div class="pt-0">
+          <p>
+            This action is irreversible. All data associated with this agent will be permanently deleted.
+          </p>
+          <div class="mt-4">
+            <%= button_to "Delete", chatbots_setting_path(@chatbot), method: :delete, class: "px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer", data: { turbo_confirm: "Are you sure you want to delete this agent?" } %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

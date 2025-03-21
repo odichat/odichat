@@ -23,6 +23,18 @@ class Chatbots::SettingsController < Chatbots::BaseController
     end
   end
 
+  def destroy
+    if @chatbot.destroy
+      respond_to do |format|
+        format.html { redirect_to chatbots_path, notice: "Chatbot was successfully deleted." }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to chatbots_path, alert: "This chatbot cannot be deleted at this moment." }
+      end
+    end
+  end
+
   private
 
   def chatbot_params

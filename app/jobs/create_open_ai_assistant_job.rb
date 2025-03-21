@@ -22,9 +22,6 @@ class CreateOpenAiAssistantJob < ApplicationJob
       end
 
       chatbot.update!(assistant_id: assistant_id)
-
-      # Create a chat for the user to start the conversation in the playground
-      CreateChatWithThreadJob.perform_later(chatbot_id, "playground")
     rescue OpenAI::Error => e
       error_message = "OpenAI::Error creating assistant for user_id `#{chatbot.user.id}` and chatbot_id `#{chatbot.id}`: #{e.message}"
       Rails.logger.error(error_message)

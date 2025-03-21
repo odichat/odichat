@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from NoMethodError, ArgumentError do |exception|
     error_message = "Error: #{exception.message}"
+    Rails.logger.error(exception.backtrace.join("\n"))
+    Rails.logger.error(error_message)
     respond_to do |format|
       format.html { redirect_to root_path, alert: error_message }
       format.turbo_stream {

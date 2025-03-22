@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "playground_sidebar" do %>
-  <%= form_with(model: chatbot, url: chatbots_playground_path(chatbot), method: :patch, class: "space-y-6") do |f| %>
+  <%= form_with(model: chatbot, url: chatbots_playground_path(chatbot), method: :patch, class: "space-y-6", id: "sidebar_form") do |f| %>
     <!-- Model selection -->
     <div>
       <label for="model_id" class="block text-sm font-medium text-gray-900 mb-2">Model</label>
@@ -32,11 +32,11 @@
               "range-slider-target": "input",
               action: "input->range-slider#updateDisplay"
             },
-            value: assistant&.dig("temperature") || chatbot.temperature,
+            value: chatbot.temperature,
             disabled: chatbot.assistant_id.blank? %>
         <span class="text-sm font-semibold text-gray-900 w-12 text-right tabular-nums" 
               data-range-slider-target="display">
-          <%= assistant&.dig("temperature") || chatbot.temperature %>
+          <%= chatbot.temperature %>
         </span>
       </div>
     </div>
@@ -45,7 +45,7 @@
     <div>
       <label for="system_instructions" class="block text-sm font-medium text-gray-900 mb-2">System Instructions</label>
       <%= f.text_area :system_instructions,
-          value: assistant&.dig("instructions") || chatbot.system_instructions,
+          value: chatbot.system_instructions,
           rows: 10,
           class: "w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 shadow-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black",
           disabled: chatbot.assistant_id.blank? %>
@@ -54,10 +54,16 @@
     <%= f.hidden_field :name, value: chatbot.name %>
 
     <!-- Submit button -->
+    <!-- TODO: Needs refactoring. Including the Stimulus controller in the index.js file -->
     <div>
-      <%= f.submit "Save Changes", 
-          class: "cursor-pointer w-full flex justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-stone-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
-          disabled: chatbot.assistant_id.blank? %>
+      <%= f.button type: "submit",
+          id: "button_loader",
+          class: "relative w-full flex justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-stone-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+          disabled: chatbot.assistant_id.blank? do %>
+          <span id="sidebar_submit_button_text">
+            Save Changes
+          </span>
+      <% end %>
     </div>
   <% end %>
 <% end %>

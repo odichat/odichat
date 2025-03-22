@@ -16,20 +16,7 @@ class ChatsController < ApplicationController
     respond_to do |format|
       if @chat.save
         format.html { redirect_to chatbots_playground_path(@chat.chatbot), notice: "Chat was successfully created." }
-        format.turbo_stream {
-          render turbo_stream: [
-            turbo_stream.replace(
-              "playground_chat",
-              partial: "chatbots/playground/chat",
-              locals: {
-                chat: @chat,
-                messages: [],
-                chatbot: @chat.chatbot,
-                is_loading: true
-              }
-            )
-          ]
-        }
+        format.turbo_stream
       else
         format.html { redirect_to chatbots_playground_path(@chat.chatbot), status: :unprocessable_entity, alert: @chat.errors.full_messages.join(", ") }
         format.turbo_stream {

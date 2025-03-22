@@ -8,13 +8,10 @@ class CreateThreadJob < ApplicationJob
 
     Turbo::StreamsChannel.broadcast_replace_to(
       "messages",
-      target: "playground_chat",
-      partial: "chatbots/playground/chat",
+      target: "loader",
+      partial: "chatbots/playground/chat_messages",
       locals: {
-        chat: chat,
-        messages: chat.messages || [],
-        chatbot: chat.chatbot,
-        is_loading: false
+        messages: chat.messages || []
       }
     )
   rescue StandardError => e

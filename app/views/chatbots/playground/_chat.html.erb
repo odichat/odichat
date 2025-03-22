@@ -1,14 +1,20 @@
-<%= turbo_frame_tag "playground_chat", class: "w-full h-full" do %>
+<div class="w-full h-full">
   <div class="flex-1">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
       <!-- Header section -->
       <%= render "chatbots/playground/chat_header", chatbot: chatbot %>
       
       <!-- Chat messages area -->
-      <%= render "chatbots/playground/chat_messages", chat: chat, messages: messages %>
+      <div class="h-full min-h-[400px] max-h-[400px] overflow-y-auto p-6" data-controller="chat-scroll">
+        <%= render "chatbots/playground/chat_messages", messages: messages %>
+      </div>
 
       <!-- Input area -->
-      <%= render "chatbots/playground/chat_form", chat: chat, messages: messages %>
+      <div class="border-t border-gray-200 p-4">
+        <div class="flex items-center space-x-3">
+          <%= render "chatbots/playground/chat_form", chat: chat, messages: messages %>
+        </div>
+      </div>
     </div>
   </div>
-<% end %>
+</div>

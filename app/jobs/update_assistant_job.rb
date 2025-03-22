@@ -3,35 +3,44 @@ class UpdateAssistantJob < ApplicationJob
 
   def perform(chatbot_id, model_id, temperature, system_instructions)
     chatbot = Chatbot.find(chatbot_id)
+
     begin
+      # OpenAI API call to update the assistant
       assistant = OpenAiService.update_assistant(chatbot.assistant_id, model_id, temperature, system_instructions)
-      raise "AI agent not found" if assistant.blank?
-      chatbot.update(model_id: model_id, temperature: temperature, system_instructions: system_instructions)
-      broadcast_sidebar_content(chatbot, assistant)
-      flash_message(:notice, "AI agent updated successfully!")
+
+      if assistant.present?
+        # Only update the database if the API call was successful
+        chatbot.update!(
+          model_id: model_id,
+          temperature: temperature,
+          system_instructions: system_instructions
+        )
+        flash_message(:notice, "AI agent updated successfully!")
+      else
+        flash_message(:alert, "Failed to update AI agent: No response received")
+      end
+
     rescue OpenAI::Error => e
       Rails.logger.error("OpenAI error updating assistant: #{e.message}")
       flash_message(:alert, "Error updating assistant: #{e.message}")
-      broadcast_sidebar_content(chatbot, nil)
-      raise "OpenAI error updating assistant: #{e.message}"
+    rescue StandardError => e
+      Rails.logger.error("Error updating assistant: #{e.message}")
+      flash_message(:alert, "Error updating assistant: #{e.message}")
+    ensure
+      # Broadcast the sidebar form to update the button text, which is a spinner
+      broadcast_sidebar_form(chatbot)
     end
-  rescue StandardError => e
-    Rails.logger.error("Error updating assistant: #{e.message}")
-    flash_message(:alert, "Error updating assistant: #{e.message}")
-    broadcast_sidebar_content(chatbot, nil)
-    raise "Error updating assistant: #{e.message}"
   end
 
   private
 
-  def broadcast_sidebar_content(chatbot, assistant)
+  def broadcast_sidebar_form(chatbot)
     Turbo::StreamsChannel.broadcast_replace_to(
       "playground_sidebar",
-      target: "sidebar_skeleton",
-      partial: "chatbots/playground/sidebar_content",
+      target: "playground_sidebar",
+      partial: "chatbots/playground/sidebar/form",
       locals: {
-        chatbot: chatbot,
-        assistant: assistant
+        chatbot: chatbot
       }
     )
   end

@@ -1,1 +1,3 @@
-<%= turbo_stream.replace "playground_sidebar", target: "sidebar_skeleton", partial: "chatbots/playground/sidebar_skeleton" %>
+<%= turbo_stream.replace "sidebar_submit_button_text" do %>
+  <%= render "shared/spinner" %>
+<% end %>

@@ -31,9 +31,19 @@ class WebhooksController < ApplicationController
 
   def parse_whatsapp_message
     parser = WhatsappMessageParser.new(params.permit!.to_h)
+    Rails.logger.info("⚡️ Incoming WhatsApp webhook payload: #{params.permit!.to_h}")
+
     @message_data = parser.extract_message_data
-    unless @message_data
-      render json: { error: "Message data not found" }, status: :unprocessable_entity
+    puts "PUTS: @message_data: #{@message_data}"
+    Rails.logger.info("PUTS: @message_data: #{@message_data}")
+
+    if @message_data
+      puts "PUTS: ✅ Successfully parsed message: #{@message_data}"
+      Rails.logger.info("✅ Successfully parsed message: #{@message_data}")
+    else
+      Rails.logger.error("❌ No message found in payload")
+      puts "PUTS: ❌ No message found in payload"
+      head :ok  # Acknowledge webhook but don't process further
     end
   end
 

@@ -1,9 +1,9 @@
 class WhatsappService
-  def self.send_message(phone_number, message)
+  def self.send_message(wa_phone_number_id, recipient_phone_number, message)
     client = WhatsappSdk::Api::Messages.new
     client.send_text(
-      sender_id: ENV["WHATSAPP_SENDER_ID"].to_i,
-      recipient_number: phone_number.to_i,
+      sender_id: wa_phone_number_id.to_i,
+      recipient_number: recipient_phone_number.to_i,
       message: message
     )
   rescue StandardError => e

@@ -2,6 +2,8 @@ class Chatbot < ApplicationRecord
   belongs_to :user
   has_many :chats, dependent: :destroy
 
+  has_one :wa_integration, dependent: :destroy
+
   before_create :set_default_system_instructions
 
   validates :model_id, presence: true

@@ -1,6 +1,7 @@
 class WebhooksController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :parse_whatsapp_message, only: :create
+  before_action :set_wa_integration, only: :create
 
   def index
     mode =      params["hub.mode"]
@@ -16,10 +17,13 @@ class WebhooksController < ApplicationController
 
 
   def create
-    return head :unprocessable_entity unless @message_data
+    wa_phone_number_id = @wa_integration.phone_number_id
 
-    if @message_data[:message_text].present?
-      WhatsappService.send_message(@message_data[:phone], "PONG!")
+    if wa_phone_number_id.present?
+      WhatsappService.send_message(wa_phone_number_id, @message_data[:from_phone_number], "PONG!")
+      head :ok
+    else
+      render json: { error: "WA phone number ID not found" }, status: :unprocessable_entity
     end
   end
 
@@ -28,5 +32,14 @@ class WebhooksController < ApplicationController
   def parse_whatsapp_message
     parser = WhatsappMessageParser.new(params.permit!.to_h)
     @message_data = parser.extract_message_data
+    unless @message_data
+      render json: { error: "Message data not found" }, status: :unprocessable_entity
+    end
+  end
+
+  def set_wa_integration
+    @wa_integration = WaIntegration.find_by!(waba_id: @message_data[:waba_id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Waba ID not found" }, status: :unprocessable_entity
   end
 end

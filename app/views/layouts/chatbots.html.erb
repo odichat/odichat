@@ -25,18 +25,10 @@
       <%= render "shared/chatbot_header" %>
       <%= yield %>
 
-      <!-- 5. Facebook related stuff -->
-      <%# if user_signed_in? %>
-        <!-- <button onclick="launchWhatsAppSignup()" class="bg-[#1877f2] border-0 rounded text-white cursor-pointer font-bold h-10 px-6">Login with Facebook</button> -->
-        <!-- <p>Session info response:</p> -->
-        <!-- <pre id="session-info-response"></pre> -->
-        <!-- <br> -->
-        <!-- <p>SDK response:</p> -->
-        <!-- <pre id="sdk-response"></pre> -->
-      <%# end %>
-
-      <%= javascript_include_tag "facebook_sdk", defer: true %>
-      <%= javascript_include_tag "embedded_signup", defer: true %>
+      <% if user_signed_in? && current_page?(chatbots_integration_path) %>
+        <%= javascript_include_tag "facebook_sdk", defer: true %>
+        <%= javascript_include_tag "embedded_signup", defer: true %>
+      <% end %>
     </main>
   </body>
 </html> 

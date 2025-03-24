@@ -1,5 +1,4 @@
 class Chatbots::SettingsController < Chatbots::BaseController
-
   def show
   end
 

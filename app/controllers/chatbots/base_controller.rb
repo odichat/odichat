@@ -5,7 +5,7 @@ class Chatbots::BaseController < ApplicationController
   before_action :set_chatbot
 
   def set_chatbot
-    @chatbot = Chatbot.find(params[:id])
+    @chatbot = Chatbot.find(params[:chatbot_id])
   rescue ActiveRecord::RecordNotFound
     respond_to do |format|
       format.html { redirect_to chatbots_path, alert: "Chatbot not found" }

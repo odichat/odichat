@@ -1,23 +1,34 @@
+<%= turbo_stream_from "flash" %>
+
+<% special_styles_1 = "relative group cursor-pointer" %>
+<% special_styles_2 = "absolute -inset-1 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur opacity-25 transition duration-1000" %>
+<% is_wa_connected = @chatbot.wa_integration.present? && @chatbot.wa_integration.access_token.present? %>
+
 <!-- Main container with full width -->
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold mb-8">Integrations</h1>
 
   <!-- Grid layout for integration cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
     <!-- WhatsApp Card -->
-    <div class="cursor-not-allowed bg-white rounded-lg shadow-md p-6 border border-gray-200">
-      <div class="flex items-center mb-4">
-        <div class="w-12 h-12 rounded-lg">
-          <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
+    <div class="<%= is_wa_connected ? special_styles_1 : '' %>">
+      <div class="<%= is_wa_connected ? special_styles_2 : '' %>"></div>
+      <div class="relative">
+        <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#F0F2F5] via-gray-50 to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite]"></div>
+        <div class="relative rounded-lg shadow-md p-6 border border-gray-200">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg">
+              <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
+            </div>
+            <h2 class="text-xl text-stone-600 font-semibold ml-4">WhatsApp</h2>
+          </div>
+          <p class="text-stone-600 mb-6">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
+          <div class="flex gap-2">
+            <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= @chatbot.id %>" class="cursor-pointer w-full bg-[#008069] hover:bg-[#017561] text-white py-2 px-4 rounded-lg">
+              <%= is_wa_connected ? "Reconnect" : "Connect" %>
+            </button>
+          </div>
         </div>
-        <h2 class="text-xl text-stone-400 font-semibold ml-4">WhatsApp</h2>
-      </div>
-      <p class="text-stone-400 mb-6">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
-      <div class="flex gap-2">
-        <button class="cursor-not-allowed w-full bg-stone-100 text-stone-500 py-2 px-4 rounded-lg">
-          Coming Soon
-        </button>
       </div>
     </div>
 

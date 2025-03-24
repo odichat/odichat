@@ -22,23 +22,27 @@ class WhatsappMessageParser
 
   def extract_text_message_data
     value =   @payload.dig("entry", 0, "changes", 0, "value")
+    waba_id = @payload.dig("entry", 0, "id")
     message = value.dig("messages", 0)
     contact = value.dig("contacts", 0)
 
     {
-      phone:        message["from"],
+      waba_id:      waba_id,
+      from_phone_number:        message["from"],
       name:         contact.dig("profile", "name"),
-      message_text: message.dig("text", "body")
+      message_text: message.dig("text", "body"),
     }
   end
 
   def extract_image_message_data
     value =   @payload.dig("entry", 0, "changes", 0, "value")
+    waba_id = @payload.dig("entry", 0, "id")
     message = value.dig("messages", 0)
     contact = value.dig("contacts", 0)
 
     {
-      phone:     message["from"],
+      waba_id:      waba_id,
+      from_phone_number:        message["from"],
       name:      contact.dig("profile", "name"),
       caption:   message.dig("image", "caption"),
       image_id:  message.dig("image", "id"),

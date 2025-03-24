@@ -1,21 +1,33 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  # Messages
   resources :messages, only: [ :create ]
+
+  # Chats
   resources :chats, only: [ :index, :show, :create ]
 
+  # Chatbots
   resources :chatbots, only: [ :index, :new, :create ]
   namespace :chatbots do
-    resources :playground, only: [ :edit, :update ]
-    resources :settings, only: [ :show, :update, :destroy ]
-    resources :integrations, only: [ :show ]
+    resources :playground, param: :chatbot_id, only: [ :edit, :update ]
+    resources :settings, param: :chatbot_id, only: [ :show, :update, :destroy ]
+    resources :integrations, param: :chatbot_id, only: [ :show ]
   end
+
+  # Whatsapp Integration
+  resources :wa_integrations, only: [ :create ]
+  post "/wa_integrations/exchange_token_and_subscribe_app", to: "wa_integrations#exchange_token_and_subscribe_app"
+
+  # Devise
   devise_for :users
 
-  get "/webhooks", to: "webhooks#index"
-  post "/webhooks", to: "webhooks#create"
+  # Webhooks
+  resources :webhooks, only: [ :index, :create ]
 
+  # Dashboard
   get "/dashboard", to: "dashboard#index"
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

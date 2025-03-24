@@ -1,0 +1,2 @@
+module WaIntegrationsHelper
+end

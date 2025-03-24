@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_18_022133) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_24_204052) do
   create_table "chatbots", force: :cascade do |t|
     t.string "name", null: false
     t.string "assistant_id"
@@ -66,8 +66,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_18_022133) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wa_integrations", force: :cascade do |t|
+    t.integer "chatbot_id", null: false
+    t.string "phone_number_id"
+    t.string "waba_id"
+    t.string "access_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "subscribed", default: false
+    t.index ["chatbot_id"], name: "index_wa_integrations_on_chatbot_id"
+  end
+
   add_foreign_key "chatbots", "models"
   add_foreign_key "chatbots", "users"
   add_foreign_key "chats", "chatbots"
   add_foreign_key "messages", "chats"
+  add_foreign_key "wa_integrations", "chatbots"
 end

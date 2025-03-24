@@ -1,11 +1,29 @@
 const fbLoginCallback = (response) => {
   if (response.authResponse) {
     const code = response.authResponse.code;
-    console.log("Code: ", code);
-    // The returned code must be transmitted to your backend first and then
-    // perform a server-to-server call from there to our servers for an access token.
+    const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
+
+    fetch(`/wa_integrations/exchange_token_and_subscribe_app`, {
+      method: 'POST',
+      body: JSON.stringify({ chatbot_id: chatbotId, wa_integration: { code } }),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "text/vnd.turbo-stream.html, application/json",
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        console.log("Token exchanged successfully");
+      } else {
+        console.error("Failed to exchange token:", data.error);
+      }
+    })
+    .catch(error => {
+      console.error("Error exchanging token:", error);
+    });
   }
-  document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
 }
 
 const launchWhatsAppSignup = () => {
@@ -31,19 +49,37 @@ window.addEventListener('message', (event) => {
     if (data.type === 'WA_EMBEDDED_SIGNUP') {
       // if user finishes the Embedded Signup flow
       if (data.event === 'FINISH') {
-        const {phone_number_id, waba_id} = data.data;
-        console.log("Phone number ID ", phone_number_id, " WhatsApp business account ID ", waba_id);
+        const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
+        const { phone_number_id, waba_id } = data.data;
+
+        fetch(`/wa_integrations`, {
+          method: 'POST',
+          body: JSON.stringify({ chatbot_id: chatbotId, wa_integration: { phone_number_id, waba_id } }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.info("Phone number ID ", phone_number_id, " WhatsApp business account ID ", waba_id);
+        })
+        .catch(error => {
+          console.error("Error saving WhatsApp account: ", error);
+          alert("Error saving WhatsApp account: " + error.message);
+        });
         // if user cancels the Embedded Signup flow
       } else if (data.event === 'CANCEL') {
         const {current_step} = data.data;
+        alert("Cancel at " + current_step);
         console.warn("Cancel at ", current_step);
         // if user reports an error during the Embedded Signup flow
       } else if (data.event === 'ERROR') {
         const {error_message} = data.data;
+        alert("Error: " + error_message);
         console.error("error ", error_message);
       }
     }
-    document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
   } catch {
     console.log('Non JSON Responses', event.data);
   }

@@ -1,7 +1,10 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
   def edit
     @chat = @chatbot.chats.where(source: "playground").last
-    @messages = @chat.messages.order(created_at: :asc) if @chat.present?
+    if @chat.thread_id.nil?
+      CreateThreadJob.perform_later(@chat.id)
+    end
+    @messages = @chat.messages.order(created_at: :asc)
   end
 
   def update

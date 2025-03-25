@@ -3,7 +3,7 @@ class WhatsappService
     # client = WhatsappSdk::Api::Messages.new
     wa_integration = WaIntegration.find_by(phone_number_id: wa_phone_number_id)
 
-    client = WhatsappSdk::Api::Client.new(wa_integration.access_token, 22, Logger.new(STDOUT), { bodies: true })
+    client = WhatsappSdk::Api::Client.new(wa_integration.access_token, Logger.new(STDOUT), { bodies: true })
     client.messages.send_text(
       sender_id: wa_phone_number_id.to_i,
       recipient_number: recipient_phone_number.to_i,

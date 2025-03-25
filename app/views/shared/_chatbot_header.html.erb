@@ -1,15 +1,15 @@
-<div class="border-b border-gray-200 mb-4">
-  <div class="flex justify-center px-4">
+<div class="mb-4">
+  <div class="tabs justify-center">
     <% if @chatbot %>
       <%= link_to "Playground", 
           edit_chatbots_playground_path(@chatbot), 
-          class: "py-4 px-4 text-gray-700 text-sm font-medium border-b-2 #{current_page?(edit_chatbots_playground_path(@chatbot)) ? 'text-black border-black' : 'border-transparent hover:text-stone-900'}" %>
+          class: "tab #{current_page?(edit_chatbots_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Integrations", 
           chatbots_integration_path(@chatbot), 
-          class: "py-4 px-4 text-gray-700 text-sm font-medium border-b-2 #{current_page?(chatbots_integration_path(@chatbot)) ? 'text-black border-black' : 'border-transparent hover:text-stone-900'}" %>
+          class: "tab #{current_page?(chatbots_integration_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Settings", 
           chatbots_setting_path(@chatbot), 
-          class: "py-4 px-4 text-gray-700 text-sm font-medium border-b-2 #{current_page?(chatbots_setting_path(@chatbot)) ? 'text-black border-black' : 'border-transparent hover:text-stone-900'}" %>
+          class: "tab #{current_page?(chatbots_setting_path(@chatbot)) ? 'tab-active' : ''}" %>
     <% end %>
   </div>
 </div>

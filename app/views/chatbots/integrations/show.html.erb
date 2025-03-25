@@ -1,11 +1,11 @@
 <%= turbo_stream_from "flash" %>
 
 <% special_styles_1 = "relative group cursor-pointer" %>
-<% special_styles_2 = "absolute -inset-1 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur opacity-25 transition duration-1000" %>
+<% special_styles_2 = "absolute -inset-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-500" %>
 <% is_wa_connected = @chatbot.wa_integration.present? && @chatbot.wa_integration.access_token.present? %>
 
 <!-- Main container with full width -->
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto max-w-4xl px-4 py-8">
   <h1 class="text-3xl font-bold mb-8">Integrations</h1>
 
   <!-- Grid layout for integration cards -->
@@ -14,51 +14,57 @@
     <div class="<%= is_wa_connected ? special_styles_1 : '' %>">
       <div class="<%= is_wa_connected ? special_styles_2 : '' %>"></div>
       <div class="relative">
-        <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#F0F2F5] via-gray-50 to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite]"></div>
-        <div class="relative rounded-lg shadow-md p-6 border border-gray-200">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg">
-              <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
+        <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#dcf8c6] via-[#F0F2F5] to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite] opacity-70"></div>
+        <div class="card bg-base-100/70 backdrop-blur-sm shadow-md relative border border-gray-200">
+          <div class="card-body relative z-10">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg">
+                <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
+              </div>
+              <h2 class="card-title text-stone-600 ml-4">WhatsApp</h2>
             </div>
-            <h2 class="text-xl text-stone-600 font-semibold ml-4">WhatsApp</h2>
-          </div>
-          <p class="text-stone-600 mb-6">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
-          <div class="flex gap-2">
-            <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= @chatbot.id %>" class="cursor-pointer w-full bg-[#008069] hover:bg-[#017561] text-white py-2 px-4 rounded-lg">
-              <%= is_wa_connected ? "Reconnect" : "Connect" %>
-              <span id="wa-connection-loader"></span>
-            </button>
+            <p class="text-stone-600">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
+            <div class="card-actions justify-stretch mt-2">
+              <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= @chatbot.id %>" class="btn btn-success w-full">
+                <%= is_wa_connected ? "Reconnect" : "Connect" %>
+                <span id="wa-connection-loader"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Instagram Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 cursor-not-allowed">
-      <div class="flex items-center mb-4">
-        <div class="w-12 h-12 rounded-lg">
-          <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/ig.svg", class: "w-full h-full object-cover" %>
+    <div class="card bg-base-100 shadow-md cursor-not-allowed">
+      <div class="card-body">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-lg">
+            <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/ig.svg", class: "w-full h-full object-cover" %>
+          </div>
+          <h2 class="card-title text-stone-400 ml-4">Instagram</h2>
         </div>
-        <h2 class="text-xl text-stone-400 font-semibold ml-4">Instagram</h2>
+        <p class="text-stone-400">Connect your agent to an Instagram account and let it respond to messages from your customers.</p>
+        <div class="card-actions justify-stretch mt-2">
+          <button class="btn btn-neutral btn-disabled w-full">Coming Soon</button>
+        </div>
       </div>
-      <p class="text-stone-400 mb-6">Connect your agent to an Instagram account and let it respond to messages from your customers.</p>
-      <button class="cursor-not-allowed w-full bg-stone-100 text-stone-500 py-2 px-4 rounded-lg">
-        Coming Soon
-      </button>
     </div>
 
     <!-- Messenger Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 cursor-not-allowed">
-      <div class="flex items-center mb-4">
-        <div class="w-12 h-12 rounded-lg">
-          <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/messenger.svg", class: "w-full h-full object-cover" %>
+    <div class="card bg-base-100 shadow-md cursor-not-allowed">
+      <div class="card-body">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-lg">
+            <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/messenger.svg", class: "w-full h-full object-cover" %>
+          </div>
+          <h2 class="card-title text-stone-400 ml-4">Messenger</h2>
         </div>
-        <h2 class="text-xl text-stone-400 font-semibold ml-4">Messenger</h2>
+        <p class="text-stone-400">Connect your agent to a Messenger account and let it respond to messages from your customers.</p>
+        <div class="card-actions justify-stretch mt-2">
+          <button class="btn btn-neutral btn-disabled w-full">Coming Soon</button>
+        </div>
       </div>
-      <p class="text-stone-400 mb-6">Connect your agent to a Messenger account and let it respond to messages from your customers.</p>
-      <button class="cursor-not-allowed w-full bg-stone-100 text-stone-500 py-2 px-4 rounded-lg">
-        Coming Soon
-      </button>
     </div>
 
   </div>

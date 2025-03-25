@@ -1,12 +1,12 @@
 <%= form_with(model: Message.new, url: messages_path, method: :post, class: "flex-1", data: { controller: "form", action: "turbo:submit-end->form#clear" }) do |f| %>
   <%= f.hidden_field :chat_id, value: chat.id %>
   <%= f.hidden_field :sender, value: "user" %>
-  <div class="flex gap-2">
+  <div class="join w-full">
     <%= f.text_field :content, 
         placeholder: "Type your message...",
-        class: "flex-1 rounded-md bg-white px-3 py-2 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 shadow-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black" %>
+        class: "join-item input input-bordered focus:outline-none focus-visible:ring focus-visible:ring-primary/50 w-full" %>
     <%= f.submit "Send", 
-        class: "cursor-pointer rounded-md px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-black hover:bg-stone-900" %>
+        class: "join-item btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50 min-w-[100px]" %>
   </div>
 <% end %>
 

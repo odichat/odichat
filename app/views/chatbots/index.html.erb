@@ -1,13 +1,12 @@
 <% content_for :title, "Chatbots" %>
 
-<div class="w-full container mx-auto">
-
-  <div class="flex justify-between items-center pb-4 mt-8 mb-2">
+<div class="container mx-auto max-w-4xl">
+  <div class="flex justify-between items-center py-8">
     <div class="flex items-center">
-      <h1 class="font-bold text-2xl text-gray-800">AI Agents</h1>
+      <h1 class="text-3xl font-bold text-base-content">AI Agents</h1>
     </div>
-    <%= link_to new_chatbot_path, class: "rounded-md px-4 py-2 bg-black hover:bg-stone-900 text-white font-medium flex items-center" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+    <%= link_to new_chatbot_path, class: "btn btn-primary gap-2" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
       </svg>
       New chatbot
@@ -18,25 +17,25 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% if @chatbots.any?%>
         <% @chatbots.each do |chatbot| %>
-          <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <%= link_to chatbots_setting_path(chatbot), class: "block" do %>
-              <div class="h-48 bg-gray-200 flex items-center justify-center">
+          <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <%= link_to chatbots_setting_path(chatbot), class: "card-body p-0" do %>
+              <figure class="h-48 bg-base-200">
                 <% if chatbot.respond_to?(:image) && chatbot.image.present? %>
                   <%= image_tag chatbot.image, class: "w-full h-full object-cover" %>
                 <% else %>
-                  <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <svg class="w-16 h-16 text-base-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                   </svg>
                 <% end %>
-              </div>
+              </figure>
               <div class="p-4">
-                <h3 class="font-medium text-lg mb-1"><%= chatbot.name %></h3>
+                <h3 class="card-title text-base-content"><%= chatbot.name %></h3>
               </div>
             <% end %>
           </div>
         <% end %>
       <% else %>
-        <p class="text-center my-10">No chatbots found.</p>
+        <p class="text-center text-base-content my-10">No chatbots found.</p>
       <% end %>
     </div>
   </div>

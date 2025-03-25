@@ -17,6 +17,7 @@ class ChatsController < ApplicationController
       if @chat.save
         format.html { redirect_to chatbots_playground_path(@chat.chatbot), notice: "Chat was successfully created." }
         format.turbo_stream
+        CreateThreadJob.perform_later(@chat.id)
       else
         format.html { redirect_to chatbots_playground_path(@chat.chatbot), status: :unprocessable_entity, alert: @chat.errors.full_messages.join(", ") }
         format.turbo_stream {

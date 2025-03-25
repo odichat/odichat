@@ -21,10 +21,12 @@ class WaIntegrationsController < ApplicationController
     ExchangeTokenAndSubscribeAppJob.perform_later(params[:chatbot_id], exchange_token_params[:code])
 
     respond_to do |format|
+      format.turbo_stream
       format.json { render json: { success: true } }
     end
   rescue StandardError => e
     respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("wa-connection-loader", "") }
       format.json { render json: { error: e.message }, status: :unprocessable_entity }
     end
   end

@@ -26,6 +26,7 @@
           <div class="flex gap-2">
             <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= @chatbot.id %>" class="cursor-pointer w-full bg-[#008069] hover:bg-[#017561] text-white py-2 px-4 rounded-lg">
               <%= is_wa_connected ? "Reconnect" : "Connect" %>
+              <span id="wa-connection-loader"></span>
             </button>
           </div>
         </div>

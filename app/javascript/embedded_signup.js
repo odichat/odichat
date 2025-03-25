@@ -12,11 +12,19 @@ const fbLoginCallback = (response) => {
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
       }
     })
-    .then(response => response.json())
+    .then(response => {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("text/vnd.turbo-stream.html")) {
+        return response.text().then(html => {
+          Turbo.renderStreamMessage(html);
+        });
+      }
+      return response.json();
+    })
     .then(data => {
-      if (data.success) {
+      if (data && data.success) {
         console.log("Token exchanged successfully");
-      } else {
+      } else if (data && data.error) {
         console.error("Failed to exchange token:", data.error);
       }
     })

@@ -12,6 +12,7 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
     wa_integration.update!(access_token: access_token)
 
     subscribe_app(wa_integration)
+    register_phone_number(wa_integration)
 
     Turbo::StreamsChannel.broadcast_update_to(
       "flash",
@@ -75,5 +76,27 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
     end
   rescue StandardError => e
     raise "Error subscribing to app for WABA ID: #{wa_integration.waba_id}: #{e.message}"
+  end
+
+  def register_phone_number(wa_integration)
+    uri = URI("https://graph.facebook.com/v22.0/#{wa_integration.phone_number_id}/register")
+
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Bearer #{wa_integration.access_token}"
+    request["Content-Type"] = "application/json"
+    request.body = {
+      messaging_product: "whatsapp",
+      pin: "000000"
+    }.to_json
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "Failed to register phone number: #{response.body}"
+    end
+
+    response
   end
 end

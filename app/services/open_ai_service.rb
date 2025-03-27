@@ -101,6 +101,14 @@ class OpenAiService
     raise "OpenAI error updating assistant: #{e.message}"
   end
 
+  def self.delete_assistant(assistant_id)
+    client = OpenAI::Client.new
+    client.assistants.delete(id: assistant_id)
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI error deleting assistant: #{e.message}")
+    raise "OpenAI error deleting assistant: #{e.message}"
+  end
+
   private
 
   def self.fetch_assistant_messages(thread_id, run_id)

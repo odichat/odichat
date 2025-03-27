@@ -15,6 +15,8 @@ class Chatbot < ApplicationRecord
   after_create :create_assistant
   after_create :create_playground_chat
 
+  after_destroy :delete_assistant
+
   private
 
   def set_default_system_instructions
@@ -34,5 +36,10 @@ class Chatbot < ApplicationRecord
   def create_playground_chat
     return if self.chats.one?
     chats.create!(source: "playground")
+  end
+
+  def delete_assistant
+    return if self.assistant_id.blank?
+    DeleteAssistantJob.perform_later(self.assistant_id)
   end
 end

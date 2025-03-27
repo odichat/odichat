@@ -18,3 +18,15 @@
     @apply py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-md inline-block;
   }
 }
+
+/* Aurora animation */
+@layer utilities {
+  @keyframes aurora {
+    from { background-position: 50% 50%, 50% 50%; }
+    to { background-position: 350% 50%, 350% 50%; }
+  }
+
+  .after\:animate-aurora::after {
+    animation: aurora 60s linear infinite;
+  }
+}

@@ -16,6 +16,8 @@ class CreateOpenAiAssistantJob < ApplicationJob
 
       vector_store_id = vector_store["id"]
 
+      chatbot.update!(vector_store_id: vector_store_id)
+
       assistant = client.assistants.create(
         parameters: {
         model: Model.find(chatbot.model_id).name,

@@ -15,6 +15,7 @@ class Chatbot < ApplicationRecord
   after_create :create_playground_chat
 
   after_destroy :delete_assistant
+  after_destroy :delete_vector_store
 
   private
 
@@ -40,5 +41,10 @@ class Chatbot < ApplicationRecord
   def delete_assistant
     return if self.assistant_id.blank?
     DeleteAssistantJob.perform_later(self.assistant_id)
+  end
+
+  def delete_vector_store
+    return if self.vector_store_id.blank?
+    DeleteVectorStoreJob.perform_later(self.vector_store_id)
   end
 end

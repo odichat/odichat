@@ -109,6 +109,14 @@ class OpenAiService
     raise "OpenAI error deleting assistant: #{e.message}"
   end
 
+  def self.delete_vector_store(vector_store_id)
+    client = OpenAI::Client.new
+    client.vector_stores.delete(id: vector_store_id)
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI error deleting vector store: #{e.message}")
+    raise "OpenAI error deleting vector store: #{e.message}"
+  end
+
   private
 
   def self.fetch_assistant_messages(thread_id, run_id)

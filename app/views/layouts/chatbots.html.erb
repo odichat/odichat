@@ -23,7 +23,9 @@
       <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>
       <%= render "shared/chatbot_header" %>
-      <%= yield %>
+      <div class="container mx-auto max-w-4xl px-4 py-8">
+        <%= yield %>
+      </div>
 
       <% if user_signed_in? && current_page?(chatbots_integration_path) %>
         <%= javascript_include_tag "facebook_sdk", defer: true %>

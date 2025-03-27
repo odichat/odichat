@@ -1,60 +1,58 @@
-<!-- Main container with full width -->
-<div class="container mx-auto max-w-4xl px-4 py-8">
-  <!-- Settings heading -->
-  <h1 class="text-3xl font-bold mb-8">Settings</h1>
+<!-- Settings heading -->
+<h1 class="text-3xl font-bold mb-8">Settings</h1>
+
+<!-- Flex container for sidebar and main content -->
+<div class="flex gap-6">
+  <!-- Left sidebar -->
+  <div class="w-64 shrink-0">
+    <nav class="menu w-full bg-base-200 rounded-box">
+      <li><a class="active focus:outline-none focus-visible:ring focus-visible:ring-primary/50">General</a></li>
+    </nav>
+  </div>
   
-  <!-- Flex container for sidebar and main content -->
-  <div class="flex gap-6">
-    <!-- Left sidebar -->
-    <div class="w-64 shrink-0">
-      <nav class="menu w-full bg-base-200 rounded-box">
-        <li><a class="active focus:outline-none focus-visible:ring focus-visible:ring-primary/50">General</a></li>
-      </nav>
-    </div>
-    
-    <!-- Main content area -->
-    <div class="flex-1">
-      <div class="card bg-base-100 shadow-md">
-        <div class="card-body">
-          <h2 class="card-title text-2xl mb-6">General</h2>
-          
-          <!-- Form with Turbo attributes -->
-          <%= form_with(model: @chatbot, 
-                      url: chatbots_setting_path(@chatbot), 
-                      method: :patch, 
-                      class: "space-y-6",
-                      data: { turbo: true }) do |form| %>
-            <!-- Name field -->
-            <div class="form-control w-full">
-              <label class="label">
-                <span class="label-text">Name</span>
-              </label>
-              <%= form.text_field :name, class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50", value: @chatbot.name %>
-            </div>
-            
-            <!-- Save button -->
-            <div class="card-actions justify-end">
-              <%= form.submit "Save", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="divider divider-error my-10">
-        <span class="text-error font-bold">Danger Zone</span>
-      </div>
-
-      <div class="card bg-base-100 shadow-md border-error">
-        <div class="card-body">
-          <h2 class="card-title text-error text-2xl">Delete Agent</h2>
-          <p>
-            This action is irreversible. All data associated with this agent will be permanently deleted.
-          </p>
-          <div class="card-actions mt-4">
-            <%= button_to "Delete", chatbots_setting_path(@chatbot), method: :delete, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: "Are you sure you want to delete this agent?" } %>
+  <!-- Main content area -->
+  <div class="flex-1">
+    <div class="card bg-base-100 shadow-md">
+      <div class="card-body">
+        <h2 class="card-title text-2xl mb-6">General</h2>
+        
+        <!-- Form with Turbo attributes -->
+        <%= form_with(model: @chatbot, 
+                    url: chatbots_setting_path(@chatbot), 
+                    method: :patch, 
+                    class: "space-y-6",
+                    data: { turbo: true }) do |form| %>
+          <!-- Name field -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text">Name</span>
+            </label>
+            <%= form.text_field :name, class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50", value: @chatbot.name %>
           </div>
+          
+          <!-- Save button -->
+          <div class="card-actions justify-end">
+            <%= form.submit "Save", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="divider divider-error my-10">
+      <span class="text-error font-bold">Danger Zone</span>
+    </div>
+
+    <div class="card bg-base-100 shadow-md border-error">
+      <div class="card-body">
+        <h2 class="card-title text-error text-2xl">Delete Agent</h2>
+        <p>
+          This action is irreversible. All data associated with this agent will be permanently deleted.
+        </p>
+        <div class="card-actions mt-4">
+          <%= button_to "Delete", chatbots_setting_path(@chatbot), method: :delete, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: "Are you sure you want to delete this agent?" } %>
         </div>
       </div>
     </div>
   </div>
 </div>
+

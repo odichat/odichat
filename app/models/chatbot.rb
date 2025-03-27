@@ -4,12 +4,11 @@ class Chatbot < ApplicationRecord
 
   has_one :wa_integration, dependent: :destroy
 
-  before_create :set_default_system_instructions
-
   validates :model_id, presence: true
   validates :temperature, presence: true
   validates :temperature, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 2 }
 
+  before_create :set_default_system_instructions
   before_create :set_default_temperature
 
   after_create :create_assistant

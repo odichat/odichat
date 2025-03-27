@@ -5,21 +5,28 @@ class CreateOpenAiAssistantJob < ApplicationJob
     chatbot = Chatbot.find(chatbot_id)
 
     begin
-      # In development, we use a pre-existing assistant for testing purposes
-      if Rails.env.production?
-        client = OpenAI::Client.new
-        assistant = client.assistants.create(
-          parameters: {
-          model: Model.find(chatbot.model_id).name,
-          name: chatbot.name,
-          instructions: chatbot.system_instructions,
-          tools: [],
-          temperature: chatbot.temperature
-        })
-        assistant_id = assistant["id"]
-      else
-        assistant_id = "asst_AFGyRQRz0BgEOW0kmjFg9wsg"
-      end
+      client = OpenAI::Client.new
+
+      vector_store = client.vector_stores.create(
+        parameters: {
+          name: "#{chatbot.name.parameterize}:#{chatbot.id}",
+          file_ids: []
+        }
+      )
+
+      vector_store_id = vector_store["id"]
+
+      assistant = client.assistants.create(
+        parameters: {
+        model: Model.find(chatbot.model_id).name,
+        name: chatbot.name,
+        instructions: chatbot.system_instructions,
+        tools: [ { type: "file_search" } ],
+        tool_resources: { file_search: { vector_store_ids: [ vector_store_id ] } },
+        temperature: chatbot.temperature
+      })
+
+      assistant_id = assistant["id"]
 
       chatbot.update!(assistant_id: assistant_id)
     rescue OpenAI::Error => e

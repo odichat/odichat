@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   resources :chats, only: [ :index, :show, :create ]
 
   # Chatbots
-  resources :chatbots, only: [ :index, :new, :create ]
+  resources :chatbots, only: [ :index, :new, :create, :update ]
   namespace :chatbots do
+    resources :sources, param: :chatbot_id, only: [ :edit, :update ]
     resources :playground, param: :chatbot_id, only: [ :edit, :update ]
     resources :settings, param: :chatbot_id, only: [ :show, :update, :destroy ]
     resources :integrations, param: :chatbot_id, only: [ :show ]

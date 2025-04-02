@@ -18,7 +18,7 @@
       <% if @chatbots.any?%>
         <% @chatbots.each do |chatbot| %>
           <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <%= link_to chatbots_setting_path(chatbot), class: "card-body p-0" do %>
+            <%= link_to chatbot_settings_path(chatbot), class: "card-body p-0" do %>
               <figure class="h-48 bg-base-200">
                 <% if chatbot.respond_to?(:image) && chatbot.image.present? %>
                   <%= image_tag chatbot.image, class: "w-full h-full object-cover" %>

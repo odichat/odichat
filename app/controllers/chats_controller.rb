@@ -15,11 +15,11 @@ class ChatsController < ApplicationController
 
     respond_to do |format|
       if @chat.save
-        format.html { redirect_to chatbots_playground_path(@chat.chatbot), notice: "Chat was successfully created." }
+        format.html { redirect_to chatbot_playground_path(@chat.chatbot), notice: "Chat was successfully created." }
         format.turbo_stream
         CreateThreadJob.perform_later(@chat.id)
       else
-        format.html { redirect_to chatbots_playground_path(@chat.chatbot), status: :unprocessable_entity, alert: @chat.errors.full_messages.join(", ") }
+        format.html { redirect_to chatbot_playground_path(@chat.chatbot), status: :unprocessable_entity, alert: @chat.errors.full_messages.join(", ") }
         format.turbo_stream {
           flash.now[:alert] = @chat.errors.full_messages.to_sentence
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")

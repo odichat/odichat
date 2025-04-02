@@ -2,17 +2,17 @@
   <div class="tabs justify-center">
     <% if @chatbot %>
       <%= link_to "Playground", 
-          edit_chatbots_playground_path(@chatbot), 
-          class: "tab #{current_page?(edit_chatbots_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
+          chatbot_playground_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Sources", 
-          edit_chatbots_source_path(@chatbot), 
-          class: "tab #{current_page?(edit_chatbots_source_path(@chatbot)) ? 'tab-active' : ''}" %>
+          chatbot_sources_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Integrations", 
-          chatbots_integration_path(@chatbot), 
-          class: "tab #{current_page?(chatbots_integration_path(@chatbot)) ? 'tab-active' : ''}" %>
+          chatbot_integrations_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Settings", 
-          chatbots_setting_path(@chatbot), 
-          class: "tab #{current_page?(chatbots_setting_path(@chatbot)) ? 'tab-active' : ''}" %>
+          chatbot_settings_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_settings_path(@chatbot)) ? 'tab-active' : ''}" %>
     <% end %>
   </div>
 </div>

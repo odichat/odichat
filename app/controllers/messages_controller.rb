@@ -27,12 +27,12 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         GenerateAssistantResponseJob.perform_later(@message.id) if @message.sender == "user"
-        format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Message was successfully created." }
+        format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Message was successfully created." }
         format.turbo_stream {
           render turbo_stream: turbo_stream.append("playground-messages", partial: "messages/message", locals: { message: @message })
         }
       else
-        format.html { redirect_to chatbots_playground_path(@chatbot), status: :unprocessable_entity, alert: @message.errors.full_messages.join(", ") }
+        format.html { redirect_to chatbot_playground_path(@chatbot), status: :unprocessable_entity, alert: @message.errors.full_messages.join(", ") }
         format.turbo_stream {
           flash.now[:alert] = @message.errors.full_messages.to_sentence
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")

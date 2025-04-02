@@ -18,7 +18,7 @@ class ChatbotsController < ApplicationController
 
     respond_to do |format|
       if @chatbot.save
-        format.html { redirect_to chatbots_setting_path(@chatbot), notice: "Chatbot was successfully created." }
+        format.html { redirect_to chatbot_settings_path(@chatbot), notice: "Chatbot was successfully created." }
         format.json { render :show, status: :created, location: @chatbot }
       else
         flash.now[:alert] = @chatbot.errors.full_messages.join(", ")
@@ -33,13 +33,13 @@ class ChatbotsController < ApplicationController
 
     respond_to do |format|
       if @chatbot.update(chatbot_params)
-        format.html { redirect_to chatbots_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
+        format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
         format.turbo_stream {
           flash.now[:notice] = "Chatbot was successfully updated."
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
         }
       else
-        format.html { redirect_to chatbots_playground_path(@chatbot), alert: @chatbot.errors.full_messages.join(", ") }
+        format.html { redirect_to chatbot_playground_path(@chatbot), alert: @chatbot.errors.full_messages.join(", ") }
         format.turbo_stream {
           flash.now[:alert] = @chatbot.errors.full_messages.join(", ")
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")

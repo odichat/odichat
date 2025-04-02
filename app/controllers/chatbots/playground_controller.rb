@@ -1,5 +1,5 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
-  def edit
+  def show
     @chat = @chatbot.chats.where(source: "playground").last
     if @chat.thread_id.nil?
       CreateThreadJob.perform_later(@chat.id)
@@ -8,9 +8,9 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
   end
 
   def update
-    UpdateAssistantJob.perform_later(@chatbot.id, chatbot_params[:model_id], chatbot_params[:temperature], chatbot_params[:system_instructions])
+    UpdateAssistantJob.perform_later(@chatbot.id, chatbot_params[:model_id], chatbot_params[:temperature].to_f, chatbot_params[:system_instructions])
     respond_to do |format|
-      format.html { redirect_to edit_chatbots_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
+      format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
       format.turbo_stream
     end
   end

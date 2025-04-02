@@ -5,7 +5,7 @@ class Chatbots::SettingsController < Chatbots::BaseController
   def update
     if @chatbot.update(chatbot_params)
       respond_to do |format|
-        format.html { redirect_to chatbots_setting_path, notice: "Chatbot was successfully updated." }
+        format.html { redirect_to chatbot_settings_path, notice: "Chatbot was successfully updated." }
         format.turbo_stream {
           flash.now[:notice] = "Chatbot was successfully updated."
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
@@ -13,7 +13,7 @@ class Chatbots::SettingsController < Chatbots::BaseController
       end
     else
       respond_to do |format|
-        format.html { redirect_to chatbots_setting_path, alert: @chatbot.errors.full_messages.to_sentence }
+        format.html { redirect_to chatbot_settings_path, alert: @chatbot.errors.full_messages.to_sentence }
         format.turbo_stream {
           flash.now[:alert] = @chatbot.errors.full_messages.to_sentence
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")

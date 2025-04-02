@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "playground_sidebar" do %>
-  <%= form_with(model: chatbot, url: chatbots_playground_path(chatbot), method: :patch, class: "space-y-6", id: "sidebar_form") do |f| %>
+  <%= form_with(model: chatbot, url: chatbot_playground_path(chatbot), method: :patch, class: "space-y-6", id: "sidebar_form") do |f| %>
     <!-- Model selection -->
     <div class="form-control">
       <label class="label">

@@ -9,11 +9,12 @@ Rails.application.routes.draw do
 
   # Chatbots
   resources :chatbots, only: [ :index, :new, :create, :update ]
-  namespace :chatbots do
-    resources :sources, param: :chatbot_id, only: [ :edit, :update ]
-    resources :playground, param: :chatbot_id, only: [ :edit, :update ]
-    resources :settings, param: :chatbot_id, only: [ :show, :update, :destroy ]
-    resources :integrations, param: :chatbot_id, only: [ :show ]
+
+  resources :chatbots do
+    resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
+    resource :sources, only: [ :show, :update ], controller: "chatbots/sources"
+    resource :integrations, only: [ :show ], controller: "chatbots/integrations"
+    resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
   end
 
   # Whatsapp Integration

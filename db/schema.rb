@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_01_204823) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_02_121158) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -63,6 +63,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_01_204823) do
     t.index ["chatbot_id"], name: "index_chats_on_chatbot_id"
   end
 
+  create_table "documents", force: :cascade do |t|
+    t.integer "chatbot_id", null: false
+    t.string "file_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_documents_on_chatbot_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.integer "chat_id", null: false
     t.string "sender"
@@ -81,14 +89,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_01_204823) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_models_on_name", unique: true
-  end
-
-  create_table "sources", force: :cascade do |t|
-    t.integer "chatbot_id", null: false
-    t.string "file_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chatbot_id"], name: "index_sources_on_chatbot_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -119,7 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_01_204823) do
   add_foreign_key "chatbots", "models"
   add_foreign_key "chatbots", "users"
   add_foreign_key "chats", "chatbots"
+  add_foreign_key "documents", "chatbots"
   add_foreign_key "messages", "chats"
-  add_foreign_key "sources", "chatbots"
   add_foreign_key "wa_integrations", "chatbots"
 end

@@ -4,7 +4,7 @@ class Chatbot < ApplicationRecord
   has_one :wa_integration, dependent: :destroy
 
   has_many :chats, dependent: :destroy
-  has_many_attached :documents
+  has_many :documents, dependent: :destroy
 
   validates :model_id, presence: true
   validates :temperature, presence: true

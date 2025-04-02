@@ -19,14 +19,10 @@
           files_documents_value: @documents,
           files_chatbot_id_value: @chatbot.id
         } do |f| %>
-          <!-- Add hidden fields for existing documents -->
-          <%# @documents.each do |doc| %>
-            <%#= f.hidden_field :document_files, multiple: true, value: doc[:signed_id] %>
-          <%# end %>
-          
           <div class="form-control w-full">
             <%= f.file_field :document_files, 
                 class: "file-input file-input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50",
+                accept: [ "application/pdf", "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/html" ].join(","),
                 multiple: true,
                 direct_upload: true,
                 include_hidden: false,

@@ -76,3 +76,5 @@ gem "ruby-openai"
 gem "mission_control-jobs"
 
 gem "aws-sdk-s3", require: false
+
+gem "active_storage_validations"

@@ -1,3 +1,5 @@
+<%= turbo_stream_from "sources" %>
+
 <h1 class="text-3xl font-bold mb-8">Sources</h1>
 
 <div class="flex gap-6">
@@ -13,37 +15,7 @@
     <div class="card bg-base-100 shadow-md">
       <div class="card-body">
         <h2 class="card-title text-2xl mb-6">Files</h2>
-
-        <%= form_with model: @chatbot, url: chatbot_sources_path(@chatbot), method: :put, data: { 
-          controller: "files direct-uploads",
-          files_documents_value: @documents,
-          files_chatbot_id_value: @chatbot.id
-        } do |f| %>
-          <div class="form-control w-full">
-            <%= f.file_field :document_files, 
-                class: "file-input file-input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50",
-                accept: [ "application/pdf", "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/html" ].join(","),
-                multiple: true,
-                direct_upload: true,
-                include_hidden: false,
-                data: { 
-                  files_target: "input",
-                  action: "change->files#showSelectedFile"
-                } %>
-          </div>
-
-          <!-- File cards container -->
-          <%= render partial: "file_card" %>
-          <div class="mt-4" 
-               data-files-target="container"
-               data-direct-uploads-target="container">
-            <!-- File cards will be dynamically inserted here -->
-          </div>
-
-          <div class="card-actions justify-end mt-6">
-            <%= f.submit "Train Agent", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
-          </div>
-        <% end %>
+        <%= render "form", chatbot: @chatbot, documents: @documents %>
       </div>
     </div>
   </div>

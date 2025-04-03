@@ -4,6 +4,7 @@ class Chatbots::SourcesController < Chatbots::BaseController
       {
         id: document.id,
         filename: document.file.filename.to_s,
+        file_id: document.file_id,
         size: document.file.byte_size,
         signed_id: document.file.signed_id
       }
@@ -15,19 +16,22 @@ class Chatbots::SourcesController < Chatbots::BaseController
       if chatbot_params[:document_files].present?
 
         signed_blob_ids = chatbot_params[:document_files]
+        documents = []
 
         signed_blob_ids.each do |signed_blob_id|
           blob = ActiveStorage::Blob.find_signed(signed_blob_id)
-          @chatbot.documents.create!.tap do |document|
+          document = @chatbot.documents.create!.tap do |document|
             document.file.attach(blob)
           end
+          documents << document
         end
 
-        format.html { redirect_to chatbots_source_path(@chatbot), notice: "Agent was successfully trained." }
-        format.turbo_stream {
-          flash.now[:notice] = "Agent was successfully trained."
-          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
-        }
+        # Enqueue the upload job
+        document_ids = documents.pluck(:id)
+        UploadDocumentsToOpenAiJob.perform_later(document_ids)
+
+        format.html { redirect_to chatbots_source_path(@chatbot), notice: "Files uploaded successfully. Processing in background..." }
+        format.turbo_stream
       else
         format.html { redirect_to chatbots_source_path(@chatbot), alert: "No files uploaded." }
         format.turbo_stream {

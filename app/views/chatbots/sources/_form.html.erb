@@ -1,0 +1,32 @@
+<%= form_with model: chatbot, url: chatbot_sources_path(chatbot), method: :put, id: "form", data: { 
+  controller: "files direct-uploads",
+  files_documents_value: documents,
+  files_chatbot_id_value: chatbot.id
+} do |f| %>
+  <div class="form-control w-full">
+    <%= f.file_field :document_files, 
+        class: "file-input file-input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50",
+        accept: [ "application/pdf", "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/html" ].join(","),
+        multiple: true,
+        direct_upload: true,
+        include_hidden: false,
+        data: { 
+          files_target: "input",
+          action: "change->files#showSelectedFile"
+        } %>
+  </div>
+
+  <!-- File cards container -->
+  <%= render partial: "chatbots/sources/file_card" %>
+  <div class="mt-4" 
+      data-files-target="container"
+      data-direct-uploads-target="container">
+    <!-- File cards will be dynamically inserted here -->
+  </div>
+
+  <div class="card-actions justify-end mt-6">
+    <%= f.button type: "submit", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50", disabled: chatbot.assistant_id.blank? do %>
+      <span id="submit-text">Train Agent</span>
+    <% end %>
+  </div>
+<% end %>

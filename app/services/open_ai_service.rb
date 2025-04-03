@@ -117,6 +117,52 @@ class OpenAiService
     raise "OpenAI error deleting vector store: #{e.message}"
   end
 
+  def self.upload_file_to_openai(file_path, purpose = "assistants")
+    begin
+      client = OpenAI::Client.new
+      response = client.files.upload(parameters: { file: file_path, purpose: purpose })
+      response["id"]
+    rescue OpenAI::Error => e
+      Rails.logger.error("OpenAI error uploading file: #{e.message}")
+      raise "OpenAI error uploading file: #{e.message}"
+    end
+  end
+
+  def self.create_vector_store_files(vector_store_id, file_ids)
+    begin
+      client = OpenAI::Client.new
+
+      response = client.vector_store_file_batches.create(
+        vector_store_id: vector_store_id,
+        parameters: {
+          file_ids: file_ids
+        }
+      )
+
+      file_batch = response["id"]
+
+      file_batch
+    rescue OpenAI::Error => e
+      Rails.logger.error("OpenAI error updating vector store files: #{e.message}")
+      raise "OpenAI error updating vector store files: #{e.message}"
+    end
+  end
+
+  def self.update_vector_store_files(vector_store_id, file_ids)
+    client = OpenAI::Client.new
+
+    response = client.vector_store_file_batches.create(
+      vector_store_id: vector_store_id,
+      parameters: {
+        file_ids: file_ids
+      }
+    )
+
+    file_batch_id = response["id"]
+
+    file_batch_id
+  end
+
   private
 
   def self.fetch_assistant_messages(thread_id, run_id)

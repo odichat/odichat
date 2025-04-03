@@ -37,7 +37,7 @@ class UpdateAssistantJob < ApplicationJob
   def broadcast_sidebar_form(chatbot)
     Turbo::StreamsChannel.broadcast_replace_to(
       "playground_sidebar",
-      target: "playground_sidebar",
+      target: "sidebar_form",
       partial: "chatbots/playground/sidebar/form",
       locals: {
         chatbot: chatbot

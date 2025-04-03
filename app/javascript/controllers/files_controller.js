@@ -54,6 +54,10 @@ export default class extends Controller {
       const card = this.createFileCard(file, index)
       this.containerTarget.appendChild(card)
     })
+
+    // Enable submit button if there are files
+    const form = document.querySelector('#form')
+    form.querySelector('button[type="submit"]').disabled = false
   }
 
   createFileCard(file, index, existingFileId = null) {
@@ -133,6 +137,12 @@ export default class extends Controller {
 
       // Remove the card from UI
       card.remove()
+
+      // Disable submit button if no files are left
+      if (updatedFiles.length === 0) {
+        const form = document.querySelector('#form')
+        form.querySelector('button[type="submit"]').disabled = true
+      }
     }
   }
 

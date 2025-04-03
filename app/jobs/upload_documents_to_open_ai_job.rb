@@ -14,7 +14,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
           )
           update_vector_store(chatbot)
         rescue StandardError => e
-          Rails.logger.error("Error uploading document #{document_id} to OpenAI: #{e.message}")
+          Rails.logger.error("Error uploading document #{document.id} to OpenAI: #{e.message}")
           raise e
         end
       end
@@ -43,7 +43,9 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
   private
 
   def upload_file_to_openai(document)
-    Tempfile.create([ "document", safe_extension(document) ]) do |temp_file|
+    temp_file = nil
+    begin
+      temp_file = Tempfile.new([ "document", safe_extension(document) ])
       temp_file.binmode
       temp_file.write(document.file.download)
       temp_file.rewind

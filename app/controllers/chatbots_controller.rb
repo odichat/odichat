@@ -3,7 +3,7 @@ class ChatbotsController < ApplicationController
 
   # GET /chatbots or /chatbots.json
   def index
-    @chatbots = Chatbot.all
+    @chatbots = current_user.chatbots
   end
 
   # GET /chatbots/new

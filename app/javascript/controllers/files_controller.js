@@ -69,7 +69,7 @@ export default class extends Controller {
     
     if (existingFileId) {
       card.dataset.existingFileId = existingFileId
-      card.classList.add('bg-success/20') // Add success background to existing files
+      card.classList.add('bg-success/10') // Add success background to existing files
     }
     
     card.querySelector('h3').textContent = file.name

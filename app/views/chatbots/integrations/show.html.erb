@@ -1,67 +1,15 @@
-<%= turbo_stream_from "flash" %>
-
-<% special_styles_1 = "relative group cursor-pointer" %>
-<% special_styles_2 = "absolute -inset-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-500" %>
-<% is_wa_connected = @chatbot.waba.present? && @chatbot.waba.access_token.present? %>
+<%= turbo_stream_from "integrations" %>
 
 <h1 class="text-3xl font-bold mb-8">Integrations</h1>
 
 <!-- Grid layout for integration cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   <!-- WhatsApp Card -->
-  <div class="<%= is_wa_connected ? special_styles_1 : '' %>">
-    <div class="<%= is_wa_connected ? special_styles_2 : '' %>"></div>
-    <div class="relative">
-      <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#dcf8c6] via-[#F0F2F5] to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite] opacity-70"></div>
-      <div class="card bg-base-100/70 backdrop-blur-sm shadow-md relative border border-gray-200">
-        <div class="card-body relative z-10">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg">
-              <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
-            </div>
-            <h2 class="card-title text-stone-600 ml-4">WhatsApp</h2>
-          </div>
-          <p class="text-stone-600">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
-          <div class="card-actions justify-stretch mt-2">
-            <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= @chatbot.id %>" class="btn btn-success w-full">
-              <%= is_wa_connected ? "Reconnect" : "Connect" %>
-              <span id="wa-connection-loader"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render "chatbots/integrations/waba_card", chatbot: @chatbot %>
 
   <!-- Instagram Card -->
-  <div class="card bg-base-100 shadow-md cursor-not-allowed">
-    <div class="card-body">
-      <div class="flex items-center mb-4">
-        <div class="w-12 h-12 rounded-lg">
-          <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/ig.svg", class: "w-full h-full object-cover" %>
-        </div>
-        <h2 class="card-title text-stone-400 ml-4">Instagram</h2>
-      </div>
-      <p class="text-stone-400">Connect your agent to an Instagram account and let it respond to messages from your customers.</p>
-      <div class="card-actions justify-stretch mt-2">
-        <button class="btn btn-neutral btn-disabled w-full">Coming Soon</button>
-      </div>
-    </div>
-  </div>
+  <%= render "chatbots/integrations/ig_card" %>
 
   <!-- Messenger Card -->
-  <div class="card bg-base-100 shadow-md cursor-not-allowed">
-    <div class="card-body">
-      <div class="flex items-center mb-4">
-        <div class="w-12 h-12 rounded-lg">
-          <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/messenger.svg", class: "w-full h-full object-cover" %>
-        </div>
-        <h2 class="card-title text-stone-400 ml-4">Messenger</h2>
-      </div>
-      <p class="text-stone-400">Connect your agent to a Messenger account and let it respond to messages from your customers.</p>
-      <div class="card-actions justify-stretch mt-2">
-        <button class="btn btn-neutral btn-disabled w-full">Coming Soon</button>
-      </div>
-    </div>
-  </div>
+  <%= render "chatbots/integrations/messenger_card" %>
 </div>

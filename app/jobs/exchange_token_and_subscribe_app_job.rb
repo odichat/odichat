@@ -14,8 +14,11 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
     subscribe_app(waba)
     register_phone_number(waba)
 
+    # Reload chatbot with associations to ensure fresh data
+    chatbot = Chatbot.includes(:waba).find(chatbot.id)
+
     Turbo::StreamsChannel.broadcast_update_to(
-      "flash",
+      "integrations",
       target: "flash",
       partial: "shared/flash_messages",
       locals: {
@@ -24,9 +27,18 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
         }
       }
     )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "integrations",
+      target: "waba-card",
+      partial: "chatbots/integrations/waba_card",
+      locals: {
+        chatbot: chatbot
+      }
+    )
   rescue StandardError => e
     Turbo::StreamsChannel.broadcast_update_to(
-      "flash",
+      "integrations",
       target: "flash",
       partial: "shared/flash_messages",
       locals: {

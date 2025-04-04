@@ -1,0 +1,30 @@
+<div id="waba-card" class="<%= waba_connected?(chatbot) ? whatsapp_card_styles : '' %>">
+  <div class="<%= waba_connected?(chatbot) ? whatsapp_card_gradient_styles : '' %>"></div>
+  <div class="relative">
+    <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#dcf8c6] via-[#F0F2F5] to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite] opacity-70"></div>
+    <div class="card bg-base-100/70 backdrop-blur-sm shadow-md relative border border-gray-200">
+      <div class="card-body relative z-10">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-lg">
+            <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
+          </div>
+          <h2 class="card-title text-stone-600 ml-4">WhatsApp</h2>
+        </div>
+        <p class="text-stone-600">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
+        <div class="card-actions w-full mt-2">
+          <div class="flex w-full">
+            <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
+              Connect
+              <span id="waba-connection-loader"></span>
+            </button>
+            <% if waba_connected?(chatbot) %>
+              <%= link_to wabas_path(chatbot.waba), method: :delete, class: "btn btn-outline ml-1" do %>
+                <%= icon "wrench", variant: "mini" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

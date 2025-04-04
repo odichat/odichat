@@ -16,7 +16,9 @@ const fbLoginCallback = (response) => {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("text/vnd.turbo-stream.html")) {
         return response.text().then(html => {
-          Turbo.renderStreamMessage(html);
+          setTimeout(() => {
+            Turbo.renderStreamMessage(html);
+          }, 300);
         });
       }
       return response.json();

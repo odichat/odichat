@@ -3,9 +3,9 @@ const fbLoginCallback = (response) => {
     const code = response.authResponse.code;
     const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
 
-    fetch(`/wa_integrations/exchange_token_and_subscribe_app`, {
+    fetch(`/wabas/exchange_token_and_subscribe_app`, {
       method: 'POST',
-      body: JSON.stringify({ chatbot_id: chatbotId, wa_integration: { code } }),
+      body: JSON.stringify({ chatbot_id: chatbotId, waba: { code } }),
       headers: {
         "Content-Type": "application/json",
         "Accept": "text/vnd.turbo-stream.html, application/json",
@@ -60,9 +60,9 @@ window.addEventListener('message', (event) => {
         const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
         const { phone_number_id, waba_id } = data.data;
 
-        fetch(`/wa_integrations`, {
+        fetch(`/wabas`, {
           method: 'POST',
-          body: JSON.stringify({ chatbot_id: chatbotId, wa_integration: { phone_number_id, waba_id } }),
+          body: JSON.stringify({ chatbot_id: chatbotId, waba: { phone_number_id, waba_id } }),
           headers: {
             "Content-Type": "application/json",
             "X-CSRF-Token": document.querySelector("[name='csrf-token']").content

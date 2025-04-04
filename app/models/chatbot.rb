@@ -1,7 +1,7 @@
 class Chatbot < ApplicationRecord
   belongs_to :user
 
-  has_one :wa_integration, dependent: :destroy
+  has_one :waba, dependent: :destroy
 
   has_many :chats, dependent: :destroy
   has_many :documents, dependent: :destroy

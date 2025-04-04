@@ -2,7 +2,7 @@
 
 <% special_styles_1 = "relative group cursor-pointer" %>
 <% special_styles_2 = "absolute -inset-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-500" %>
-<% is_wa_connected = @chatbot.wa_integration.present? && @chatbot.wa_integration.access_token.present? %>
+<% is_wa_connected = @chatbot.waba.present? && @chatbot.waba.access_token.present? %>
 
 <h1 class="text-3xl font-bold mb-8">Integrations</h1>
 

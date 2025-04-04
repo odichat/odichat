@@ -5,14 +5,14 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
 
   def perform(chatbot_id, code)
     chatbot = Chatbot.find(chatbot_id)
-    wa_integration = chatbot.wa_integration
-    raise "WA integration not found for chatbot #{chatbot.id}" if wa_integration.nil?
+    waba = chatbot.waba
+    raise "Waba not found for chatbot #{chatbot.id}" if waba.nil?
 
     access_token = exchange_token(code)
-    wa_integration.update!(access_token: access_token)
+    waba.update!(access_token: access_token)
 
-    subscribe_app(wa_integration)
-    register_phone_number(wa_integration)
+    subscribe_app(waba)
+    register_phone_number(waba)
 
     Turbo::StreamsChannel.broadcast_update_to(
       "flash",
@@ -58,31 +58,31 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
     end
   end
 
-  def subscribe_app(wa_integration)
-    uri = URI("https://graph.facebook.com/v22.0/#{wa_integration.waba_id}/subscribed_apps")
+  def subscribe_app(waba)
+    uri = URI("https://graph.facebook.com/v22.0/#{waba.waba_id}/subscribed_apps")
 
     request = Net::HTTP::Post.new(uri)
-    request["Authorization"] = "Bearer #{wa_integration.access_token}"
+    request["Authorization"] = "Bearer #{waba.access_token}"
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(request)
     end
 
     if response.is_a?(Net::HTTPSuccess)
-      wa_integration.update!(subscribed: true)
+      waba.update!(subscribed: true)
       response
     else
       raise "Failed to subscribe app: #{response.body}"
     end
   rescue StandardError => e
-    raise "Error subscribing to app for WABA ID: #{wa_integration.waba_id}: #{e.message}"
+    raise "Error subscribing to app for WABA ID: #{waba.waba_id}: #{e.message}"
   end
 
-  def register_phone_number(wa_integration)
-    uri = URI("https://graph.facebook.com/v22.0/#{wa_integration.phone_number_id}/register")
+  def register_phone_number(waba)
+    uri = URI("https://graph.facebook.com/v22.0/#{waba.phone_number_id}/register")
 
     request = Net::HTTP::Post.new(uri)
-    request["Authorization"] = "Bearer #{wa_integration.access_token}"
+    request["Authorization"] = "Bearer #{waba.access_token}"
     request["Content-Type"] = "application/json"
     request.body = {
       messaging_product: "whatsapp",

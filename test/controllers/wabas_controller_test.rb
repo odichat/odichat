@@ -1,13 +1,13 @@
 require "test_helper"
 
-class WaIntegrationsControllerTest < ActionDispatch::IntegrationTest
+class WabasControllerTest < ActionDispatch::IntegrationTest
   test "should get create" do
-    get wa_integrations_create_url
+    get wabas_create_url
     assert_response :success
   end
 
   test "should get update" do
-    get wa_integrations_update_url
+    get wabas_update_url
     assert_response :success
   end
 end

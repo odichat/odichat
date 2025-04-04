@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_02_121158) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_011256) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -103,7 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_121158) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "wa_integrations", force: :cascade do |t|
+  create_table "wabas", force: :cascade do |t|
     t.integer "chatbot_id", null: false
     t.string "phone_number_id"
     t.string "waba_id"
@@ -111,7 +111,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_121158) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "subscribed", default: false
-    t.index ["chatbot_id"], name: "index_wa_integrations_on_chatbot_id"
+    t.index ["chatbot_id"], name: "index_wabas_on_chatbot_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -121,5 +121,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_121158) do
   add_foreign_key "chats", "chatbots"
   add_foreign_key "documents", "chatbots"
   add_foreign_key "messages", "chats"
-  add_foreign_key "wa_integrations", "chatbots"
+  add_foreign_key "wabas", "chatbots"
 end

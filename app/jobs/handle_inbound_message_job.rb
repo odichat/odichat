@@ -2,8 +2,8 @@ class HandleInboundMessageJob < ApplicationJob
   queue_as :default
 
   def perform(message_data)
-    wa_integration = WaIntegration.includes(:chatbot).find_by!(waba_id: message_data[:waba_id])
-    chatbot = wa_integration.chatbot
+    waba = Waba.includes(:chatbot).find_by!(waba_id: message_data[:waba_id])
+    chatbot = waba.chatbot
     chat = chatbot.chats.includes(:messages).find_by(contact_phone: message_data[:from_phone_number])
 
     if chat.nil?

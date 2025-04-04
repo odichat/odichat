@@ -27,7 +27,7 @@ class GenerateAssistantResponseJob < ApplicationJob
         locals: { message: assistant_message }
       )
     when "whatsapp"
-      WhatsappService.send_message(chat.chatbot.wa_integration.phone_number_id, chat.contact_phone, assistant_message.content)
+      WhatsappService.send_message(chat.chatbot.waba.phone_number_id, chat.contact_phone, assistant_message.content)
     else
       raise "Unknown chat source: #{chat.source}"
     end

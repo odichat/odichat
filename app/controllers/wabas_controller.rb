@@ -1,15 +1,15 @@
-class WaIntegrationsController < ApplicationController
+class WabasController < ApplicationController
   before_action :authenticate_user!
   before_action :set_chatbot, only: [ :create ]
 
   def create
-    @wa_integration = @chatbot.wa_integration || @chatbot.build_wa_integration(wa_integration_params)
+    @waba = @chatbot.waba || @chatbot.build_waba(waba_params)
 
     respond_to do |format|
-      if @wa_integration.save
+      if @waba.save
         format.json { render json: { success: true } }
       else
-        format.json { render json: { error: @wa_integration.errors.full_messages.join(", ") }, status: :unprocessable_entity }
+        format.json { render json: { error: @waba.errors.full_messages.join(", ") }, status: :unprocessable_entity }
       end
     end
   end
@@ -33,12 +33,12 @@ class WaIntegrationsController < ApplicationController
 
   private
 
-  def wa_integration_params
-    params.require(:wa_integration).permit(:phone_number_id, :waba_id)
+  def waba_params
+    params.require(:waba).permit(:phone_number_id, :waba_id)
   end
 
   def exchange_token_params
-    params.require(:wa_integration).permit(:code)
+    params.require(:waba).permit(:code)
   end
 
   def set_chatbot

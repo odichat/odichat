@@ -1,6 +1,8 @@
 class GenerateAssistantResponseJob < ApplicationJob
   queue_as :default
 
+  retry_on OpenAI::Error, wait: 10.seconds, attempts: 3, priority: :high, jitter: 0.25
+
   def perform(message_id)
     user_message = Message.includes(:chat).find(message_id)
     chat = user_message.chat

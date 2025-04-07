@@ -3,11 +3,13 @@
               class: "space-y-6") do |form| %>
   <div class="form-control w-full">
     <div class="flex items-center gap-8">
-      <div class="avatar avatar-online">
-        <div class="w-24 rounded-full cursor-pointer hover:scale-110 transition-all duration-300">
-          <%= image_tag(business_profile.profile_picture_url, class: "") %>
+      <% if business_profile.profile_picture_url.present? %>
+        <div class="avatar avatar-online">
+          <div class="w-24 rounded-full cursor-pointer hover:scale-110 transition-all duration-300">
+            <%= image_tag(business_profile.profile_picture_url, class: "") %>
+          </div>
         </div>
-      </div>
+      <% end %>
       <div class="flex flex-col gap-2 w-full">
         <label class="label">
           <span class="label-text">Profile Picture</span>

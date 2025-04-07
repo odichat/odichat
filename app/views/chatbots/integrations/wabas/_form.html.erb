@@ -55,10 +55,13 @@
   <div class="form-control w-full">
     <label class="label">
       <span class="label-text">Websites</span>
-      <span class="label-text-alt">Comma-separated list of URLs</span>
+      <span class="tooltip tooltip-bottom" data-tip="Comma-separated list of URLs">
+        <%= icon "information-circle", variant: "mini" %>
+      </span>
     </label>
     <%= form.text_field :websites, 
         value: business_profile.websites&.join(", "),
+        placeholder: "https://www.example.com, https://www.example2.com",
         class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
   </div>
 
@@ -67,9 +70,10 @@
     <label class="label">
       <span class="label-text">Business Category</span>
     </label>
-    <%= form.text_field :vertical, 
-        value: business_profile.vertical,
-        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+    <%= form.select :vertical,
+        Waba.available_verticals.map { |key, label| [label, key] },
+        { selected: business_profile.vertical, include_blank: "Select a category" },
+        class: "select select-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
   </div>
   
   <!-- Save button -->

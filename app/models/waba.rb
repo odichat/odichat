@@ -76,7 +76,20 @@ class Waba < ApplicationRecord
       file_type: content_type
     }
     response = Net::HTTP.post(uri, params.to_json, "Content-Type" => "application/json")
-    JSON.parse(response.body)["id"]
+    parsed_response = JSON.parse(response.body)
+
+    puts "==============="
+    puts "parsed_response start_upload_session: #{parsed_response}"
+    puts "==============="
+    if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
+      error_message = parsed_response["error"] || "Unknown error"
+      error_code = parsed_response["error"]&.dig("code") || response.code
+      raise "WhatsApp API Error (#{error_code}): #{error_message}"
+    end
+
+    parsed_response["id"]
+  rescue JSON::ParserError => e
+    raise "Invalid JSON response: #{e.message}"
   rescue StandardError => e
     raise "Error starting upload session: #{e}"
   end
@@ -93,6 +106,21 @@ class Waba < ApplicationRecord
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(request)
     end
-    JSON.parse(response.body)
+
+    parsed_response = JSON.parse(response.body)
+    puts "==============="
+    puts "parsed_response upload_file: #{parsed_response}"
+    puts "==============="
+    if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
+      error_message = parsed_response["error"]&.dig("message") || "Unknown error"
+      error_code = parsed_response["error"]&.dig("code") || response.code
+      raise "WhatsApp API Error (#{error_code}): #{error_message}"
+    end
+
+    parsed_response
+  rescue JSON::ParserError => e
+    raise "Invalid JSON response: #{e.message}"
+  rescue StandardError => e
+    raise "Error uploading file: #{e}"
   end
 end

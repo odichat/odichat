@@ -40,7 +40,7 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
   private
 
   def business_profile_params
-    params.permit(:about, :address, :description, :email, :websites, :vertical)
+    params.permit(:profile_picture_handle, :about, :address, :description, :email, :websites, :vertical)
   end
 
   def set_waba

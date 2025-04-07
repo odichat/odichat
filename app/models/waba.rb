@@ -1,3 +1,6 @@
+require "net/http"
+require "uri"
+
 class Waba < ApplicationRecord
   include WhatsappClient
 
@@ -39,6 +42,11 @@ class Waba < ApplicationRecord
     if params[:websites].present?
       params[:websites] = params[:websites].split(",").map(&:strip)
     end
+
+    if params[:profile_picture_handle].present?
+      handle = upload_profile_picture(params[:profile_picture_handle])
+      params.merge!(profile_picture_handle: handle)
+    end
     # business_profiles.update responds with Boolean
     client.business_profiles.update(
       phone_number_id: self.phone_number_id,
@@ -49,5 +57,42 @@ class Waba < ApplicationRecord
   def get_connected_phone_number
     client = whatsapp_client(self.access_token)
     client.phone_numbers.get(self.phone_number_id)
+  end
+
+  def upload_profile_picture(file)
+    upload_session_id = start_upload_session(file.original_filename, file.size, file.content_type)
+    upload_file(upload_session_id, file.path)["h"]
+  rescue StandardError => e
+    raise "Error uploading profile picture: #{e}"
+  end
+
+  private
+
+  def start_upload_session(filename, size, content_type)
+    uri = URI("https://graph.facebook.com/v22.0/#{ENV["WHATSAPP_APP_ID"]}/uploads")
+    params = {
+      access_token: ENV["WHATSAPP_ACCESS_TOKEN"],
+      file_size: size,
+      file_type: content_type
+    }
+    response = Net::HTTP.post(uri, params.to_json, "Content-Type" => "application/json")
+    JSON.parse(response.body)["id"]
+  rescue StandardError => e
+    raise "Error starting upload session: #{e}"
+  end
+
+  def upload_file(upload_session_id, file_path)
+    uri = URI("https://graph.facebook.com/v22.0/#{upload_session_id}")
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "OAuth #{ENV["WHATSAPP_ACCESS_TOKEN"]}"
+    request["file_offset"] = "0"
+    request["Content-Type"] = "application/octet-stream"
+
+    # Read the file in binary mode
+    request.body = File.binread(file_path)
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+    JSON.parse(response.body)
   end
 end

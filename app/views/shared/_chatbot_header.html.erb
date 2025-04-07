@@ -9,7 +9,7 @@
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Integrations", 
           chatbot_integrations_path(@chatbot), 
-          class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) ? 'tab-active' : ''}" %>
+          class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) || request.path.include?('/integrations/') ? 'tab-active' : ''}" %>
       <%= link_to "Settings", 
           chatbot_settings_path(@chatbot), 
           class: "tab #{current_page?(chatbot_settings_path(@chatbot)) ? 'tab-active' : ''}" %>

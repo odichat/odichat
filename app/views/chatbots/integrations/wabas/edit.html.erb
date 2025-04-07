@@ -1,0 +1,66 @@
+<div class="breadcrumbs mb-8">
+  <ul>
+    <li>
+      <%= link_to root_path do %>
+        Home
+      <% end %>
+    </li>
+    <li>
+      <%= link_to chatbot_integrations_path(@chatbot), class: "link link-hover" do %>
+        Integrations
+      <% end %>
+    </li>
+    <li>
+      WhatsApp
+    </li>
+  </ul>
+</div>
+
+<!-- Settings heading -->
+<h1 class="text-3xl font-bold mb-8 flex gap-2 items-center">
+  <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-12 h-12 mr-2" %>
+  <span>WhatsApp Business Profile</span>
+</h1>
+
+<!-- Main content area -->
+<div class="flex-1 space-y-8">
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-6">Connected Phone Number</h2>
+      <div class="overflow-x-auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= @connected_phone_number&.verified_name || "N/A" %></td>
+              <td><%= @connected_phone_number&.display_phone_number || "N/A" %></td>
+              <td>
+                <div class="flex items-center gap-2">
+                  <span class="status <%= @connected_phone_number&.status.downcase == "connected" ? "status-success" : "status-error" %>"></span>
+                  <%= @connected_phone_number&.status.downcase.capitalize || "Disconnected" %>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-6">Business Profile Settings</h2>
+      
+      <!-- Form with Turbo attributes -->
+      <%= turbo_frame_tag "business_profile_form" do %>
+        <%= render "form", chatbot: @chatbot, business_profile: @business_profile %>
+      <% end %>
+    </div>
+  </div>
+</div>

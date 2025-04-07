@@ -14,11 +14,15 @@
         <div class="card-actions w-full mt-2">
           <div class="flex w-full">
             <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
-              Connect
+              <% if waba_connected?(chatbot) %>
+                Reconnect
+              <% else %>
+                Connect
+              <% end %>
               <span id="waba-connection-loader"></span>
             </button>
             <% if waba_connected?(chatbot) %>
-              <%= link_to wabas_path(chatbot.waba), method: :delete, class: "btn btn-outline ml-1" do %>
+              <%= link_to edit_chatbot_integrations_waba_path(chatbot), class: "btn btn-soft ml-1" do %>
                 <%= icon "wrench", variant: "mini" %>
               <% end %>
             <% end %>

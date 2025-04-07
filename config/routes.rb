@@ -13,12 +13,14 @@ Rails.application.routes.draw do
   resources :chatbots do
     resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
-    resource :integrations, only: [ :show ], controller: "chatbots/integrations"
+    resource :integrations, only: [ :show ], controller: "chatbots/integrations" do
+      resource :waba, only: [ :edit, :update ], controller: "chatbots/integrations/wabas"
+    end
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
   end
 
   # Whatsapp Integration
-  resources :wabas, only: [ :create ]
+  resources :wabas, only: [ :create, :edit ]
   post "/wabas/exchange_token_and_subscribe_app", to: "wabas#exchange_token_and_subscribe_app"
 
   # Devise

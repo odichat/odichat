@@ -1,0 +1,79 @@
+<%= form_with(url: chatbot_integrations_waba_path(chatbot), 
+              method: :patch, 
+              class: "space-y-6") do |form| %>
+  
+  <!-- About field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">About</span>
+    </label>
+    <%= form.text_field :about, 
+        value: business_profile.about,
+        minlength: 1,
+        maxlength: 139,
+        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+
+  <!-- Address field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">Address</span>
+    </label>
+    <%= form.text_field :address, 
+        value: business_profile.address,
+        minlength: 0,
+        maxlength: 256,
+        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+
+  <!-- Description field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">Description</span>
+    </label>
+    <%= form.text_area :description, 
+        value: business_profile.description,
+        minlength: 0,
+        maxlength: 512,
+        rows: 4,
+        class: "textarea textarea-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+
+  <!-- Email field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">Email</span>
+    </label>
+    <%= form.email_field :email, 
+        value: business_profile.email,
+        minlength: 0,
+        maxlength: 128,
+        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+
+  <!-- Websites field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">Websites</span>
+      <span class="label-text-alt">Comma-separated list of URLs</span>
+    </label>
+    <%= form.text_field :websites, 
+        value: business_profile.websites&.join(", "),
+        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+
+  <!-- Vertical field -->
+  <div class="form-control w-full">
+    <label class="label">
+      <span class="label-text">Business Category</span>
+    </label>
+    <%= form.text_field :vertical, 
+        value: business_profile.vertical,
+        class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+  
+  <!-- Save button -->
+  <div class="card-actions justify-end">
+    <%= form.submit "Save Changes", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+  </div>
+<% end %> 

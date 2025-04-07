@@ -77,10 +77,6 @@ class Waba < ApplicationRecord
     }
     response = Net::HTTP.post(uri, params.to_json, "Content-Type" => "application/json")
     parsed_response = JSON.parse(response.body)
-
-    puts "==============="
-    puts "parsed_response start_upload_session: #{parsed_response}"
-    puts "==============="
     if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
       error_message = parsed_response["error"] || "Unknown error"
       error_code = parsed_response["error"]&.dig("code") || response.code
@@ -108,9 +104,6 @@ class Waba < ApplicationRecord
     end
 
     parsed_response = JSON.parse(response.body)
-    puts "==============="
-    puts "parsed_response upload_file: #{parsed_response}"
-    puts "==============="
     if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
       error_message = parsed_response["error"]&.dig("message") || "Unknown error"
       error_code = parsed_response["error"]&.dig("code") || response.code

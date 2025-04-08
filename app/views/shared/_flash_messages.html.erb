@@ -9,6 +9,8 @@
                         "alert alert-success"
                       when "alert"
                         "alert alert-error"
+                      when "warning"
+                        "alert alert-warning"
                       else
                         "alert alert-info"
                       end
@@ -18,6 +20,8 @@
           <%= icon "check-circle", variant: "mini" %>
         <% elsif type.to_s == "alert" %>
           <%= icon "x-circle", variant: "mini" %>
+        <% elsif type.to_s == "warning" %>
+          <%= icon "exclamation-triangle", variant: "mini" %>
         <% else %>
           <%= icon "information-circle", variant: "mini" %>
         <% end %>

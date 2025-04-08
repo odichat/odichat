@@ -6,6 +6,8 @@ class Waba < ApplicationRecord
 
   belongs_to :chatbot
 
+  after_destroy :unsubscribe
+
   def self.available_verticals
     {
       "ALCOHOL" => "Alcoholic Beverages",
@@ -64,6 +66,56 @@ class Waba < ApplicationRecord
     upload_file(upload_session_id, file.path)["h"]
   rescue StandardError => e
     raise "Error uploading profile picture: #{e}"
+  end
+
+  def subscribe
+    uri = URI("https://graph.facebook.com/v22.0/#{self.waba_id}/subscribed_apps")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    request = Net::HTTP::Post.new(uri)
+    request["Content-Type"] = "application/json"
+    request.body = { access_token: self.access_token }.to_json
+
+    response = http.request(request)
+    parsed_response = JSON.parse(response.body)
+    if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
+      error_message = parsed_response["error"] || "Unknown error"
+      error_code = parsed_response["error"]&.dig("code") || response.code
+      raise "WhatsApp API Error (#{error_code}): #{error_message}"
+    end
+    self.subscribed = true
+    self.save!
+    parsed_response
+  rescue JSON::ParserError => e
+    raise "Invalid JSON response: #{e.message}"
+  rescue StandardError => e
+    raise "Error subscribing: #{e}"
+  end
+
+  def unsubscribe
+    uri = URI("https://graph.facebook.com/v22.0/#{self.waba_id}/subscribed_apps")
+
+    # Set up the DELETE request
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    request = Net::HTTP::Delete.new(uri)
+    request["Content-Type"] = "application/json"
+    request.body = { access_token: self.access_token }.to_json
+
+    response = http.request(request)
+    parsed_response = JSON.parse(response.body)
+    if !response.is_a?(Net::HTTPSuccess) || parsed_response["error"]
+      error_message = parsed_response["error"] || "Unknown error"
+      error_code = parsed_response["error"]&.dig("code") || response.code
+      raise "WhatsApp API Error (#{error_code}): #{error_message}"
+    end
+    self.subscribed = false
+    self.save!
+    parsed_response
+  rescue JSON::ParserError => e
+    raise "Invalid JSON response: #{e.message}"
+  rescue StandardError => e
+    raise "Error unsubscribing: #{e}"
   end
 
   private

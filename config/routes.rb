@@ -14,7 +14,10 @@ Rails.application.routes.draw do
     resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
     resource :integrations, only: [ :show ], controller: "chatbots/integrations" do
-      resource :waba, only: [ :edit, :update ], controller: "chatbots/integrations/wabas"
+      resource :waba, only: [ :edit, :update ], controller: "chatbots/integrations/wabas" do
+        post :subscribe
+        post :unsubscribe
+      end
     end
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
   end

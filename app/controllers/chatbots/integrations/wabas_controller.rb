@@ -37,6 +37,25 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
     end
   end
 
+  def destroy
+    @chatbot.waba.destroy
+    redirect_to chatbots_path, notice: "WhatsApp integration deleted successfully"
+  end
+
+  def subscribe
+    @chatbot.waba.subscribe
+    redirect_to edit_chatbot_integrations_waba_path(@chatbot), notice: "WhatsApp Business Profile subscribed successfully"
+  rescue StandardError => e
+    redirect_to edit_chatbot_integrations_waba_path(@chatbot), alert: e.message
+  end
+
+  def unsubscribe
+    @chatbot.waba.unsubscribe
+    redirect_to edit_chatbot_integrations_waba_path(@chatbot), notice: "WhatsApp Business Profile unsubscribed successfully"
+  rescue StandardError => e
+    redirect_to edit_chatbot_integrations_waba_path(@chatbot), alert: e.message
+  end
+
   private
 
   def business_profile_params

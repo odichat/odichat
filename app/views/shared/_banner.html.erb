@@ -1,0 +1,51 @@
+<%# 
+  Renders a banner/alert component
+  
+  Parameters:
+  - message: String (required) - The message to display (can include HTML)
+  - type: Symbol (optional) - :info, :success, :warning, :error. Defaults to plain alert
+  - icon: String (optional) - The icon name to display
+  - button_text: String (optional) - Text for the action button
+  - button_path: String (optional) - URL for the action button
+  - button_method: Symbol (optional) - HTTP method for the button, defaults to :get
+  - button_class: String (optional) - Additional classes for the button
+%>
+
+<% 
+  alert_class = case type
+    when :info then "alert-info"
+    when :success then "alert-success" 
+    when :warning then "alert-warning"
+    when :error then "alert-error"
+    else ""
+  end
+
+  button_class ||= case type
+    when :info then "btn-info"
+    when :success then "btn-success"
+    when :warning then "btn-warning"
+    when :error then "btn-error"
+    else "btn-neutral"
+  end
+%>
+
+<div role="alert" class="alert <%= alert_class %> flex items-center">
+  <% if local_assigns[:icon].present? %>
+    <div class="flex-none">
+      <%= icon icon, variant: "mini", class: "w-6 h-6" %>
+    </div>
+  <% end %>
+  
+  <div class="flex-1">
+    <%= sanitize message, tags: %w(b strong i em span p), attributes: %w(class) %>
+  </div>
+
+  <% if local_assigns[:button_text].present? && local_assigns[:button_path].present? %>
+    <div class="flex-none">
+      <%= link_to button_text, 
+                  button_path, 
+                  method: local_assigns[:button_method] || :get,
+                  class: "btn btn-sm #{button_class}" %>
+    </div>
+  <% end %>
+</div> 

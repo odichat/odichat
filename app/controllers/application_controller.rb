@@ -1,10 +1,14 @@
 class ApplicationController < ActionController::Base
   layout "application"
+
+  include Pundit::Authorization
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
   rescue_from NoMethodError, ArgumentError, with: :handle_error
   rescue_from WhatsappSdk::Api::Responses::HttpResponseError, with: :handle_whatsapp_api_error
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
@@ -16,6 +20,10 @@ class ApplicationController < ActionController::Base
 
   def handle_whatsapp_api_error
     respond_with_error(500)
+  end
+
+  def user_not_authorized
+    respond_with_error(403)
   end
 
   def respond_with_error(code)

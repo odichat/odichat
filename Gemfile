@@ -81,3 +81,5 @@ gem "active_storage_validations"
 
 # Rails Icons [https://railsdesigner.com/rails-icons/]
 gem "rails_icons"
+
+gem "pundit", "~> 2.5"

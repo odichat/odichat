@@ -1,20 +1,23 @@
 class ChatbotsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_chatbot, only: [ :update ]
 
   # GET /chatbots or /chatbots.json
   def index
-    @chatbots = current_user.chatbots
+    @chatbots = policy_scope(Chatbot)
   end
 
   # GET /chatbots/new
   def new
     @chatbot = Chatbot.new
+    authorize @chatbot
   end
 
   # POST /chatbots or /chatbots.json
   def create
     @chatbot = Chatbot.new(chatbot_params)
     @chatbot.user = current_user
+    authorize @chatbot
 
     respond_to do |format|
       if @chatbot.save
@@ -29,8 +32,7 @@ class ChatbotsController < ApplicationController
   end
 
   def update
-    @chatbot = Chatbot.find(params[:id])
-
+    authorize @chatbot
     respond_to do |format|
       if @chatbot.update(chatbot_params)
         format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
@@ -49,8 +51,13 @@ class ChatbotsController < ApplicationController
   end
 
   private
-    # Only allow a list of trusted parameters through.
-    def chatbot_params
-      params.require(:chatbot).permit(:name, :model_id, :assistant_id)
-    end
+
+  def set_chatbot
+    @chatbot = Chatbot.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def chatbot_params
+    params.require(:chatbot).permit(:name, :model_id, :assistant_id)
+  end
 end

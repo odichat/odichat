@@ -4,6 +4,7 @@ class WabasController < ApplicationController
 
   def create
     @waba = @chatbot.waba || @chatbot.build_waba(waba_params)
+    authorize @waba
 
     respond_to do |format|
       if @waba.save

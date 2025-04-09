@@ -1,28 +1,33 @@
 class MessagesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_message, only: %i[ show edit update destroy ]
 
   # GET /messages or /messages.json
   def index
-    @messages = Message.all
+    @messages = policy_scope(Message)
   end
 
   # GET /messages/1 or /messages/1.json
   def show
+    authorize @message
   end
 
   # GET /messages/new
   def new
     @message = Message.new
+    authorize @message
   end
 
   # GET /messages/1/edit
   def edit
+    authorize @message
   end
 
   # POST /messages or /messages.json
   def create
     @message = Message.new(message_params)
     @chatbot = @message.chat.chatbot
+    authorize @message
 
     respond_to do |format|
       if @message.save
@@ -43,6 +48,7 @@ class MessagesController < ApplicationController
 
   # PATCH/PUT /messages/1 or /messages/1.json
   def update
+    authorize @message
     respond_to do |format|
       if @message.update(message_params)
         format.html { redirect_to @message, notice: "Message was successfully updated." }
@@ -56,6 +62,7 @@ class MessagesController < ApplicationController
 
   # DELETE /messages/1 or /messages/1.json
   def destroy
+    authorize @message
     @message.destroy!
 
     respond_to do |format|

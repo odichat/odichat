@@ -6,23 +6,22 @@ class ApplicationController < ActionController::Base
   rescue_from NoMethodError, ArgumentError, with: :handle_error
   rescue_from WhatsappSdk::Api::Responses::HttpResponseError, with: :handle_whatsapp_api_error
 
+  private
+
   protected
 
-  def handle_error(exception)
-    error_message = "Error: #{exception.message}"
-    respond_with_error(500, error_message)
+  def handle_error
+    respond_with_error(500)
   end
 
-  def handle_whatsapp_api_error(exception)
-    error_message = exception.body.dig("error", "message") || "WhatsApp API Error"
-    error_code = exception.body.dig("error", "code") || 500
-    respond_with_error(error_code, error_message)
+  def handle_whatsapp_api_error
+    respond_with_error(500)
   end
 
-  def respond_with_error(code, message)
+  def respond_with_error(code)
     respond_to do |format|
-      format.any  { render "errors/error", layout: "error", status: code, locals: { status: code, message: message }, formats: [ :html ] }
-      format.json { render json: { error: Rack::Utils::HTTP_STATUS_CODES[code], message: message }, status: code }
+      format.any  { render "errors/#{code}", layout: "error", status: code, formats: [ :html ] }
+      format.json { render json: { error: Rack::Utils::HTTP_STATUS_CODES[code] }, status: code }
     end
   end
 end

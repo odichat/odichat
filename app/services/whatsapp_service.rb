@@ -1,7 +1,6 @@
 class WhatsappService
   def self.send_message(waba_id, recipient_phone_number, message)
-    # client = WhatsappSdk::Api::Messages.new
-    waba = Waba.find_by(waba_id: waba_id)
+    waba = Waba.find_by!(waba_id: waba_id)
 
     client = WhatsappSdk::Api::Client.new(waba.access_token, "v21.0", Logger.new(STDOUT), { bodies: true })
     client.messages.send_text(

@@ -6,7 +6,7 @@ class Waba < ApplicationRecord
 
   belongs_to :chatbot
 
-  after_destroy :unsubscribe
+  before_destroy :unsubscribe
 
   def self.available_verticals
     {

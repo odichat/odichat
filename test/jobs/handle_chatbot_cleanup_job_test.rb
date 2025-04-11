@@ -1,6 +1,6 @@
 require "test_helper"
 
-class DeleteVectorStoreJobTest < ActiveJob::TestCase
+class HandleChatbotCleanupJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -16,8 +16,7 @@ class Chatbot < ApplicationRecord
   after_create :create_assistant
   after_create :create_playground_chat
 
-  after_destroy :delete_assistant
-  after_destroy :delete_vector_store
+  after_destroy :cleanup
 
   private
 
@@ -40,13 +39,15 @@ class Chatbot < ApplicationRecord
     chats.create!(source: "playground")
   end
 
-  def delete_assistant
-    return if self.assistant_id.blank?
-    DeleteAssistantJob.perform_later(self.assistant_id)
-  end
+  def cleanup
+    # `skip_openai_cleanup` virtual attribute to true to prevent Document callbacks from running
+    documents.update_all(skip_openai_cleanup: true)
 
-  def delete_vector_store
-    return if self.vector_store_id.blank?
-    DeleteVectorStoreJob.perform_later(self.vector_store_id)
+    document_ids = self.documents.pluck(:id)
+    HandleChatbotCleanupJob.perform_later(
+      self.assistant_id,
+      document_ids,
+      self.vector_store_id
+    )
   end
 end

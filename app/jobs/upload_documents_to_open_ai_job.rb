@@ -13,9 +13,12 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
             file_id: file_id
           )
           update_vector_store(chatbot)
+        rescue Faraday::TooManyRequestsError => e
+          # TODO: This should send a notification to the admin via email/slack
+          raise "Check your OpenAI account for rate limits or missing funds"
         rescue StandardError => e
           Rails.logger.error("Error uploading document #{document.id} to OpenAI: #{e.message}")
-          raise e
+          raise "Error uploading document #{document.id} to OpenAI: #{e.message}"
         end
       end
     end

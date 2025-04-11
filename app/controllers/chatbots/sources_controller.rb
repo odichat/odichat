@@ -43,10 +43,13 @@ class Chatbots::SourcesController < Chatbots::BaseController
   end
 
   def destroy
+    vector_store_id = @chatbot.vector_store_id
     document = @chatbot.documents.find(params[:document_id])
+    file_id = document.file_id
 
     respond_to do |format|
       if document.destroy
+        Document.remove_from_openai(vector_store_id, file_id)
         format.html { redirect_to chatbots_source_path(@chatbot), notice: "File was successfully removed." }
         format.turbo_stream {
           flash.now[:notice] = "File was successfully removed."

@@ -10,7 +10,7 @@ class OpenAiService
       Rails.logger.error("OpenAI error creating thread: #{e.message}")
       raise "OpenAI error creating thread: #{e.message}"
     end
-  rescue StandardError => e
+  rescue OpenAI::Error => e
     # TODO: Make sure if this job fails, we send a notification and retry
     # I was getting a 500 error when I tried to create a thread. So this could happen often.
     Rails.logger.error("Unexpected error creating thread: #{e.message}")
@@ -18,21 +18,15 @@ class OpenAiService
   end
 
   def self.add_message_to_thread(thread_id, role, message)
-    begin
-      Rails.logger.info("Adding message to thread: #{thread_id}")
-      client = OpenAI::Client.new
-      client.messages.create(
-        thread_id: thread_id,
-        parameters: {
-          role: role,
-          content: message
-        }
-      )["id"]
-    rescue OpenAI::Error => e
-      Rails.logger.error("OpenAI error adding message to thread: #{e.message}")
-      raise "OpenAI error adding message to thread: #{e.message}"
-    end
-  rescue StandardError => e
+    client = OpenAI::Client.new
+    client.messages.create(
+      thread_id: thread_id,
+      parameters: {
+        role: role,
+        content: message
+      }
+    )["id"]
+  rescue OpenAI::Error => e
     Rails.logger.error("Unexpected error adding message to thread: #{e.message}")
     raise "Unexpected error adding message to thread: #{e.message}"
   end
@@ -72,7 +66,7 @@ class OpenAiService
         raise "Unknown status response: #{status} with response: #{response}"
       end
     end
-  rescue StandardError => e
+  rescue OpenAI::Error => e
     Rails.logger.error("API call to OpenAI failed: #{e.message}")
     raise "API call to OpenAI failed: #{e.message}"
   end
@@ -111,10 +105,13 @@ class OpenAiService
 
   def self.delete_vector_store(vector_store_id)
     client = OpenAI::Client.new
-    client.vector_stores.delete(id: vector_store_id)
-  rescue OpenAI::Error => e
-    Rails.logger.error("OpenAI error deleting vector store: #{e.message}")
-    raise "OpenAI error deleting vector store: #{e.message}"
+    begin
+      response = client.vector_stores.delete(id: vector_store_id)
+      response["deleted"]
+    rescue OpenAI::Error => e
+      Rails.logger.error("OpenAI error deleting vector store: #{e.message}")
+      raise "OpenAI error deleting vector store: #{e.message}"
+    end
   end
 
   def self.upload_file_to_openai(file_path, purpose = "assistants")
@@ -161,6 +158,9 @@ class OpenAiService
     file_batch_id = response["id"]
 
     file_batch_id
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI error updating vector store files: #{e.message}")
+    raise "OpenAI error updating vector store files: #{e.message}"
   end
 
   private

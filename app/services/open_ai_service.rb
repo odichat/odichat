@@ -68,7 +68,7 @@ class OpenAiService
     end
   rescue OpenAI::Error => e
     Rails.logger.error("API call to OpenAI failed: #{e.message}")
-    raise "API call to OpenAI failed: #{e.message}"
+    raise OpenAI::Error, "API call to OpenAI failed: #{e.message}"
   end
 
   def self.get_assistant(assistant_id)

@@ -40,9 +40,6 @@ class Chatbot < ApplicationRecord
   end
 
   def cleanup
-    # `skip_openai_cleanup` virtual attribute to true to prevent Document callbacks from running
-    documents.update_all(skip_openai_cleanup: true)
-
     document_ids = self.documents.pluck(:id)
     HandleChatbotCleanupJob.perform_later(
       self.assistant_id,

@@ -9,10 +9,6 @@ class GenerateAssistantResponseJob < ApplicationJob
     chat = user_message.chat
     chatbot = chat.chatbot
     model = Model.find(chatbot.model_id)
-    # thread_id = chat.thread_id
-
-    # OpenAiService.add_message_to_thread(thread_id, user_message.sender, user_message.content)
-    # assistant_message = OpenAiService.create_and_wait_for_run(thread_id, chat.assistant_id)
 
     response = client.responses.create(parameters: {
       model: model.name,

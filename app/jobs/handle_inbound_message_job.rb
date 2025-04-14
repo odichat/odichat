@@ -8,7 +8,6 @@ class HandleInboundMessageJob < ApplicationJob
 
     if chat.nil?
       chat = chatbot.chats.create!(contact_phone: message_data[:from_phone_number], source: "whatsapp")
-      CreateThreadJob.perform_now(chat.id) # Will insert the thread_id to the chat
     end
 
     message = chat.messages.create!(sender: "user", content: message_data[:message_text])

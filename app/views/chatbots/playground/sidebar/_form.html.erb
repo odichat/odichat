@@ -10,8 +10,7 @@
           :id, 
           :name, 
           { selected: chatbot.model_id },
-          class: "cursor-pointer select select-bordered w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20",
-          disabled: chatbot.assistant_id.blank? %>
+          class: "cursor-pointer select select-bordered w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" %>
     </div>
   </div>
 
@@ -32,8 +31,7 @@
           "range-slider-target": "input",
           action: "input->range-slider#updateDisplay"
         },
-        value: chatbot.temperature,
-        disabled: chatbot.assistant_id.blank? %>
+        value: chatbot.temperature %>
   </div>
 
   <!-- System instructions -->
@@ -44,8 +42,7 @@
     <%= f.text_area :system_instructions,
         value: chatbot.system_instructions,
         rows: 10,
-        class: "w-full textarea textarea-bordered focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20",
-        disabled: chatbot.assistant_id.blank? %>
+        class: "w-full textarea textarea-bordered focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" %>
   </div>
 
   <%= f.hidden_field :name, value: chatbot.name %>
@@ -54,8 +51,7 @@
   <div>
     <%= f.button type: "submit",
         id: "button_loader",
-        class: "btn btn-primary w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20",
-        disabled: chatbot.assistant_id.blank? do %>
+        class: "btn btn-primary w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" do %>
         <span id="sidebar_submit_button_text">
           Save Changes
         </span>

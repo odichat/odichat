@@ -1,17 +1,24 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
   def show
     @chat = @chatbot.chats.where(source: "playground").last
-    if @chat.thread_id.nil?
-      CreateThreadJob.perform_later(@chat.id)
-    end
     @messages = @chat.messages.order(created_at: :asc)
   end
 
   def update
-    UpdateAssistantJob.perform_later(@chatbot.id, chatbot_params[:model_id], chatbot_params[:temperature].to_f, chatbot_params[:system_instructions])
-    respond_to do |format|
-      format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
-      format.turbo_stream
+    if @chatbot.update(chatbot_params)
+      respond_to do |format|
+        format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Agent was successfully updated." }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages", locals: { flash: { notice: "Agent was successfully updated." } })
+        }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to chatbot_playground_path(@chatbot), alert: "Agent was not updated." }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages", locals: { flash: { alert: @chatbot.errors.full_messages.join(", ") } })
+        }
+      end
     end
   end
 

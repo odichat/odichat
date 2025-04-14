@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CreateOpenAiAssistantJobTest < ActiveJob::TestCase
+class VectorStoreTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

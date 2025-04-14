@@ -1,20 +1,18 @@
-<div class="w-full h-full">
-  <div class="flex-1">
-    <div class="card bg-base-100 shadow-sm">
-      <!-- Header section -->
-      <%= render "chatbots/playground/chat_header", chatbot: chatbot %>
-      
-      <!-- Chat messages area -->
-      <div class="min-h-[400px] max-h-[400px] overflow-y-auto p-6" data-controller="chat-scroll">
-        <%= render "chatbots/playground/chat_messages", messages: messages %>
-      </div>
+<div id="chat" class="card bg-base-100 shadow-sm w-full">
+  <!-- Header section -->
+  <%= render "chatbots/playground/chat_header", chatbot: chatbot %>
+  
+  <!-- Chat messages area -->
+  <div class="min-h-[400px] max-h-[400px] overflow-y-auto p-6" data-controller="chat-scroll">
+    <%= render "chatbots/playground/chat_messages", messages: messages %>
+  </div>
 
-      <!-- Input area -->
-      <div class="card-body pt-0 px-4">
-        <div class="flex items-center">
-          <%= render "chatbots/playground/chat_form", chat: chat, messages: messages %>
-        </div>
-      </div>
+  <!-- Input area -->
+  <div class="card-body pt-0 px-4">
+    <div class="flex items-center">
+      <%= render "chatbots/playground/chat_form", chat: chat, messages: messages %>
     </div>
   </div>
 </div>
+  
+

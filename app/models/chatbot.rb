@@ -2,6 +2,7 @@ class Chatbot < ApplicationRecord
   belongs_to :user
 
   has_one :waba, dependent: :destroy
+  has_one :vector_store, dependent: :destroy
 
   has_many :chats, dependent: :destroy
   has_many :documents, dependent: :destroy
@@ -13,7 +14,7 @@ class Chatbot < ApplicationRecord
   before_create :set_default_system_instructions
   before_create :set_default_temperature
 
-  after_create :create_assistant
+  after_create :create_vector_store
   after_create :create_playground_chat
 
   after_destroy :cleanup
@@ -28,10 +29,8 @@ class Chatbot < ApplicationRecord
     self.temperature = 1.0
   end
 
-  def create_assistant
-    return if self.assistant_id.present?
-    # Enqueue job to create the assistant
-    CreateOpenAiAssistantJob.perform_later(self.id)
+  def create_vector_store
+    VectorStore.create!(chatbot: self, name: "#{self.name.parameterize}:#{self.id}")
   end
 
   def create_playground_chat
@@ -39,12 +38,12 @@ class Chatbot < ApplicationRecord
     chats.create!(source: "playground")
   end
 
-  def cleanup
-    document_ids = self.documents.pluck(:id)
-    HandleChatbotCleanupJob.perform_later(
-      self.assistant_id,
-      document_ids,
-      self.vector_store_id
-    )
-  end
+  # def cleanup
+  #   document_ids = self.documents.pluck(:id)
+  #   HandleChatbotCleanupJob.perform_later(
+  #     self.assistant_id,
+  #     document_ids,
+  #     self.vector_store_id
+  #   )
+  # end
 end

@@ -1,18 +1,17 @@
 class HandleChatbotCleanupJob < ApplicationJob
-  queue_as :default
+  queue_as :low
+  retry_on OpenAI::Error, wait: :polynomially_longer, attempts: 5, priority: :low
 
-  def perform(assistant_id, document_ids, vector_store_id)
+  def perform(file_ids, vector_store_id)
     begin
-      openai_client = OpenAI::Client.new
-      openai_client.assistants.delete(id: assistant_id)
-      openai_client.vector_stores.delete(id: vector_store_id)
-      document_ids.each do |document_id|
-        openai_client.files.delete(id: document_id)
+      file_ids.each do |file_id|
+        Document.remove_from_storage(vector_store_id, file_id)
       end
+      VectorStore.delete(vector_store_id)
     rescue OpenAI::Error => e
-      raise "OpenAI error when deleting when cleaning up chatbot (assistant_id: #{assistant_id}, document_ids: #{document_ids}, vector_store_id: #{vector_store_id}): #{e.message}"
+      raise "OpenAI error when deleting when cleaning up chatbot (file_ids: #{file_ids}, vector_store_id: #{vector_store_id}): #{e.message}"
     rescue StandardError => e
-      raise "Failed to cleanup chatbot (assistant_id: #{assistant_id}, document_ids: #{document_ids}, vector_store_id: #{vector_store_id}): #{e.message}"
+      raise "Failed to cleanup chatbot (file_ids: #{file_ids}, vector_store_id: #{vector_store_id}): #{e.message}"
     end
   end
 end

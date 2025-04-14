@@ -34,6 +34,15 @@ class VectorStore < ApplicationRecord
     raise OpenAI::Error, "Could not attach files to vector store: #{e.message}"
   end
 
+  class << self
+    def delete(vector_store_id)
+      openai_client.vector_stores.delete(id: vector_store_id)
+    rescue OpenAI::Error => e
+      Rails.logger.error("OpenAI::Error deleting vector store: #{e.message}")
+      raise OpenAI::Error, "Could not delete vector store: #{e.message}"
+    end
+  end
+
   private
 
   def enqueue_create_vector_store_job

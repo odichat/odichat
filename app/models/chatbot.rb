@@ -17,7 +17,7 @@ class Chatbot < ApplicationRecord
   after_create :create_vector_store
   after_create :create_playground_chat
 
-  after_destroy :cleanup
+  after_destroy :enqueue_cleanup_job
 
   private
 
@@ -38,12 +38,10 @@ class Chatbot < ApplicationRecord
     chats.create!(source: "playground")
   end
 
-  # def cleanup
-  #   document_ids = self.documents.pluck(:id)
-  #   HandleChatbotCleanupJob.perform_later(
-  #     self.assistant_id,
-  #     document_ids,
-  #     self.vector_store_id
-  #   )
-  # end
+  def enqueue_cleanup_job
+    HandleChatbotCleanupJob.perform_later(
+      documents.pluck(:file_id),
+      vector_store.vector_store_id
+    )
+  end
 end

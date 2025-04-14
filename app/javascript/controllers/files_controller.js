@@ -56,7 +56,7 @@ export default class extends Controller {
     })
 
     // Enable submit button if there are files
-    const form = document.querySelector('#form')
+    const form = document.querySelector('#sources-form')
     form.querySelector('button[type="submit"]').disabled = false
   }
 
@@ -140,7 +140,7 @@ export default class extends Controller {
 
       // Disable submit button if no files are left
       if (updatedFiles.length === 0) {
-        const form = document.querySelector('#form')
+        const form = document.querySelector('#sources-form')
         form.querySelector('button[type="submit"]').disabled = true
       }
     }

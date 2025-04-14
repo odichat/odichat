@@ -41,6 +41,14 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
         documents: documents
       }
     )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "sources",
+      target: "flash",
+      partial: "shared/flash_messages",
+      locals: {
+        flash: { notice: "Documents uploaded successfully" }
+      }
+    )
   end
 
   private

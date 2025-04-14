@@ -34,7 +34,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
     end
     Turbo::StreamsChannel.broadcast_replace_to(
       "sources",
-      target: "form",
+      target: "sources-form",
       partial: "chatbots/sources/form",
       locals: {
         chatbot: chatbot,
@@ -53,7 +53,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
       temp_file.write(document.file.download)
       temp_file.rewind
 
-      OpenAiService.upload_file_to_openai(temp_file.path)
+      document.upload_file(temp_file.path)
     ensure
       temp_file&.close
       temp_file&.unlink
@@ -61,8 +61,8 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
   end
 
   def update_vector_store(chatbot)
-    all_file_ids = chatbot.documents.where.not(file_id: nil).pluck(:file_id)
-    OpenAiService.update_vector_store_files(chatbot.vector_store_id, all_file_ids)
+    file_ids = chatbot.documents.where.not(file_id: nil).pluck(:file_id)
+    chatbot.vector_store.attach_files(file_ids)
   end
 
   def safe_extension(document)

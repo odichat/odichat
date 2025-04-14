@@ -1,4 +1,4 @@
-<%= form_with model: chatbot, url: chatbot_sources_path(chatbot), method: :put, id: "form", data: { 
+<%= form_with model: chatbot, url: chatbot_sources_path(chatbot), method: :put, id: "sources-form", data: { 
   controller: "files direct-uploads",
   files_documents_value: documents,
   files_chatbot_id_value: chatbot.id

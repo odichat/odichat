@@ -21,6 +21,19 @@ class VectorStore < ApplicationRecord
     raise OpenAI::Error, "Could not create vector store: #{e.message}"
   end
 
+  def attach_files(file_ids)
+    response = openai_client.vector_store_file_batches.create(
+      vector_store_id: self.vector_store_id,
+      parameters: {
+        file_ids: file_ids
+      }
+    )
+    response["id"]
+  rescue OpenAI::Error => e
+    Rails.logger.error("OpenAI::Error attaching files to vector store: #{e.message}")
+    raise OpenAI::Error, "Could not attach files to vector store: #{e.message}"
+  end
+
   private
 
   def enqueue_create_vector_store_job

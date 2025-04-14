@@ -1,20 +1,11 @@
 class RemoveDocumentFromOpenaiJob < ApplicationJob
   queue_as :default
+  retry_on OpenAI::Error, wait: :polynomially_longer, attempts: 5
 
   def perform(vector_store_id, file_id)
-    begin
-      openai_client = OpenAI::Client.new
-      openai_client.vector_store_files.delete(
-        vector_store_id: vector_store_id,
-        id: file_id
-      )
-      openai_client.files.delete(id: file_id)
-    rescue OpenAI::Error => e
-      Rails.logger.error("Error removing document from OpenAI: #{e.message}")
-      raise "Error removing document from OpenAI: #{e.message}"
-    end
+    Document.remove_from_storage(vector_store_id, file_id)
   rescue StandardError => e
     Rails.logger.error("Error removing document from OpenAI: #{e.message}")
-    raise "Error removing document from OpenAI: #{e.message}"
+    raise
   end
 end

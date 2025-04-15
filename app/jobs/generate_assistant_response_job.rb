@@ -22,6 +22,12 @@ class GenerateAssistantResponseJob < ApplicationJob
           content: user_message.content
         }
       ],
+      tools: [
+        {
+          type: "file_search",
+          vector_store_ids: [ chatbot.vector_store.vector_store_id ]
+        }
+      ],
       previous_response_id: chat.previous_response_id
     })
 

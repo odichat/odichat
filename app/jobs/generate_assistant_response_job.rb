@@ -31,7 +31,7 @@ class GenerateAssistantResponseJob < ApplicationJob
       previous_response_id: chat.previous_response_id
     })
 
-    # TODO: Raise when no response["id"] comes back
+    raise OpenAI::Error, "No response from OpenAI" if response["id"].blank?
     chat.update!(previous_response_id: response["id"])
 
     assistant_message = chat.messages.create!(
@@ -57,6 +57,6 @@ class GenerateAssistantResponseJob < ApplicationJob
   rescue StandardError => e
     Rails.logger.error("Error adding message to chat_id: #{user_message.chat.id}: #{e.message}")
     # TODO: Send a notification to the user
-    raise "Error adding message to chat_id: #{user_message.chat.id}: #{e.message}"
+    raise
   end
 end

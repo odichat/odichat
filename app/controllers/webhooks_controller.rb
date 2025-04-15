@@ -7,7 +7,7 @@ class WebhooksController < ApplicationController
     token =     params["hub.verify_token"]
     challenge = params["hub.challenge"]
 
-    if mode == "subscribe" && token == ENV["WEBHOOK_VERIFY_TOKEN"]
+    if mode == "subscribe" && token == Rails.application.credentials.whatsapp[:webhook_verify_token]
       render json: challenge, status: :ok
     else
       render json: { error: "Invalid verification token" }, status: :unauthorized

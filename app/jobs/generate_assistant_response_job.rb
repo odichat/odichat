@@ -34,9 +34,10 @@ class GenerateAssistantResponseJob < ApplicationJob
     raise OpenAI::Error, "No response from OpenAI" if response["id"].blank?
     chat.update!(previous_response_id: response["id"])
 
+    response_content = response.dig("output", 0, "content", 0, "text") || response.dig("output", 1, "content", 0, "text")
     assistant_message = chat.messages.create!(
       sender: "assistant",
-      content: response.dig("output", 0, "content", 0, "text")
+      content: response_content
     )
 
     Rails.logger.info("About to broadcast assistant message: #{assistant_message.id}")

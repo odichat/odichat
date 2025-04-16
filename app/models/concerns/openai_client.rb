@@ -4,7 +4,7 @@ module OpenaiClient
   included do
     def openai_client
       @openai_client ||= ::OpenAI::Client.new(
-        access_token: Rails.application.credentials.openai[:access_token],
+        access_token: Rails.application.credentials.dig(:openai, :access_token),
         log_errors: Rails.env.local?
       )
     end
@@ -13,7 +13,7 @@ module OpenaiClient
   class_methods do
     def openai_client
       @openai_client ||= ::OpenAI::Client.new(
-        access_token: Rails.application.credentials.openai[:access_token],
+        access_token: Rails.application.credentials.dig(:openai, :access_token),
         log_errors: Rails.env.local?
       )
     end

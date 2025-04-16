@@ -121,9 +121,9 @@ class Waba < ApplicationRecord
   private
 
   def start_upload_session(filename, size, content_type)
-    uri = URI("https://graph.facebook.com/v22.0/#{Rails.application.credentials.whatsapp[:app_id]}/uploads")
+    uri = URI("https://graph.facebook.com/v22.0/#{Rails.application.credentials.dig(:whatsapp, :app_id)}/uploads")
     params = {
-      access_token: Rails.application.credentials.whatsapp[:access_token],
+      access_token: Rails.application.credentials.dig(:whatsapp, :access_token),
       file_size: size,
       file_type: content_type
     }
@@ -145,7 +145,7 @@ class Waba < ApplicationRecord
   def upload_file(upload_session_id, file_path)
     uri = URI("https://graph.facebook.com/v22.0/#{upload_session_id}")
     request = Net::HTTP::Post.new(uri)
-    request["Authorization"] = "OAuth #{Rails.application.credentials.whatsapp[:access_token]}"
+    request["Authorization"] = "OAuth #{Rails.application.credentials.dig(:whatsapp, :access_token)}"
     request["file_offset"] = "0"
     request["Content-Type"] = "application/octet-stream"
 

@@ -35,6 +35,13 @@ Rails.application.routes.draw do
   # Dashboard
   get "/dashboard", to: "dashboard#index"
 
+  # Checkout
+  get "/subscriptions", to: "subscriptions#show"
+  get "/subscriptions/success", to: "subscriptions#success"
+  get "/subscriptions/cancel", to: "subscriptions#cancel"
+  # get "billing", to: "billing#show"
+  # TODO: Add cancel route
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

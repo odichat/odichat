@@ -1,6 +1,7 @@
 class ChatbotsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_chatbot, only: [ :update ]
+  before_action :check_subscription, only: [ :new, :create ]
 
   # GET /chatbots or /chatbots.json
   def index
@@ -59,5 +60,13 @@ class ChatbotsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def chatbot_params
     params.require(:chatbot).permit(:name, :model_id, :assistant_id)
+  end
+
+  def check_subscription
+    unless current_user.active_subscription
+      redirect_to subscriptions_path(
+        price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"
+      ), alert: "You need an active subscription to create a chatbot"
+    end
   end
 end

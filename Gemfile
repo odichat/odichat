@@ -68,7 +68,7 @@ gem "whatsapp_sdk"
 
 gem "devise", "~> 4.9"
 
-gem "tailwindcss-ruby", "~> 4.0"
+gem "tailwindcss-ruby", "~> 4.1"
 
 gem "ruby-openai"
 

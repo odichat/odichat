@@ -1,5 +1,5 @@
 Pay.setup do |config|
-  config.business_name = "BYTECODE LLC"
+  config.business_name = "Odichat"
   config.business_address = "9898 Colonnade Blvd, San Antonio, TX 78230"
   config.application_name = "odichat"
   config.support_email = "aeum3893@gmail.com"

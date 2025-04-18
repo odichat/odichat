@@ -3,11 +3,11 @@
 <div class="container mx-auto max-w-4xl">
   <div class="flex justify-between items-center py-8">
     <div class="flex items-center">
-      <h1 class="text-3xl font-bold text-base-content">AI Agents</h1>
+      <h1 class="text-3xl font-bold text-base-content">Agents Dashboard</h1>
     </div>
-    <%= link_to new_chatbot_path, class: "btn btn-primary gap-2" do %>
+    <%= link_to new_chatbot_path, class: "btn btn-primary gap-2", data: { turbo: false } do %>
       <%= icon "plus", variant: "mini" %>
-      New chatbot
+      Create Agent
     <% end %>
   </div>
 

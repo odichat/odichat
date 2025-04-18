@@ -8,9 +8,9 @@
   <div class="navbar-end">
     <div class="hidden md:flex items-center">
       <div class="menu menu-horizontal mr-8 gap-8">
+        <%= link_to "Dashboard", root_path, class: "menu-item text-base-content/70 hover:text-base-content" %>
         <a href="#" class="menu-item text-base-content/70 hover:text-base-content">Docs</a>
         <a href="#" class="menu-item text-base-content/70 hover:text-base-content">Help</a>
-        <a href="#" class="menu-item text-base-content/70 hover:text-base-content">Changelog</a>
       </div>
       
       <% if user_signed_in? %>

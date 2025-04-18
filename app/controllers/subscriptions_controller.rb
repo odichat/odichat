@@ -18,7 +18,7 @@ class SubscriptionsController < ApplicationController
         }
       ],
       subscription_data: {
-        trial_period_days: 30
+        trial_period_days: 7
       },
       success_url: subscriptions_success_url,
       cancel_url: subscriptions_cancel_url

@@ -13,7 +13,7 @@ module SubscriptionConcern
       )
     end
 
-    def active_subscription
+    def active_subscription?
       check_subscription_status if subscription_end_date.blank? || subscription_end_date < Time.current
       subscription_end_date.nil? ? false : subscription_end_date > Time.current
     end

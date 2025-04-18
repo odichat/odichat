@@ -32,9 +32,6 @@ Rails.application.routes.draw do
   # Webhooks
   resources :webhooks, only: [ :index, :create ]
 
-  # Dashboard
-  get "/dashboard", to: "dashboard#index"
-
   # Checkout
   get "/subscriptions", to: "subscriptions#show"
   get "/subscriptions/success", to: "subscriptions#success"

@@ -2,5 +2,8 @@
   <h1 class="text-error text-6xl font-bold mb-4">500</h1>
   <h2 class="text-2xl font-semibold mb-4">Internal Server Error</h2>
   <p class="text-base-content mb-8">An error occurred while processing your request.</p>
+  <% if error.present? %>
+    <pre class="text-base-content mb-8"><%= error.message %></pre>
+  <% end %>
   <%= link_to "Back to Home", root_path, class: "btn btn-primary" %>
 </div> 

@@ -1,0 +1,9 @@
+<% if user_signed_in? && !current_user.active_subscription? %>
+  <div role="alert" class="alert alert-warning">
+    <%= icon "exclamation-triangle" %>
+    <span>Upgrade your plan to connect agents to your WhatsApp account.</span>
+    <div>
+      <%= link_to "Upgrade", subscriptions_path(price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"), class: "btn btn-sm btn-primary" %>
+    </div>
+  </div>
+<% end %>

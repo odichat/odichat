@@ -10,4 +10,8 @@ module Chatbots::IntegrationsHelper
   def waba_connected?(chatbot)
     chatbot.waba.present? && chatbot.waba.access_token.present?
   end
+
+  def is_disabled?
+    !current_user.active_subscription?
+  end
 end

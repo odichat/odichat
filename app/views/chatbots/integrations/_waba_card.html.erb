@@ -13,17 +13,21 @@
         <p class="text-stone-600">Connect your agent to a WhatsApp number and let it respond to messages from your customers.</p>
         <div class="card-actions w-full mt-2">
           <div class="flex w-full">
-            <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
+            <% if is_disabled? %>
+              <%= link_to "Upgrade", subscriptions_path(price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"), class: "btn btn-success flex-1" %>
+            <% else %>
+              <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
+                <% if waba_connected?(chatbot) %>
+                  Reconnect
+                <% else %>
+                  Connect
+                <% end %>
+                <span id="waba-connection-loader"></span>
+              </button>
               <% if waba_connected?(chatbot) %>
-                Reconnect
-              <% else %>
-                Connect
-              <% end %>
-              <span id="waba-connection-loader"></span>
-            </button>
-            <% if waba_connected?(chatbot) %>
-              <%= link_to edit_chatbot_integrations_waba_path(chatbot), class: "btn btn-soft ml-1" do %>
-                <%= icon "wrench", variant: "mini" %>
+                <%= link_to edit_chatbot_integrations_waba_path(chatbot), class: "btn btn-soft ml-1" do %>
+                  <%= icon "wrench", variant: "mini" %>
+                <% end %>
               <% end %>
             <% end %>
           </div>

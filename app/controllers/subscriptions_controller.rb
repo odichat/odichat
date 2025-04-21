@@ -29,6 +29,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def cancel
+    redirect_to subscriptions_path(price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1")
   end
 
   private

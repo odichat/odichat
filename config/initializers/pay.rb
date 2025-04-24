@@ -4,8 +4,8 @@ Pay.setup do |config|
   config.application_name = "odichat"
   config.support_email = "aeum3893@gmail.com"
 
-  config.default_product_name = "free"
-  config.default_plan_name = "free"
+  config.default_product_name = "default"
+  config.default_plan_name = "default"
 
   config.enabled_processors = [ :stripe ]
 

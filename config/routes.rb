@@ -33,11 +33,11 @@ Rails.application.routes.draw do
   resources :webhooks, only: [ :index, :create ]
 
   # Checkout
-  get "/subscriptions", to: "subscriptions#show"
+  get "/subscriptions/billing", to: "subscriptions#show"
+  get "/subscriptions/pricing", to: "subscriptions#index"
+  get "/subscriptions/checkout", to: "subscriptions#checkout"
   get "/subscriptions/success", to: "subscriptions#success"
   get "/subscriptions/cancel", to: "subscriptions#cancel"
-  # get "billing", to: "billing#show"
-  # TODO: Add cancel route
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

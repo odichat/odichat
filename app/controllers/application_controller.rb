@@ -15,9 +15,11 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
-    subscriptions_path(
-      price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"
-    )
+    if current_user&.payment_processor&.subscribed?
+      chatbots_path
+    else
+      subscriptions_pricing_path
+    end
   end
 
   def handle_error(e)

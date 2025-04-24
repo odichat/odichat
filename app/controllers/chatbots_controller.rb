@@ -63,10 +63,8 @@ class ChatbotsController < ApplicationController
   end
 
   def check_subscription
-    if !current_user.active_subscription? && current_user.chatbots.count >= 1
-      redirect_to subscriptions_path(
-        price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"
-      ), alert: "You need an active subscription to create a chatbot"
+    if !current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 1
+      redirect_to subscriptions_pricing_path, alert: "You need an active subscription to create a chatbot"
     end
   end
 end

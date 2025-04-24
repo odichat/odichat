@@ -14,7 +14,7 @@
         <div class="card-actions w-full mt-2">
           <div class="flex w-full">
             <% if is_disabled? %>
-              <%= link_to "Upgrade", subscriptions_path(price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"), class: "btn btn-success flex-1" %>
+              <%= link_to "Upgrade", subscriptions_pricing_path, class: "btn btn-success flex-1" %>
             <% else %>
               <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
                 <% if waba_connected?(chatbot) %>

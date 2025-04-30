@@ -14,16 +14,19 @@
   <div id="chatbots" class="py-4">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% if @chatbots.any?%>
-        <% @chatbots.each do |chatbot| %>
+        <% @chatbots.each_with_index do |chatbot, index| %>
           <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow duration-300">
             <%= link_to chatbot_settings_path(chatbot), class: "card-body p-0" do %>
               <figure class="h-48 bg-base-200">
                 <% if chatbot.respond_to?(:image) && chatbot.image.present? %>
                   <%= image_tag chatbot.image, class: "w-full h-full object-cover" %>
                 <% else %>
-                  <svg class="w-16 h-16 text-base-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                  </svg>
+                  <% images = [
+                    "https://clars.com/wp-content/uploads/2023/06/2477_1.jpeg",
+                    "https://images.squarespace-cdn.com/content/v1/5c49568eb27e3974ef358650/11203d78-c2fb-42e5-8711-736229cbfb36/Gustave-Baumann-PInes-Grand-Canyon-13x13-7990.jpg", "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg",
+                    "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg"
+                  ] %>
+                  <%= image_tag images[index], class: "w-full h-full object-cover rounded-t-lg", alt: "Agent image" %>
                 <% end %>
               </figure>
               <div class="p-4">

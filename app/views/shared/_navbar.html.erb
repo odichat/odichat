@@ -13,9 +13,9 @@
               <div class="w-6 h-6 bg-radial-[at_25%_25%] from-white via-[#FFC738] to-[#E66429] to-75% rounded-full"></div>
             </summary>
             <ul class="bg-base-100 rounded-t-none p-2 w-[200px] absolute top-full right-0 mt-2 shadow-lg z-10">
-              <li><%= link_to "Settings", edit_user_registration_path, class: "" %></li>
-              <li><%= link_to "Billing", subscriptions_billing_path, class: "" %></li>
-              <li><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "" %></li>
+              <li><%= link_to "Settings", edit_user_registration_path, class: "hover:bg-base-200" %></li>
+              <li><%= link_to "Billing", subscriptions_billing_path, class: "hover:bg-base-200" %></li>
+              <li><%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "hover:bg-base-200" %></li>
             </ul>
           </details>
         </li>

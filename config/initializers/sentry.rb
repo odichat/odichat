@@ -5,5 +5,5 @@ Sentry.init do |config|
   config.dsn = Rails.application.credentials.dig(:sentry, :dsn)
   config.traces_sample_rate = 1.0
   config.environment = Rails.env
-  # config.enabled_environments = %w[ production ]
+  config.enabled_environments = %w[ production ]
 end

@@ -21,10 +21,6 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
     <%= Sentry.get_trace_propagation_meta.html_safe %>
-    <script
-      src="https://js.sentry-cdn.com/025f4c0bb2e0f0b49011631b2e93528d.min.js"
-      crossorigin="anonymous"
-    ></script>
 
     <%= javascript_importmap_tags %>
 
@@ -35,7 +31,9 @@
     <main class="">
       <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>
-      <%= render "shared/subscription_banner" %>
+      <% if Flipper.enabled?(:paywall) %>
+        <%= render "shared/subscription_banner" %>
+      <% end %>
       <%= yield %>
 
       <%# <% if user_signed_in? %>

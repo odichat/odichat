@@ -15,6 +15,13 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
+    <%= Sentry.get_trace_propagation_meta.html_safe %>
+    <script
+      src="https://js.sentry-cdn.com/025f4c0bb2e0f0b49011631b2e93528d.min.js"
+      crossorigin="anonymous"
+    ></script>
+
     <%= javascript_importmap_tags %>
 
     <script src="https://js.stripe.com/basil/stripe.js"></script>
@@ -35,6 +42,7 @@
       <% if user_signed_in? && current_page?(chatbot_integrations_path) %>
         <%= javascript_include_tag "facebook_sdk", defer: true %>
         <%= javascript_include_tag "embedded_signup", defer: true %>
+        <%= javascript_include_tag "sentry", defer: true %>
       <% end %>
     </main>
   </body>

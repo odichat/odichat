@@ -89,3 +89,5 @@ gem "pay", "~> 8.0"
 gem "stripe", "~> 13.0"
 
 gem "flipper", "~> 1.3"
+
+gem "flipper-active_record", "~> 1.3"

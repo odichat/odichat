@@ -87,3 +87,5 @@ gem "pundit", "~> 2.5"
 gem "pay", "~> 8.0"
 
 gem "stripe", "~> 13.0"
+
+gem "flipper", "~> 1.3"

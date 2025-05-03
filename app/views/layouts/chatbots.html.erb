@@ -24,7 +24,9 @@
     <main class="">
       <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>
-      <%= render "shared/subscription_banner" %>
+      <% if Flipper.enabled?(:paywall) %>
+        <%= render "shared/subscription_banner" %> 
+      <% end%>
       <%= render "shared/chatbot_header" %>
       <div class="container mx-auto max-w-5xl px-4 py-8">
         <%= yield %>

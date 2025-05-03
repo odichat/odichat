@@ -63,8 +63,10 @@ class ChatbotsController < ApplicationController
   end
 
   def check_subscription
-    if !current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 1
-      redirect_to subscriptions_pricing_path, alert: "You need an active subscription to create a chatbot"
+    if Flipper.enabled?(:paywall)
+      if !current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 1
+        redirect_to subscriptions_pricing_path, alert: "You need an active subscription to create a chatbot"
+      end
     end
   end
 end

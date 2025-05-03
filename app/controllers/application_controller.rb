@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
@@ -14,6 +16,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # **************************************************
+  # Devise
+  # **************************************************
+
   def after_sign_in_path_for(resource)
     if current_user&.payment_processor&.subscribed?
       chatbots_path
@@ -21,6 +27,14 @@ class ApplicationController < ActionController::Base
       subscriptions_pricing_path
     end
   end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :city, :country ])
+  end
+
+  # **************************************************
+  # Error handling
+  # **************************************************
 
   def handle_error(e)
     respond_with_error(500, e)

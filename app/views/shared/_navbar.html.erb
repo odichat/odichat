@@ -1,49 +1,25 @@
-<div class="navbar bg-base-100 border-b border-b-base-200 px-6">
-  <div class="navbar-start">
-    <%= link_to root_path do %>
-      <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/assets/odi-gradient.svg", alt: "Logo", class: "h-8 w-auto" %>
+<div class="navbar bg-base-100 shadow-sm">
+  <div class="flex-1">
+    <%= link_to root_path, class: "btn btn-ghost text-xl" do %>
+      <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/assets/odi-gradient.svg", alt: "Logo", class: "h-6 w-auto" %>
     <% end %>
   </div>
-  
-  <div class="navbar-end">
-    <div class="hidden md:flex items-center">
-      <div class="menu menu-horizontal mr-8 gap-8">
-        <%= link_to "Dashboard", root_path, class: "menu-item text-base-content/70 hover:text-base-content" %>
-        <a href="#" class="menu-item text-base-content/70 hover:text-base-content">Docs</a>
-        <a href="#" class="menu-item text-base-content/70 hover:text-base-content">Help</a>
-      </div>
-      
-      <% if user_signed_in? %>
-        <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-ghost" %>
-      <% else %>
-        <div class="flex gap-2">
-          <%= link_to "Log in", new_user_session_path, class: "btn btn-ghost" %>
-          <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
-        </div>
-      <% end %>
-    </div>
-
-    <!-- Mobile menu button -->
-    <div class="dropdown dropdown-end md:hidden">
-      <label tabindex="0" class="btn btn-ghost">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </label>
-      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="#" class="text-base-content/70 hover:text-base-content">Docs</a></li>
-        <li><a href="#" class="text-base-content/70 hover:text-base-content">Help</a></li>
-        <li><a href="#" class="text-base-content/70 hover:text-base-content">Changelog</a></li>
-        <div class="divider"></div>
-        <% if user_signed_in? %>
-          <li><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-base-content/70 hover:text-base-content" %></li>
-        <% else %>
-          <div class="flex flex-col gap-2 w-full">
-            <%= link_to "Log in", new_user_session_path, class: "btn btn-ghost" %>
-            <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
-          </div>
-        <% end %>
+  <% if user_signed_in? %>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal px-1">
+        <li class="relative">
+          <details>
+            <summary>
+              <div class="w-6 h-6 bg-radial-[at_25%_25%] from-white via-[#FFC738] to-[#E66429] to-75% rounded-full"></div>
+            </summary>
+            <ul class="bg-base-100 rounded-t-none p-2 w-[200px] absolute top-full right-0 mt-2 shadow-lg z-10">
+              <li><%= link_to "Settings", edit_user_registration_path, class: "" %></li>
+              <li><%= link_to "Billing", subscriptions_billing_path, class: "" %></li>
+              <li><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "" %></li>
+            </ul>
+          </details>
+        </li>
       </ul>
     </div>
-  </div>
+  <% end %>
 </div>

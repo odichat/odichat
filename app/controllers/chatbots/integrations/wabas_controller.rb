@@ -1,5 +1,7 @@
 class Chatbots::Integrations::WabasController < Chatbots::BaseController
+  skip_before_action :authorize_chatbot
   before_action :set_waba, only: [ :update, :destroy, :subscribe, :unsubscribe ]
+  before_action :authorize_waba, only: [ :update, :destroy, :subscribe, :unsubscribe ]
 
   def edit
     @business_profile = @chatbot.waba.get_business_profile
@@ -7,7 +9,6 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
   end
 
   def update
-    authorize @waba
     if @chatbot.waba.update_business_profile(business_profile_params)
       respond_to do |format|
         format.turbo_stream {
@@ -39,13 +40,11 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
   end
 
   def destroy
-    authorize @waba
     @chatbot.waba.destroy
     redirect_to chatbots_path, notice: "WhatsApp integration deleted successfully"
   end
 
   def subscribe
-    authorize @waba
     @chatbot.waba.subscribe
     redirect_to edit_chatbot_integrations_waba_path(@chatbot), notice: "WhatsApp Business Profile subscribed successfully"
   rescue StandardError => e
@@ -53,7 +52,6 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
   end
 
   def unsubscribe
-    authorize @waba
     @waba.unsubscribe
     redirect_to edit_chatbot_integrations_waba_path(@chatbot), notice: "WhatsApp Business Profile unsubscribed successfully"
   rescue StandardError => e
@@ -68,5 +66,9 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
 
   def set_waba
     @waba = @chatbot.waba
+  end
+
+  def authorize_waba
+    authorize @waba
   end
 end

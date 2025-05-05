@@ -25,7 +25,7 @@ class Chatbots::SettingsController < Chatbots::BaseController
   def destroy
     if @chatbot.destroy
       respond_to do |format|
-        format.html { redirect_to chatbots_path, info: "Agent was successfully deleted." }
+        format.html { redirect_to chatbots_path, notice: "Agent was successfully deleted." }
       end
     else
       respond_to do |format|

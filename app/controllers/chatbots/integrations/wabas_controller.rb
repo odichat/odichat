@@ -53,7 +53,7 @@ class Chatbots::Integrations::WabasController < Chatbots::BaseController
   end
 
   def unsubscribe
-    authorize @waba
+    authorize @waba, policy_class: WabaPolicy
     @chatbot.waba.unsubscribe
     redirect_to edit_chatbot_integrations_waba_path(@chatbot), notice: "WhatsApp Business Profile unsubscribed successfully"
   rescue StandardError => e

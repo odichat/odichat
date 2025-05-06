@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   # Devise
   # **************************************************
   def after_sign_in_path_for(resource)
-    if Feature.enabled?(:paywall)
+    if Flipper.enabled?(:paywall)
       if current_user&.payment_processor&.subscribed?
         chatbots_path
       else

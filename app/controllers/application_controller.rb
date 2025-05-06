@@ -19,12 +19,15 @@ class ApplicationController < ActionController::Base
   # **************************************************
   # Devise
   # **************************************************
-
   def after_sign_in_path_for(resource)
-    if current_user&.payment_processor&.subscribed?
-      chatbots_path
+    if Feature.enabled?(:paywall)
+      if current_user&.payment_processor&.subscribed?
+        chatbots_path
+      else
+        subscriptions_pricing_path
+      end
     else
-      subscriptions_pricing_path
+      chatbots_path
     end
   end
 

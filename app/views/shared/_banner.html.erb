@@ -43,8 +43,8 @@
   <% if local_assigns[:button_text].present? && local_assigns[:button_path].present? %>
     <div class="flex-none">
       <%= link_to button_text, 
-                  button_path, 
-                  method: local_assigns[:button_method] || :get,
+                  button_path,
+                  data: { turbo_method: local_assigns[:button_method] || :get },
                   class: "btn btn-sm #{button_class}" %>
     </div>
   <% end %>

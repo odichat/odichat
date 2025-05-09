@@ -43,7 +43,7 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
       partial: "shared/flash_messages",
       locals: {
         flash: {
-          alert: "Error exchanging token and subscribing to app: #{e.message}"
+          alert: "Error exchanging token and subscribing to app. #{e.message}"
         }
       }
     )

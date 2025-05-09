@@ -22,6 +22,10 @@
   <span>WhatsApp Business Profile</span>
 </h1>
 
+<div class="flex justify-end mb-4">
+  <%= link_to "View Templates", chatbot_integrations_waba_templates_path(@chatbot), class: "btn btn-primary", data: { turbo: false } %>
+</div>
+
 <!-- Main content area -->
 <div class="flex-1 space-y-8">
   <% if !@chatbot.waba.subscribed? %>

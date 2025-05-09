@@ -18,6 +18,9 @@ Rails.application.routes.draw do
         post :subscribe
         post :unsubscribe
       end
+      resources :waba_templates, only: [ :index ], controller: "chatbots/integrations/waba_templates" do
+        post :destroy_message_template
+      end
     end
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
   end

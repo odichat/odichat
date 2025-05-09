@@ -1,0 +1,72 @@
+<div class="breadcrumbs mb-8">
+  <ul>
+    <li>
+      <%= link_to root_path do %>
+        Home
+      <% end %>
+    </li>
+    <li>
+      <%= link_to chatbot_integrations_path(@chatbot), class: "link link-hover" do %>
+        Integrations
+      <% end %>
+    </li>
+    <li>
+      <%= link_to edit_chatbot_integrations_waba_path(@chatbot), class: "link link-hover" do %>
+        WhatsApp
+      <% end %>
+    </li>
+    <li>
+      Templates
+    </li>
+  </ul>
+</div>
+
+<h1 class="text-3xl font-bold mb-8 flex gap-2 items-center">
+  <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-12 h-12 mr-2" %>
+  <span>WhatsApp Message Templates</span>
+</h1>
+
+<% if @templates.any? %>
+  <% @templates.each do |template| %>
+    <div class="template-card border rounded p-4 mb-4">
+      <h2 class="text-xl font-bold mb-2"><%= template.name %></h2>
+      <p>Status: <%= template.status %></p>
+      <p>Category: <%= template.category %></p>
+      <p>Language: <%= template.language %></p>
+      <div class="template-preview mt-4">
+        <% template.components_json.each do |component| %>
+          <% if component["type"] == "BODY" %>
+            <% body_text = component["text"].dup %>
+            <p class="whatsapp-body"><%= body_text %></p>
+          <% elsif component["type"] == "BUTTONS" %>
+            <div class="whatsapp-buttons mt-2">
+              <% component["buttons"].each do |button| %>
+                <% if button["type"] == "URL" %>
+                  <span class="inline-block bg-blue-50 text-blue-600 px-3 py-1 rounded mr-2 text-sm cursor-default"><%= button["text"] %></span>
+                <% elsif button["type"] == "QUICK_REPLY" %>
+                  <span class="inline-block bg-gray-50 text-gray-600 px-3 py-1 rounded mr-2 text-sm cursor-default"><%= button["text"] %></span>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+        <div class="template-actions mt-4 flex space-x-2">
+        <a href="https://business.facebook.com/latest/whatsapp_manager/message_templates/?tab=message-templates&childRoute=CAPI&id=<%= template.id %>&nav_ref=whatsapp_manager&asset_id=<%= @waba.waba_id %>" target="_blank" class="btn btn-sm btn-outline">Edit Template</a>
+        <%= button_to 'Delete Template', chatbot_integrations_waba_template_destroy_message_template_path(@chatbot, template.name), method: :post, data: { confirm: 'Are you sure you want to delete this template?' }, class: 'btn btn-sm btn-error btn-outline', form_class: 'inline-block' %>
+      </div>
+  <% end %>
+<% else %>
+  <div class="card w-full mx-auto my-12 shadow-xl border border-base-200">
+    <div class="w-full card-body items-center text-center space-y-4">
+      <h2 class="card-title text-2xl font-bold">You haven't created any templates yet.</h2>
+      <p class="text-gray-600">Get started by creating your first WhatsApp message template.</p>
+      <div class="card-actions">
+        <%= link_to "Create Template", "https://business.facebook.com/latest/whatsapp_manager/message_templates?tab=message-templates&childRoute=templates&nav_ref=whatsapp_manager&asset_id=#{@waba.waba_id}", class: "btn btn-primary", target: "_blank" %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+

@@ -34,6 +34,16 @@ class Waba < ApplicationRecord
     }
   end
 
+  def message_templates
+    client = whatsapp_client(self.access_token)
+    client.templates.list(business_id: self.waba_id)
+  end
+
+  def delete_message_template(template_name)
+    client = whatsapp_client(self.access_token)
+    client.templates.delete(business_id: self.waba_id, name: template_name)
+  end
+
   def get_business_profile
     client = whatsapp_client(self.access_token)
     client.business_profiles.get(self.phone_number_id)

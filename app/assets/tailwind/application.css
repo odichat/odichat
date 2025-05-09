@@ -8,17 +8,6 @@
   themes: lofi --default
 }
 
-/* Custom banner classes */
-@layer components {
-  .banner-success {
-    @apply py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block;
-  }
-  
-  .banner-error {
-    @apply py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-md inline-block;
-  }
-}
-
 /* Aurora animation */
 @layer utilities {
   @keyframes aurora {

@@ -1,0 +1,32 @@
+<h1 class="text-3xl font-bold mb-8">Create New Template</h1>
+
+<div class="card bg-base-100 shadow-md">
+  <div class="card-body">
+    <%= form_with model: Waba.new, url: chatbot_integrations_waba_templates_path(@chatbot), method: :post, class: "space-y-6" do |f| %>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Name</span>
+        </label>
+        <%= f.text_field :name, class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Category</span>
+        </label>
+        <%= f.select :category, ["AUTHENTICATION", "MARKETING", "UTILITY"], {}, class: "select select-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Body</span>
+        </label>
+        <%= f.text_area :body, rows: 4, class: "textarea textarea-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
+      </div>
+
+      <div class="card-actions justify-end">
+        <%= f.submit "Create Template", class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50", data: { turbo_submits_with: "Creating..." } %>
+      </div>
+    <% end %>
+  </div>
+</div>

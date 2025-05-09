@@ -40,8 +40,27 @@ class Waba < ApplicationRecord
   end
 
   def delete_message_template(template_name)
+    sanitized_name = template_name.to_s.strip.downcase.gsub(/\s+/, "_")
     client = whatsapp_client(self.access_token)
-    client.templates.delete(business_id: self.waba_id, name: template_name)
+    client.templates.delete(business_id: self.waba_id, name: sanitized_name)
+  end
+
+  def create_message_template(template_name, template_category, template_body)
+    sanitized_name = template_name.to_s.strip.downcase.gsub(/\s+/, "_")
+    client = whatsapp_client(self.access_token)
+    client.templates.create(
+      business_id: self.waba_id,
+      name: sanitized_name,
+      language: "en_US",
+      category: template_category,
+      components_json: [
+        {
+          "type": "BODY",
+          "text": template_body
+        }
+      ],
+      allow_category_change: true
+    )
   end
 
   def get_business_profile

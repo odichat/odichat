@@ -27,6 +27,12 @@
 </h1>
 
 <% if @templates.any? %>
+  <div class="flex justify-end mb-4">
+    <%= link_to "Create Template", new_chatbot_integrations_waba_template_path(@chatbot), class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<% if @templates.any? %>
   <% @templates.each do |template| %>
     <div class="template-card border rounded p-4 mb-4">
       <h2 class="text-xl font-bold mb-2"><%= template.name %></h2>
@@ -63,7 +69,7 @@
       <h2 class="card-title text-2xl font-bold">You haven't created any templates yet.</h2>
       <p class="text-gray-600">Get started by creating your first WhatsApp message template.</p>
       <div class="card-actions">
-        <%= link_to "Create Template", "https://business.facebook.com/latest/whatsapp_manager/message_templates?tab=message-templates&childRoute=templates&nav_ref=whatsapp_manager&asset_id=#{@waba.waba_id}", class: "btn btn-primary", target: "_blank" %>
+        <%= link_to "Create Template", new_chatbot_integrations_waba_template_path(@chatbot), class: "btn btn-primary" %>
       </div>
     </div>
   </div>

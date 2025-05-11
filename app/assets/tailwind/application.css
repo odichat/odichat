@@ -8,6 +8,12 @@
   themes: lofi --default
 }
 
+@layer components {
+  .test {
+    @apply py-2;
+  }
+}
+
 /* Aurora animation */
 @layer utilities {
   @keyframes aurora {

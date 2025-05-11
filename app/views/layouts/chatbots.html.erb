@@ -14,7 +14,6 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
     <%= Sentry.get_trace_propagation_meta.html_safe %>

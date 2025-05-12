@@ -79,7 +79,8 @@ builder:
   arch: amd64
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
-  # remote: ssh://docker@docker-builder-server
+  remote: ssh://root@5.161.239.57
+  local: false
   #
   # # Pass arguments and secrets to the Docker build process
   # args:

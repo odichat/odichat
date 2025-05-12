@@ -22,7 +22,7 @@ class ChatbotsController < ApplicationController
 
     respond_to do |format|
       if @chatbot.save
-        format.html { redirect_to chatbot_settings_path(@chatbot), notice: "Chatbot was successfully created." }
+        format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully created." }
         format.json { render :show, status: :created, location: @chatbot }
       else
         flash.now[:alert] = @chatbot.errors.full_messages.join(", ")

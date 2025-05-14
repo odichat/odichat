@@ -21,4 +21,20 @@ class User < ApplicationRecord
       }
     }
   end
+
+  def basic_plan?
+    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :plans, :basic_monthly))
+  end
+
+  def pro_plan?
+    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :plans, :pro_monthly))
+  end
+
+  def subscribed?
+    payment_processor&.subscribed?
+  end
+
+  def not_subscribed_and_has_one_chatbot?
+    !subscribed? && chatbots.count >= 1
+  end
 end

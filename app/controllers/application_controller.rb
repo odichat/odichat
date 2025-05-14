@@ -19,17 +19,6 @@ class ApplicationController < ActionController::Base
   # **************************************************
   # Devise
   # **************************************************
-  def after_sign_in_path_for(resource)
-    if Flipper.enabled?(:paywall)
-      if current_user&.payment_processor&.subscribed?
-        chatbots_path
-      else
-        subscriptions_pricing_path
-      end
-    else
-      chatbots_path
-    end
-  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :city, :country ])

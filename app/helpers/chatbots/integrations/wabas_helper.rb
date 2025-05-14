@@ -13,7 +13,7 @@ module Chatbots::Integrations::WabasHelper
 
   def is_disabled?
     if Flipper.enabled?(:paywall)
-      !current_user&.payment_processor&.subscribed?
+      !current_user.subscribed?
     else
       false
     end

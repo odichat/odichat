@@ -31,10 +31,10 @@ class User < ApplicationRecord
   end
 
   def subscribed?
-    payment_processor&.subscribed?
+    !!payment_processor&.subscribed?
   end
 
   def not_subscribed_and_has_one_chatbot?
-    !subscribed? && chatbots.count >= 1
+    subscribed? && chatbots.count >= 1
   end
 end

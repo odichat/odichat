@@ -1,4 +1,4 @@
-<% if user_signed_in? && !current_user&.payment_processor&.subscribed? %>
+<% if (user_signed_in? && current_user&.payment_processor.nil?) || (user_signed_in? && !current_user&.payment_processor&.subscribed?) %>
   <div role="alert" class="alert alert-warning">
     <%= icon "exclamation-triangle" %>
     <span>Upgrade your plan to connect agents to your WhatsApp account.</span>

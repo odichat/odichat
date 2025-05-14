@@ -6,7 +6,7 @@
     </label>
     <div class="relative">
       <%= f.collection_select :model_id, 
-          Model.all, 
+          models, 
           :id, 
           :name, 
           { selected: chatbot.model_id },

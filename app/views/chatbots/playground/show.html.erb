@@ -21,7 +21,7 @@
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="flex gap-6">
       <!-- Left sidebar with form -->
-      <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot %>
+      <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
 
       <!-- Right side chat interface -->
       <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>

@@ -53,7 +53,7 @@
           Schedule appointments (coming soon)
         </li>
       </ul>
-      <%= link_to "Checkout", subscriptions_checkout_path(price_id: "price_1REDkkCrK57Omz3Ai3F1Dtv1"), class: "mt-8 block rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:mt-10" %>
+      <%= link_to "Checkout", subscriptions_checkout_path(price_id: Rails.application.credentials.dig(:stripe, :prices, :pro_monthly)), class: "mt-8 block rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:mt-10" %>
     </div>
     <div class="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 sm:mx-8 sm:rounded-t-none sm:p-10 lg:mx-0 lg:rounded-tr-3xl lg:rounded-bl-none">
       <h3 id="tier-team" class="text-base/7 font-semibold text-primary">Starter</h3>
@@ -82,7 +82,7 @@
           3 OpenAI models to choose from
         </li>
       </ul>
-      <%= link_to "Checkout", subscriptions_checkout_path(price_id: "price_1RHYBRCrK57Omz3AyVufbOfQ"), class: "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary ring-1 ring-primary ring-inset hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:mt-10" %>
+      <%= link_to "Checkout", subscriptions_checkout_path(price_id: Rails.application.credentials.dig(:stripe, :prices, :basic_monthly)), class: "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary ring-1 ring-primary ring-inset hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:mt-10" %>
     </div>
   </div>
 </div>

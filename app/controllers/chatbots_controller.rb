@@ -66,7 +66,9 @@ class ChatbotsController < ApplicationController
     if Flipper.enabled?(:paywall)
       if !current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 1
         redirect_to subscriptions_pricing_path, alert: "You need an active subscription to create a chatbot"
-      elsif current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 3
+      elsif current_user&.payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :plans, :basic_monthly)) && current_user.chatbots.count >= 1
+        redirect_to chatbots_path, alert: "You have reached the maximum number of chatbots for your subscription. Please upgrade to a higher plan."
+      elsif current_user&.payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :plans, :pro_monthly)) && current_user.chatbots.count >= 3
         redirect_to chatbots_path, alert: "You have reached the maximum number of chatbots for your subscription. Please contact us for a higher limit."
       end
     end

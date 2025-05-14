@@ -6,6 +6,9 @@
   <div class="flex gap-6">
     <!-- Left sidebar -->
     <div class="w-64 shrink-0">
+            <div class="mb-2">
+        <%= link_to "Go Back", :back, class: "link link-primary" %>
+      </div>
       <nav class="menu w-full bg-base-200 rounded-box">
         <li><a class="active focus:outline-none focus-visible:ring focus-visible:ring-primary/50">Account</a></li>
       </nav>
@@ -110,10 +113,6 @@
                 data: { turbo_confirm: "Are you sure you want to delete your account?" } %>
           </div>
         </div>
-      </div>
-
-      <div class="mt-6">
-        <%= link_to "Go Back", :back, class: "link link-primary" %>
       </div>
     </div>
   </div>

@@ -30,7 +30,9 @@ Rails.application.routes.draw do
   post "/wabas/exchange_token_and_subscribe_app", to: "wabas#exchange_token_and_subscribe_app"
 
   # Devise
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
 
   # Webhooks
   resources :webhooks, only: [ :index, :create ]

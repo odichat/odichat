@@ -26,8 +26,11 @@ Rails.application.routes.draw do
   end
 
   # Whatsapp Integration
-  resources :wabas, only: [ :create, :edit ]
-  post "/wabas/exchange_token_and_subscribe_app", to: "wabas#exchange_token_and_subscribe_app"
+  resources :wabas, only: [ :create ] do
+    collection do
+      post :exchange_token_and_subscribe_app
+    end
+  end
 
   # Devise
   devise_for :users, controllers: {

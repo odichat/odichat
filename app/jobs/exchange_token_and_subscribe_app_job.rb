@@ -54,8 +54,8 @@ class ExchangeTokenAndSubscribeAppJob < ApplicationJob
     response = Net::HTTP.post(
       uri,
       {
-        client_id: "1293328758418096",
-        client_secret: "118934e47bceb3e1eb3079dfabd493d5",
+        client_id: Rails.application.credentials.dig(:whatsapp, :app_id),
+        client_secret: Rails.application.credentials.dig(:whatsapp, :client_secret),
         code: code,
         grant_type: "authorization_code"
       }.to_json,

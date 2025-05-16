@@ -90,6 +90,6 @@ gem "flipper", "~> 1.3"
 
 gem "flipper-active_record", "~> 1.3"
 
-gem "sentry-ruby", "~> 5.23"
+gem "sentry-ruby", "~> 5.24"
 
 gem "sentry-rails", "~> 5.23"

@@ -31,11 +31,11 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
   end
 
   def set_models
-    if !current_user&.payment_processor&.subscribed? && current_user.chatbots.count >= 1
+    if !current_user.subscribed?
       @models = Model.where(name: "gpt-4o-mini")
-    elsif current_user&.payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :basic_monthly)) && current_user.chatbots.count >= 1
+    elsif current_user.basic_plan?
       @models = Model.where(name: [ "gpt-4o-mini", "gpt-4o", "o4-mini" ])
-    elsif current_user&.payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :pro_monthly)) && current_user.chatbots.count >= 3
+    elsif current_user.pro_plan?
       @models = Model.all
     end
   end

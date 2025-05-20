@@ -22,7 +22,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
         end
       end
     end
-  ensure
+
     documents = chatbot.documents.map do |document|
       {
         id: document.id,

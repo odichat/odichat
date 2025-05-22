@@ -3,6 +3,7 @@ class Chatbot < ApplicationRecord
 
   has_one :waba, dependent: :destroy
   has_one :vector_store, dependent: :destroy
+  has_one :shareable_link, dependent: :destroy
 
   has_many :chats, dependent: :destroy
   has_many :documents, dependent: :destroy
@@ -14,19 +15,31 @@ class Chatbot < ApplicationRecord
   before_create :set_default_system_instructions
   before_create :set_default_temperature
 
+  after_create :create_shareable_link
   after_create :create_vector_store
   after_create :create_playground_chat
 
   after_destroy :enqueue_cleanup_job
 
+  def public_url
+    Rails.application.routes.url_helpers.public_playground_url(token: shareable_link.token)
+  end
+
   private
 
+  # **************************************************
+  # Callbacks
+  # **************************************************
   def set_default_system_instructions
     self.system_instructions = "You are a helpful assistant."
   end
 
   def set_default_temperature
     self.temperature = 1.0
+  end
+
+  def create_shareable_link
+    ShareableLink.create!(chatbot: self, token: SecureRandom.uuid)
   end
 
   def create_vector_store

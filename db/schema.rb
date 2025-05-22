@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_03_174639) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_23_001834) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -201,6 +201,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_03_174639) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shareable_links", force: :cascade do |t|
+    t.integer "chatbot_id", null: false
+    t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_shareable_links_on_chatbot_id"
+    t.index ["token"], name: "index_shareable_links_on_token", unique: true
+  end
+
+  create_table "task_records", id: false, force: :cascade do |t|
+    t.string "version", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -250,6 +263,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_03_174639) do
   add_foreign_key "pay_charges", "pay_subscriptions", column: "subscription_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
+  add_foreign_key "shareable_links", "chatbots"
   add_foreign_key "vector_stores", "chatbots"
   add_foreign_key "wabas", "chatbots"
 end

@@ -48,6 +48,13 @@ Rails.application.routes.draw do
   get "/subscriptions/success", to: "subscriptions#success"
   get "/subscriptions/cancel", to: "subscriptions#cancel"
 
+  namespace :public do
+    get "chats/create"
+    resources :messages, only: [ :create ]
+    resources :chats, only: [ :create ]
+  end
+  get "public/playground/:token", to: "public/playground#show", as: :public_playground
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

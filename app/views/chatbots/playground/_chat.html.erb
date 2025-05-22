@@ -3,8 +3,8 @@
   <%= render "chatbots/playground/chat_header", chatbot: chatbot %>
   
   <!-- Chat messages area -->
-  <div class="min-h-[400px] max-h-[400px] overflow-y-auto p-6" data-controller="chat-scroll">
-    <%= render "chatbots/playground/chat_messages", messages: messages %>
+  <div class="min-h-[400px] h-full overflow-y-auto p-6" data-controller="chat-scroll">
+    <%= render "chatbots/playground/chat_messages", messages: messages, chatbot: chatbot %>
   </div>
 
   <!-- Input area -->

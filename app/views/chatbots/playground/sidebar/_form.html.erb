@@ -1,4 +1,32 @@
 <%= form_with(model: chatbot, url: chatbot_playground_path(chatbot), method: :patch, class: "space-y-6", id: "sidebar_form") do |f| %>
+
+  <!-- Public URL -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">Share link</span>
+    </label>
+    <div class="join w-full">
+      <label class="input join-item w-full">
+        <input
+          type="text"
+          class="w-full bg-transparent outline-none"
+          value="<%= chatbot.public_url %>"
+          disabled
+          readonly
+          id="public-url-input"
+          tabindex="-1"
+        />
+      </label>
+      <button
+        type="button"
+        class="btn btn-primary join-item"
+        title="Copy to clipboard"
+        onclick="navigator.clipboard.writeText(document.getElementById('public-url-input').value)"
+      >
+        <%= icon "clipboard", class: "size-4" %>
+      </button>
+    </div>
+  </div>
   <!-- Model selection -->
   <div class="form-control">
     <label class="label">

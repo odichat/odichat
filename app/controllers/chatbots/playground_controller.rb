@@ -1,5 +1,6 @@
 class Chatbots::PlaygroundController < Chatbots::BaseController
   before_action :set_models, only: [ :show ]
+  before_action :set_public_url, only: [ :show ]
 
   def show
     @chat = @chatbot.chats.where(source: "playground").last
@@ -38,5 +39,9 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
     elsif current_user.pro_plan?
       @models = Model.all
     end
+  end
+
+  def set_public_url
+    @public_url = @chatbot.public_url
   end
 end

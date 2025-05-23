@@ -19,11 +19,14 @@
       </label>
       <button
         type="button"
-        class="btn btn-primary join-item"
+        class="btn btn-primary join-item relative"
         title="Copy to clipboard"
-        onclick="navigator.clipboard.writeText(document.getElementById('public-url-input').value)"
+        data-controller="clipboard"
+        data-action="click->clipboard#copy"
+        data-clipboard-target="button"
       >
         <%= icon "clipboard", class: "size-4" %>
+        <span data-clipboard-target="tooltip" class="absolute -top-8 left-1/2 -translate-x-1/2 tooltip tooltip-primary tooltip-open hidden" data-tip="Copied!"></span>
       </button>
     </div>
   </div>

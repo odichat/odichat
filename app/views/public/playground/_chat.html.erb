@@ -3,7 +3,7 @@
   <%= render "public/playground/header", chatbot: chatbot %>
   
   <!-- Chat messages area -->
-  <div class="min-h-[400px] h-full overflow-y-auto p-6" data-controller="chat-scroll">
+  <div class="min-h-[600px] max-h-[600px] h-full overflow-y-auto p-6" data-controller="chat-scroll">
     <%= render "public/playground/messages", messages: messages, chatbot: chatbot %>
   </div>
 

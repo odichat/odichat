@@ -1,9 +1,9 @@
-<div id="public-chat" class="card bg-base-100 shadow-sm w-full">
+<div id="public-chat" class="card bg-base-100 shadow-sm w-full h-full flex flex-col">
   <!-- Header section -->
   <%= render "public/playground/header", chatbot: chatbot %>
   
   <!-- Chat messages area -->
-  <div class="min-h-[600px] max-h-[600px] h-full overflow-y-auto p-6" data-controller="chat-scroll">
+  <div class="overflow-y-auto flex-auto h-full p-6" data-controller="chat-scroll">
     <%= render "public/playground/messages", messages: messages, chatbot: chatbot %>
   </div>
 

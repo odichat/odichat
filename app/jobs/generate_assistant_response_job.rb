@@ -45,9 +45,16 @@ class GenerateAssistantResponseJob < ApplicationJob
     case chat.source
     when "playground"
       Turbo::StreamsChannel.broadcast_append_to(
-        "messages",
+        "chat_#{chat.id}_messages",
         target: "messages",
         partial: "messages/message",
+        locals: { message: assistant_message }
+      )
+    when "public_playground"
+      Turbo::StreamsChannel.broadcast_append_to(
+        "public_chat_#{chat.id}_messages",
+        target: "messages",
+        partial: "public/messages/message",
         locals: { message: assistant_message }
       )
     when "whatsapp"

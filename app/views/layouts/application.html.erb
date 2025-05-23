@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-dvh max-h-dvh">
   <head>
     <title><%= content_for(:title) || "Automate WhatsApp Conversations with AI Agents" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,14 +27,16 @@
     <script src="https://js.stripe.com/basil/stripe.js"></script>
   </head>
 
-  <body>
-    <main class="">
+  <body class="h-full overflow-hidden">
+    <main class="h-full flex flex-col">
       <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>
       <% if Flipper.enabled?(:paywall) %>
         <%= render "shared/subscription_banner" %>
       <% end %>
-      <%= yield %>
+      <div class="min-h-0">
+        <%= yield %>
+      </div>
 
       <%# <% if user_signed_in? %>
         <!-- <button onclick="launchWhatsAppSignup()" style="background-color: #1877f2; border: 0; border-radius: 4px; color: #fff; cursor: pointer; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; height: 40px; padding: 0 24px;">Login with Facebook</button> -->

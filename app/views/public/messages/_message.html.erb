@@ -1,0 +1,13 @@
+<div id="<%= dom_id(message) %>">
+  <% if message.sender == "user" %>
+    <div class="chat chat-end">
+      <div class="chat-bubble chat-bubble-primary"><%= message.content %></div>
+    </div>
+  <% end %>
+
+  <% if message.sender == "assistant" %>
+    <div class="chat chat-start">
+      <div class="chat-bubble"><%= message.content %></div>
+    </div>
+  <% end %>
+</div>

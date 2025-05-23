@@ -1,4 +1,4 @@
-<%= turbo_stream_from "messages" %>
+<%= turbo_stream_from "chat_#{@chat.id}_messages" %>
 <%= turbo_stream_from "playground_sidebar" %>
 
 <!-- Main playground container -->

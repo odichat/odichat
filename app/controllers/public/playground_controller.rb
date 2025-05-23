@@ -2,7 +2,7 @@ class Public::PlaygroundController < ApplicationController
   before_action :set_chatbot, only: [ :show ]
 
   def show
-    @chat = @chatbot.chats.where(source: "playground").last
+    @chat = @chatbot.chats.where(source: "public_playground").last
     @messages = @chat.messages.order(created_at: :asc)
   end
 

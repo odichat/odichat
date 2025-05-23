@@ -18,6 +18,7 @@ class Chatbot < ApplicationRecord
   after_create :create_shareable_link
   after_create :create_vector_store
   after_create :create_playground_chat
+  after_create :create_public_playground_chat
 
   after_destroy :enqueue_cleanup_job
 
@@ -47,8 +48,13 @@ class Chatbot < ApplicationRecord
   end
 
   def create_playground_chat
-    return if self.chats.one?
+    return if self.chats.where(source: "playground").any?
     chats.create!(source: "playground")
+  end
+
+  def create_public_playground_chat
+    return if self.chats.where(source: "public_playground").any?
+    chats.create!(source: "public_playground")
   end
 
   def enqueue_cleanup_job

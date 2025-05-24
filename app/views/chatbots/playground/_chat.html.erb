@@ -1,3 +1,4 @@
+<%= turbo_stream_from "chat_#{chat.id}_messages" %>
 <div id="chat" class="card bg-base-100 shadow-sm w-full">
   <!-- Header section -->
   <%= render "chatbots/playground/chat_header", chatbot: chatbot %>

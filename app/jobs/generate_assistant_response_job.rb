@@ -62,8 +62,12 @@ class GenerateAssistantResponseJob < ApplicationJob
     else
       raise "Unknown chat source: #{chat.source}"
     end
+  rescue Faraday::TooManyRequestsError => e
+    Rails.logger.error("Too many requests to OpenAI: #{e.message}")
+    Sentry.capture_exception(e)
   rescue StandardError => e
     Rails.logger.error("Error adding message to chat_id: #{user_message.chat.id}: #{e.message}")
+    Sentry.capture_exception(e)
     # TODO: Send a notification to the user
     raise
   end

@@ -1,9 +1,8 @@
-<%= turbo_stream_from "public_chat_#{@chat.id}_messages" %>
 
 <!-- Main playground container -->
 <div class="relative bg-gray-50/80 backdrop-blur-sm h-full px-0 pb-12">
   <div class="h-full">
-    <div class="flex gap-6 h-full">
+    <div class="flex h-full">
       <%= render "public/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
     </div>
   </div>

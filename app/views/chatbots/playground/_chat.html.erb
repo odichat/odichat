@@ -1,17 +1,17 @@
 <%= turbo_stream_from "chat_#{chat.id}_messages" %>
 <div id="chat" class="card bg-base-100 shadow-sm w-full">
   <!-- Header section -->
-  <%= render "chatbots/playground/chat_header", chatbot: chatbot %>
+  <%= render "chatbots/playground/header", chatbot: chatbot %>
   
   <!-- Chat messages area -->
   <div class="min-h-[500px] max-h-[500px] overflow-y-auto p-6" data-controller="chat-scroll">
-    <%= render "chatbots/playground/chat_messages", messages: messages, chatbot: chatbot %>
+    <%= render "chatbots/playground/messages", messages: messages, chatbot: chatbot %>
   </div>
 
   <!-- Input area -->
   <div class="card-body pt-0 px-4">
     <div class="flex items-center">
-      <%= render "chatbots/playground/chat_form", chat: chat, messages: messages %>
+      <%= render "chatbots/playground/form", chat: chat, messages: messages %>
     </div>
   </div>
 </div>

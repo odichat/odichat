@@ -1,5 +1,9 @@
 <%= turbo_stream_from "playground_sidebar" %>
 
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
 <!-- Main playground container -->
 <div class="relative bg-gray-50/80 backdrop-blur-sm py-12">
   <div class="absolute inset-0 overflow-hidden pointer-events-none">

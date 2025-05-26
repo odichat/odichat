@@ -1,5 +1,9 @@
 <%= turbo_stream_from "integrations" %>
 
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
 <h1 class="text-3xl font-bold mb-8">Integrations</h1>
 
 <!-- Grid layout for integration cards -->

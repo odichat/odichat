@@ -3,11 +3,11 @@
 <div class="container mx-auto max-w-4xl">
   <div class="flex justify-between items-center py-8">
     <div class="flex items-center">
-      <h1 class="text-3xl font-bold text-base-content">Agents Dashboard</h1>
+      <h1 class="text-3xl font-bold text-base-content">Chatbots Dashboard</h1>
     </div>
     <%= link_to new_chatbot_path, class: "btn btn-primary gap-2", data: { turbo: false } do %>
       <%= icon "plus", variant: "mini" %>
-      Create Agent
+      Create Chatbot
     <% end %>
   </div>
 
@@ -26,7 +26,7 @@
                     "https://images.squarespace-cdn.com/content/v1/5c49568eb27e3974ef358650/11203d78-c2fb-42e5-8711-736229cbfb36/Gustave-Baumann-PInes-Grand-Canyon-13x13-7990.jpg", "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg",
                     "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg"
                   ] %>
-                  <%= image_tag images[index], class: "w-full h-full object-cover rounded-t-lg", alt: "Agent image" %>
+                  <%= image_tag images[index], class: "w-full h-full object-cover rounded-t-lg", alt: "Chatbot image" %>
                 <% end %>
               </figure>
               <div class="p-4">

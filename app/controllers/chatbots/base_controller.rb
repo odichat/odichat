@@ -1,5 +1,4 @@
 class Chatbots::BaseController < ApplicationController
-  layout "chatbots"
 
   before_action :authenticate_user!
   before_action :set_chatbot

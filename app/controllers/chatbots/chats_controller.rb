@@ -1,13 +1,20 @@
-class ChatsController < ApplicationController
+class Chatbots::ChatsController < Chatbots::BaseController
   before_action :set_chat, only: %i[ show ]
 
   # GET /chats or /chats.json
   def index
-    @chats = Chat.all
+    @chats = @chatbot.chats.includes(:messages).where(source: "playground").order(created_at: :desc)
+    @chat = @chats.first
   end
 
   # GET /chats/1 or /chats/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update("chat_details", partial: "chatbots/chats/chat", locals: { chat: @chat })
+      end
+    end
   end
 
   def create
@@ -36,6 +43,6 @@ class ChatsController < ApplicationController
   end
 
   def chat_params
-    params.require(:chat).permit(:chatbot_id, :source)
+    params.permit(:chatbot_id, :source)
   end
 end

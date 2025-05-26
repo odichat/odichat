@@ -1,0 +1,42 @@
+<% content_for :title, "Chats" %>
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
+<div class="w-full">
+
+  <h1 class="text-3xl font-bold mb-8">Chat Activity</h1>
+
+  <% if @chats.any? %>
+    <div class="card bg-base-100 shadow-md">
+      <div class="card-body p-0">
+        <div class="flex gap-4">
+          <div class="h-[calc(100vh-350px)] overflow-y-auto flex-1">
+            <ul class="menu bg-base-200 rounded-box w-full">
+              <li class="menu-title">Chat History</li>
+              <% @chats.each do |chat| %>
+                <li>
+                  <%= link_to chatbot_chat_path(@chatbot, chat, format: :turbo_stream), class: "block p-4", data: { turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
+                    <div class="flex gap-1">
+                      <%= chat.messages.first.content.truncate(100) %>
+                    </div>
+                    <span class="text-sm text-gray-400">
+                      <%= time_ago_in_words(chat.created_at).capitalize %> ago
+                    </span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="flex-2 p-4">
+            <%= turbo_frame_tag "chat_details" do %>
+              <%= render "chatbots/chats/chat", chat: @chat %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    No chats found
+  <% end %>
+</div>

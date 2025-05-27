@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="flex gap-4">
-          <div class="max-h-[500px] overflow-y-auto w-2/5">
+          <div class="max-h-[500px] min-h-[500px] overflow-y-auto w-2/5">
             <ul class="menu bg-base-100 rounded-box w-full">
               <% @chats.each do |chat| %>
                 <li class="flex flex-col justify-between">
@@ -38,7 +38,7 @@
               <% end %>
             </ul>
           </div>
-          <div class="p-4 w-3/5 max-h-[500px] overflow-y-auto" data-controller="chat-scroll">
+          <div class="p-4 w-3/5 max-h-[500px] min-h-[500px] overflow-y-auto" data-controller="chat-scroll">
             <%= turbo_frame_tag "chat_messages" do %>
               <%= render "chatbots/chats/chat", chat: @chat %>
             <% end %>

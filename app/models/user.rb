@@ -37,4 +37,8 @@ class User < ApplicationRecord
   def not_subscribed_and_has_one_chatbot?
     !subscribed? && chatbots.count >= 1
   end
+
+  def past_due?
+    payment_processor&.subscription&.status == "past_due"
+  end
 end

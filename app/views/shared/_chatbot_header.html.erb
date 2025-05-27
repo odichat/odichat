@@ -4,6 +4,9 @@
       <%= link_to "Playground", 
           chatbot_playground_path(@chatbot), 
           class: "tab #{current_page?(chatbot_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
+      <%= link_to "Activity", 
+          chatbot_chats_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_chats_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Sources", 
           chatbot_sources_path(@chatbot), 
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>

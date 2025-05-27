@@ -4,15 +4,14 @@ Rails.application.routes.draw do
   # Messages
   resources :messages, only: [ :create ]
 
-  # Chats
-  resources :chats, only: [ :index, :show, :create ]
-
   # Chatbots
   resources :chatbots, only: [ :index, :new, :create, :update ]
 
   resources :chatbots do
-    resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
+    resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
+    resources :chats, only: [ :index, :show, :create ], controller: "chatbots/chats"
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
+    resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
     resource :integrations, only: [ :show ], controller: "chatbots/integrations" do
       resource :waba, only: [ :edit, :update ], controller: "chatbots/integrations/wabas" do
         post :subscribe
@@ -22,7 +21,6 @@ Rails.application.routes.draw do
         post :destroy_message_template
       end
     end
-    resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
   end
 
   # Whatsapp Integration

@@ -1,9 +1,17 @@
-<% if user_signed_in? && !current_user.subscribed? %>
+<% if user_signed_in? && !current_user.subscribed? && !current_user.past_due? %>
   <div role="alert" class="alert alert-warning">
     <%= icon "exclamation-triangle" %>
     <span>Upgrade your plan to connect chatbots to your WhatsApp account.</span>
     <div>
       <%= link_to "Upgrade", subscriptions_pricing_path, class: "btn btn-sm btn-primary" %>
+    </div>
+  </div>
+<% elsif user_signed_in? && !current_user.subscribed? && current_user.past_due? %>
+  <div role="alert" class="alert alert-warning">
+    <%= icon "exclamation-triangle" %>
+    <span>We couldn't charge your card. Please update your payment information to avoid losing access to your chatbots.</span>
+    <div>
+      <%= link_to "Update Payment Information", subscriptions_billing_path, class: "btn btn-sm btn-primary" %>
     </div>
   </div>
 <% end %>

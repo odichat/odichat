@@ -10,12 +10,11 @@
     </div>
   </div>
   <div class="flex-none">
-    <%= button_to chats_path, 
+    <%= button_to chatbot_chats_path(chatbot, source: "playground"), 
         method: :post,
         class: "btn btn-ghost btn-circle",
         title: "New chat",
-        aria: { label: "New chat" },
-        params: { chat: { chatbot_id: chatbot.id, source: "playground" } } do %>
+        aria: { label: "New chat" } do %>
       <%= icon "arrow-path", variant: "mini" %>
     <% end %>
   </div>

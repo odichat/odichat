@@ -3,7 +3,7 @@ class Chatbots::ChatsController < Chatbots::BaseController
 
   # GET /chats or /chats.json
   def index
-    @chats = @chatbot.chats.includes(:messages).where(source: "playground").order(created_at: :desc)
+    @chats = @chatbot.chats.includes(:messages).where(source: "whatsapp").order(created_at: :desc).limit(20)
     @chat = @chats.first
   end
 
@@ -12,7 +12,11 @@ class Chatbots::ChatsController < Chatbots::BaseController
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update("chat_details", partial: "chatbots/chats/chat", locals: { chat: @chat })
+        render turbo_stream:
+        [
+          turbo_stream.update("chat_messages", partial: "chatbots/chats/chat", locals: { chat: @chat }),
+          turbo_stream.update("chat_details", partial: "chatbots/chats/chat_header_info", locals: { chat: @chat })
+        ]
       end
     end
   end

@@ -4,39 +4,59 @@
 <% end %>
 
 <div class="w-full">
-
   <h1 class="text-3xl font-bold mb-8">Chat Activity</h1>
-
-  <% if @chats.any? %>
-    <div class="card bg-base-100 shadow-md">
-      <div class="card-body p-0">
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body p-0 gap-0">
+      <% if @chats.any? %>
+        <div class="w-full p-4 flex border-b border-gray-200">
+          <div class="w-2/5 flex items-center">
+            <h2 class="text-2xl font-bold">Chat History</h2>
+          </div>
+          <div class="w-3/5 flex justify-end">
+            <%= turbo_frame_tag "chat_details" do %>
+              <%= render "chatbots/chats/chat_header_info", chat: @chat %>
+            <% end %>
+          </div>
+        </div>
         <div class="flex gap-4">
-          <div class="h-[calc(100vh-350px)] overflow-y-auto flex-1">
-            <ul class="menu bg-base-200 rounded-box w-full">
-              <li class="menu-title">Chat History</li>
+          <div class="max-h-[500px] overflow-y-auto w-2/5">
+            <ul class="menu bg-base-100 rounded-box w-full">
               <% @chats.each do |chat| %>
-                <li>
-                  <%= link_to chatbot_chat_path(@chatbot, chat, format: :turbo_stream), class: "block p-4", data: { turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
-                    <div class="flex gap-1">
-                      <%= chat.messages.first.content.truncate(100) %>
-                    </div>
-                    <span class="text-sm text-gray-400">
-                      <%= time_ago_in_words(chat.created_at).capitalize %> ago
-                    </span>
+                <li class="flex flex-col justify-between">
+                  <%= link_to chatbot_chat_path(@chatbot, chat),
+                      class: "p-4 py-8 w-full flex",
+                      data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do
+                  %>
+                      <p class="font-semibold">
+                        <%= chat.messages.where(sender: "assistant").first.content.truncate(32) %>
+                      </p>
+                      <p class="text-xs text-gray-400 flex flex-col justify-center items-end">
+                        <%= time_ago_in_words(chat.created_at).gsub(/\Aabout\s/i, '').capitalize %> ago
+                      </p>
                   <% end %>
                 </li>
               <% end %>
             </ul>
           </div>
-          <div class="flex-2 p-4">
-            <%= turbo_frame_tag "chat_details" do %>
+          <div class="p-4 w-3/5 max-h-[500px] overflow-y-auto" data-controller="chat-scroll">
+            <%= turbo_frame_tag "chat_messages" do %>
               <%= render "chatbots/chats/chat", chat: @chat %>
             <% end %>
           </div>
+        <% else %>
+          <div class="p-8 min-h-[400px] w-full h-full flex flex-col items-center justify-center">
+            <div class="flex flex-col items-center justify-center gap-4">
+            <% if @chatbot.waba.present? %>
+              <p class="text-center text-md text-gray-800">We'll display the chat history here when a user starts a chat with the chatbot.</p>
+              <%= icon "chat-bubble-left", variant: "outline" %>
+            <% else %>
+                <p class="text-center text-md text-gray-800 text-md max-w-md">Connect your WhatsApp Business Account to start getting messages from your customers. ⚠️</p>
+                <%= link_to "Connect WhatsApp Business Account", chatbot_integrations_path(@chatbot), class: "btn btn-primary" %>
+            <% end %>
+            </div>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
-  <% else %>
-    No chats found
-  <% end %>
+  </div>
 </div>

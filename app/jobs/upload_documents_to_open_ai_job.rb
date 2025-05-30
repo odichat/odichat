@@ -12,7 +12,6 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
           document.update!(
             file_id: file_id
           )
-          update_vector_store(chatbot)
         rescue Faraday::TooManyRequestsError => e
           # TODO: This should send a notification to the admin via email/slack
           raise "Check your OpenAI account for rate limits or missing funds"
@@ -22,6 +21,8 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
         end
       end
     end
+
+    update_vector_store(chatbot)
 
     documents = chatbot.documents.map do |document|
       {

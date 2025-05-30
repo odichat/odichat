@@ -32,6 +32,9 @@ class VectorStore < ApplicationRecord
   rescue OpenAI::Error => e
     Rails.logger.error("OpenAI::Error attaching files to vector store: #{e.message}")
     raise OpenAI::Error, "Could not attach files to vector store: #{e.message}"
+  rescue StandardError => e
+    Rails.logger.error("StandardError attaching files to vector store: #{e.message}")
+    raise StandardError, "Could not attach files to vector store: #{e.message}"
   end
 
   class << self

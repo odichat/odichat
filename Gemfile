@@ -97,3 +97,5 @@ gem "sentry-rails", "~> 5.23"
 gem "after_party", "~> 2.0"
 
 gem "redcarpet", "~> 3.6"
+
+gem "postmark-rails", "~> 0.22.1"

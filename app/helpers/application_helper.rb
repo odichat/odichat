@@ -1,2 +1,16 @@
 module ApplicationHelper
+  DEFAULT_MARKDOWN_EXTENSIONS = {
+    autolink: true,
+    fenced_code_blocks: true,
+    filter_html: true,
+    highlight: true,
+    no_intra_emphasis: true,
+    prettify: true,
+    underline: true
+  }.freeze
+  def markdown(content, extensions = {})
+    extensions = DEFAULT_MARKDOWN_EXTENSIONS.merge(extensions)
+    renderer = Redcarpet::Markdown.new(Redcarpet::Render::HTML, extensions)
+    renderer.render(content).html_safe
+  end
 end

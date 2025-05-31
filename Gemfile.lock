@@ -332,6 +332,7 @@ GEM
     rake (13.2.1)
     rdoc (6.13.1)
       psych (>= 4.0.0)
+    redcarpet (3.6.1)
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -505,6 +506,7 @@ DEPENDENCIES
   pundit (~> 2.5)
   rails (~> 8.0.1)
   rails_icons
+  redcarpet (~> 3.6)
   rubocop-rails-omakase
   ruby-openai
   selenium-webdriver

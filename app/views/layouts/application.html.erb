@@ -27,7 +27,9 @@
     <script src="https://js.stripe.com/basil/stripe.js"></script>
   </head>
 
-  <body class="h-full">
+  <body class="h-full"
+    data-whatsapp-app-id="<%= Rails.application.credentials.dig(:whatsapp, :app_id) %>"
+    data-whatsapp-config-id="<%= Rails.application.credentials.dig(:whatsapp, :config_id) %>">
     <main class="h-full flex flex-col">
       <%= render "shared/flash_messages" %>
       <%= render "shared/navbar" %>

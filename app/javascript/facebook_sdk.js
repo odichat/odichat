@@ -1,7 +1,8 @@
 
 window.fbAsyncInit = function() {
+  const whatsappAppId = document.body.dataset.whatsappAppId;
   FB.init({
-    appId            : '1293328758418096',
+    appId            : whatsappAppId,
     autoLogAppEvents : true,
     xfbml            : true,
     version          : 'v22.0'

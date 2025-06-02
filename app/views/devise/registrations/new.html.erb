@@ -7,24 +7,24 @@
         <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/odichat/assets/logo.svg", class: "w-32", alt: "Logo" %>
       </div>
 
-      <h1 class="text-2xl md:text-3xl font-bold mb-2">Sign up for your account</h1>
-      <p class="text-base-content/60 mb-6">Not a member? <span class="font-medium">Start a 7 day free trial</span></p>
+      <h1 class="text-2xl md:text-3xl font-bold mb-2"><%= t('.title') %></h1>
+      <p class="text-base-content/60 mb-6"><%= t('.not_a_member_prompt') %> <span class="font-medium"><%= t('.start_trial_link_text') %></span></p>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }, html: { class: "space-y-4" }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-control w-full">
           <label class="label">
-            <span class="label-text">Email</span>
+            <span class="label-text"><%= t('.email_label') %></span>
           </label>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
         </div>
 
         <div class="form-control w-full">
           <label class="label">
-            <span class="label-text">Password</span>
+            <span class="label-text"><%= t('.password_label') %></span>
             <% if @minimum_password_length %>
-              <span class="label-text-alt">(<%= @minimum_password_length %> characters minimum)</span>
+              <span class="label-text-alt"><%= t('.password_length_minimum', count: @minimum_password_length) %></span>
             <% end %>
           </label>
           <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
@@ -32,7 +32,7 @@
 
         <div class="form-control w-full">
           <label class="label">
-            <span class="label-text">Password confirmation</span>
+            <span class="label-text"><%= t('.password_confirmation_label') %></span>
           </label>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
         </div>
@@ -41,18 +41,18 @@
           <div class="form-control">
             <label class="label cursor-pointer gap-2">
               <input type="checkbox" class="checkbox checkbox-primary" id="remember_me" />
-              <span class="label-text">Remember me</span>
+              <span class="label-text"><%= t('.remember_me_label') %></span>
             </label>
           </div>
           <div>
             <%- if devise_mapping.recoverable? %>
-              <%= link_to "Forgot password?", new_password_path(resource_name), class: "link link-hover text-sm" %>
+              <%= link_to t('.forgot_password_link'), new_password_path(resource_name), class: "link link-hover text-sm" %>
             <% end %>
           </div>
         </div>
 
         <div class="mt-2">
-          <%= f.submit "Sign up", class: "btn btn-primary w-full" %>
+          <%= f.submit t('.sign_up_button'), class: "btn btn-primary w-full" %>
         </div>
       <% end %>
 
@@ -60,19 +60,19 @@
       <div class="mt-4 text-center text-sm">
         <%- if controller_name != 'sessions' %>
           <div class="text-base-content/60">
-            Already have an account? <%= link_to "Log in", new_session_path(resource_name), class: "link link-hover font-medium" %>
+            <%= t('.log_in_prompt') %> <%= link_to t('.log_in_link'), new_session_path(resource_name), class: "link link-hover font-medium" %>
           </div>
         <% end %>
         
         <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
           <div class="mt-2">
-            <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "link link-hover" %>
+            <%= link_to t('devise.sessions.new.confirmation_instructions_link'), new_confirmation_path(resource_name), class: "link link-hover" %>
           </div>
         <% end %>
         
         <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
           <div class="mt-2">
-            <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "link link-hover" %>
+            <%= link_to t('devise.sessions.new.unlock_instructions_link'), new_unlock_path(resource_name), class: "link link-hover" %>
           </div>
         <% end %>
       </div>

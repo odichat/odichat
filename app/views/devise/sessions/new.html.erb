@@ -7,20 +7,20 @@
         <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/odichat/assets/logo.svg", class: "w-32", alt: "Logo" %>
       </div>
 
-      <h1 class="text-2xl md:text-3xl font-bold mb-2">Sign in to your account</h1>
-      <p class="text-base-content/60 mb-6">Welcome back! Please enter your details.</p>
+      <h1 class="text-2xl md:text-3xl font-bold mb-2"><%= t('.title') %></h1>
+      <p class="text-base-content/60 mb-6"><%= t('.welcome_message') %></p>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-4" }) do |f| %>
         <div class="form-control w-full">
           <label class="label">
-            <span class="label-text">Email</span>
+            <span class="label-text"><%= t('.email_label') %></span>
           </label>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
         </div>
 
         <div class="form-control w-full">
           <label class="label">
-            <span class="label-text">Password</span>
+            <span class="label-text"><%= t('.password_label') %></span>
           </label>
           <%= f.password_field :password, autocomplete: "current-password", class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
         </div>
@@ -30,19 +30,19 @@
             <div class="form-control">
               <label class="label cursor-pointer gap-2">
                 <%= f.check_box :remember_me, class: "checkbox checkbox-primary" %>
-                <span class="label-text">Remember me</span>
+                <span class="label-text"><%= t('.remember_me_label') %></span>
               </label>
             </div>
           <% end %>
           <div class="text-sm">
             <%- if devise_mapping.recoverable? %>
-              <%= link_to "Forgot password?", new_password_path(resource_name), class: "link link-hover" %>
+              <%= link_to t('.forgot_password_link'), new_password_path(resource_name), class: "link link-hover" %>
             <% end %>
           </div>
         </div>
 
         <div>
-          <%= f.submit "Sign in", class: "btn btn-primary w-full" %>
+          <%= f.submit t('.sign_in_button'), class: "btn btn-primary w-full" %>
         </div>
       <% end %>
 
@@ -50,19 +50,19 @@
       <div class="mt-4 text-center text-sm">
         <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
           <div class="text-base-content/60">
-            Don't have an account? <%= link_to "Sign up", new_registration_path(resource_name), class: "link link-hover font-medium" %>
+            <%= t('.sign_up_prompt') %> <%= link_to t('.sign_up_link'), new_registration_path(resource_name), class: "link link-hover font-medium" %>
           </div>
         <% end %>
         
         <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
           <div class="mt-2">
-            <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "link link-hover" %>
+            <%= link_to t('.confirmation_instructions_link'), new_confirmation_path(resource_name), class: "link link-hover" %>
           </div>
         <% end %>
         
         <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
           <div class="mt-2">
-            <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "link link-hover" %>
+            <%= link_to t('.unlock_instructions_link'), new_unlock_path(resource_name), class: "link link-hover" %>
           </div>
         <% end %>
       </div>

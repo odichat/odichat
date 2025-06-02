@@ -1,0 +1,29 @@
+es:
+  devise:
+    sessions:
+      new:
+        title: "Iniciar sesión en tu cuenta"
+        welcome_message: "¡Bienvenido de nuevo! Por favor, introduce tus datos."
+        email_label: "Correo electrónico"
+        password_label: "Contraseña"
+        remember_me_label: "Recuérdame"
+        forgot_password_link: "¿Olvidaste tu contraseña?"
+        sign_in_button: "Iniciar sesión"
+        sign_up_prompt: "¿No tienes una cuenta?"
+        sign_up_link: "Regístrate"
+        confirmation_instructions_link: "¿No recibiste las instrucciones de confirmación?"
+        unlock_instructions_link: "¿No recibiste las instrucciones de desbloqueo?"
+    registrations:
+      new:
+        title: "Regístrate para tu cuenta"
+        not_a_member_prompt: "¿No eres miembro?"
+        start_trial_link_text: "Comienza una prueba gratuita de 7 días"
+        email_label: "Correo electrónico"
+        password_label: "Contraseña"
+        password_length_minimum: "(mínimo %{count} caracteres)"
+        password_confirmation_label: "Confirmación de contraseña"
+        remember_me_label: "Recuérdame"
+        forgot_password_link: "¿Olvidaste tu contraseña?"
+        sign_up_button: "Regístrate"
+        log_in_prompt: "¿Ya tienes una cuenta?"
+        log_in_link: "Iniciar sesión"

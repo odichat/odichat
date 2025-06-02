@@ -1,0 +1,9 @@
+es:
+  chatbots:
+    sources:
+      show:
+        sidebar_files_link: "Archivos"
+        page_title: "Fuentes de Conocimiento"
+        card_title: "Archivos"
+      form:
+        submit_button_text: "Entrenar Chatbot" 

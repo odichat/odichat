@@ -1,0 +1,13 @@
+es:
+  chatbots:
+    chats:
+      index:
+        page_title_content_for: "Chats"
+        header_title: "Actividad de Chats"
+        sub_header_title: "Historial de Chats"
+        timestamp_ago_suffix: "ago"
+        empty_state_waba_present: "Mostraremos el historial de chat aquí cuando un usuario inicie una conversación con el chatbot."
+        empty_state_no_waba: "Conecta tu cuenta de WhatsApp Business para empezar a recibir mensajes de tus clientes. ⚠️"
+        connect_waba_button: "Conectar WhatsApp Business Account"
+      chat_header_info:
+        customer_number_label: "Número de cliente:" 

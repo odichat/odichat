@@ -1,0 +1,46 @@
+en:
+  chatbots:
+    integrations:
+      show:
+        page_title: "Integrations"
+        waba_card:
+          title: "WhatsApp"
+          description: "Connect your chatbot to a WhatsApp number and let it respond to your customers' messages."
+          update_button: "Update"
+          reconnect_button: "Reconnect"
+          connect_button: "Connect"
+      wabas:
+        edit:
+          breadcrumb_home: "Home"
+          breadcrumb_integrations: "Integrations"
+          breadcrumb_whatsapp: "WhatsApp"
+          page_title: "WhatsApp Business Profile"
+          view_templates_button: "View Templates"
+          subscribe_banner_message_html: "<b>Subscribe to enable WhatsApp integration.</b> Your chatbot is not subscribed to WhatsApp Business Profile."
+          subscribe_banner_button: "Subscribe"
+          connected_phone_card_title: "Connected Phone Number"
+          table_header_name: "Name"
+          table_header_number: "Number"
+          table_header_status: "Status"
+          status_not_available: "N/A"
+          status_disconnected: "Disconnected"
+          business_profile_card_title: "Business Profile Settings"
+          danger_zone_divider_text: "Danger Zone"
+          danger_zone_card_title: "Unsubscribe"
+          danger_zone_unsubscribe_warning_html: "Your <b>%{chatbot_name}</b> chatbot will no longer be able to send and receive WhatsApp messages (you can always re-subscribe to WhatsApp Business Profile later)."
+          danger_zone_unsubscribe_button: "Unsubscribe"
+          danger_zone_unsubscribe_confirm: "Are you sure you want to unsubscribe this chatbot from your WhatsApp Business Profile?"
+          danger_zone_unsubscribe_submitting: "Unsubscribing..."
+        form:
+          profile_picture_label: "Profile picture"
+          about_label: "About"
+          address_label: "Address"
+          description_label: "Description"
+          email_label: "Email"
+          websites_label: "Websites"
+          websites_tooltip: "Comma-separated list of URLs"
+          websites_placeholder: "https://www.example.com, https://www.example2.com"
+          vertical_label: "Business category"
+          vertical_select_placeholder: "Select a category"
+          save_button: "Save Changes"
+          save_button_submitting: "Saving..." 

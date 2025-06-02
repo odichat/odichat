@@ -1,0 +1,28 @@
+en:
+  chatbots:
+    playground: # Private Playground
+      show:
+        page_title: "Playground"
+        page_description: "Test and experiment with your chatbot in real-time."
+      sidebar_form:
+        share_link_label: "Share link"
+        copied_tooltip: "Copied!"
+        model_label: "Model"
+        temperature_label: "Temperature"
+        system_instructions_label: "System instructions"
+        save_changes_button: "Save changes"
+      header:
+        default_assistant_name: "Assistant"
+        new_chat_button_title: "New chat" # Private version
+      messages:
+        start_conversation_prompt: "Start a conversation with %{chatbot_name}"
+      form: # Chat input form
+        message_placeholder: "Type your message..."
+        send_button: "Send"
+  public_playground: # Public Playground
+    header:
+      default_assistant_name: "Assistant" # Can reuse or be distinct
+      new_chat_button_title: "New chat" # Public version
+    form: # Chat input form
+      message_placeholder: "Type your message..."
+      send_button: "Send"

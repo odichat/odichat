@@ -1,0 +1,9 @@
+en:
+  chatbots:
+    sources:
+      show:
+        sidebar_files_link: "Files"
+        page_title: "Knowledge Sources"
+        card_title: "Files"
+      form:
+        submit_button_text: "Train Chatbot" 

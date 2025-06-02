@@ -1,0 +1,17 @@
+es:
+  chatbots:
+    settings:
+      show:
+        page_title: "Configuración"
+        sidebar:
+          general: "General"
+        form_section:
+          title: "General"
+          name_label: "Nombre"
+          save_button: "Guardar"
+        danger_zone:
+          title: "Zona de Riesgo"
+          delete_chatbot_card_title: "Eliminar Chatbot"
+          delete_chatbot_warning: "Esta acción es irreversible. Todos los datos asociados con este chatbot serán eliminados permanentemente."
+          delete_button: "Eliminar"
+          delete_confirm_message: "¿Estás seguro de querer eliminar este chatbot?"

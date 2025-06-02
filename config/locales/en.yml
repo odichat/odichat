@@ -29,3 +29,15 @@
 
 en:
   hello: "Hello world"
+  shared:
+    chatbot_header:
+      playground: "Playground"
+      activity: "Activity"
+      sources: "Sources"
+      integrations: "Integrations"
+      settings: "Settings"
+    navbar:
+      chatbots_panel: "Dashboard"
+      settings: "Settings"
+      billing: "Billing"
+      logout: "Log out"

@@ -1,0 +1,46 @@
+es:
+  chatbots:
+    integrations:
+      show:
+        page_title: "Integraciones"
+        waba_card:
+          title: "WhatsApp"
+          description: "Conecta tu chatbot a un número de WhatsApp y permite que responda a mensajes de tus clientes."
+          update_button: "Actualizar"
+          reconnect_button: "Reconectar"
+          connect_button: "Conectar"
+      wabas:
+        edit:
+          breadcrumb_home: "Home"
+          breadcrumb_integrations: "Integrations"
+          breadcrumb_whatsapp: "WhatsApp"
+          page_title: "WhatsApp Business Profile"
+          view_templates_button: "View Templates"
+          subscribe_banner_message_html: "<b>Subscribe to enable WhatsApp integration.</b> Your chatbot is not subscribed to WhatsApp Business Profile."
+          subscribe_banner_button: "Subscribe"
+          connected_phone_card_title: "Connected Phone Number"
+          table_header_name: "Name"
+          table_header_number: "Number"
+          table_header_status: "Status"
+          status_not_available: "N/A"
+          status_disconnected: "Disconnected"
+          business_profile_card_title: "Business Profile Settings"
+          danger_zone_divider_text: "Danger Zone"
+          danger_zone_card_title: "Desuscribir"
+          danger_zone_unsubscribe_warning_html: "Tu chatbot <b>%{chatbot_name}</b> ya no podrá enviar y recibir mensajes de WhatsApp (siempre puedes volver a suscribirte a WhatsApp Business Profile más tarde)."
+          danger_zone_unsubscribe_button: "Desuscribir"
+          danger_zone_unsubscribe_confirm: "¿Estás seguro de querer desuscribir este chatbot de tu WhatsApp Business Profile?"
+          danger_zone_unsubscribe_submitting: "Desuscribiendo..."
+        form:
+          profile_picture_label: "Imagen de perfil"
+          about_label: "Acerca de"
+          address_label: "Dirección"
+          description_label: "Descripción"
+          email_label: "Correo electrónico"
+          websites_label: "Sitios web"
+          websites_tooltip: "Comma-separated list of URLs"
+          websites_placeholder: "https://www.example.com, https://www.example2.com"
+          vertical_label: "Categoría de negocio"
+          vertical_select_placeholder: "Selecciona una categoría"
+          save_button: "Save Changes"
+          save_button_submitting: "Saving..." 

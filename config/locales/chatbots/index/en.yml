@@ -1,0 +1,8 @@
+en:
+  chatbots:
+    index:
+      page_title_content_for: "Chatbots"
+      header_title: "Dashboard"
+      new_chatbot_button: "Create Chatbot"
+      chatbot_image_alt: "Chatbot Image"
+      no_chatbots_found: "No chatbots found." 

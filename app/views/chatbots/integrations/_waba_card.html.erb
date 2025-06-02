@@ -8,19 +8,19 @@
           <div class="w-12 h-12 rounded-lg">
             <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
           </div>
-          <h2 class="card-title text-stone-600 ml-4">WhatsApp</h2>
+          <h2 class="card-title text-stone-600 ml-4"><%= t('chatbots.integrations.show.waba_card.title') %></h2>
         </div>
-        <p class="text-stone-600">Conecta tu chatbot a un número de WhatsApp y permite que responda a mensajes de tus clientes.</p>
+        <p class="text-stone-600"><%= t('chatbots.integrations.show.waba_card.description') %></p>
         <div class="card-actions w-full mt-2">
           <div class="flex w-full">
             <% if is_disabled? %>
-              <%= link_to "Actualizar", subscriptions_pricing_path, class: "btn btn-success flex-1" %>
+              <%= link_to t('chatbots.integrations.show.waba_card.update_button'), subscriptions_pricing_path, class: "btn btn-success flex-1" %>
             <% else %>
               <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
                 <% if waba_connected?(chatbot) %>
-                  Reconectar
+                  <%= t('chatbots.integrations.show.waba_card.reconnect_button') %>
                 <% else %>
-                  Conectar
+                  <%= t('chatbots.integrations.show.waba_card.connect_button') %>
                 <% end %>
                 <span id="waba-connection-loader"></span>
               </button>

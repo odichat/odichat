@@ -45,6 +45,36 @@ es:
       update_needs_confirmation: "Has actualizado tu cuenta exitosamente, pero necesitamos verificar tu nuevo correo electrónico. Por favor, revisa tu correo electrónico y sigue el enlace de confirmación para confirmar tu nuevo correo electrónico."
       updated: "Tu cuenta ha sido actualizada exitosamente."
       updated_but_not_signed_in: "Tu cuenta ha sido actualizada exitosamente, pero como tu contraseña ha sido cambiada, necesitas iniciar sesión nuevamente."
+      new:
+        logo_alt: "Logo"
+        title: "Crea tu cuenta"
+        sub_title: "¿No eres miembro? Comienza una prueba gratuita de 7 días"
+        email_label: "Correo electrónico"
+        password_label: "Contraseña"
+        password_length_hint: "(%{minimum_password_length} caracteres mínimo)"
+        password_confirmation_label: "Confirmación de contraseña"
+        remember_me_label: "Recuérdame"
+        forgot_password_link: "¿Olvidaste tu contraseña?"
+        sign_up_button: "Registrarse"
+        already_have_account: "¿Ya tienes una cuenta?"
+        log_in_link: "Iniciar sesión"
+        resend_confirmation_link: "¿No recibiste las instrucciones de confirmación?"
+        resend_unlock_link: "¿No recibiste las instrucciones de desbloqueo?"
+      edit:
+        page_title: "Configuración de la Cuenta"
+        go_back_link: "Volver"
+        sidebar_account_link: "Cuenta"
+        form_title: "Editar Cuenta"
+        waiting_confirmation_for: "Actualmente esperando confirmación para: %{email}"
+        password_leave_blank_hint: "(déjalo en blanco si no quieres cambiarla)"
+        password_minimum_length_hint: "%{minimum_password_length} caracteres mínimo"
+        current_password_hint: "(necesitamos tu contraseña actual para confirmar tus cambios)"
+        update_button: "Actualizar"
+        danger_zone_divider: "Zona de Riesgo"
+        danger_zone_title: "Eliminar Cuenta"
+        danger_zone_warning: "Esta acción es irreversible. Todos los datos asociados con tu cuenta serán eliminados permanentemente."
+        danger_zone_delete_button: "Eliminar mi cuenta"
+        danger_zone_delete_confirm: "¿Estás seguro de que quieres eliminar tu cuenta?"
     sessions:
       signed_in: "Iniciado sesión exitosamente."
       signed_out: "Cerrado sesión exitosamente."
@@ -53,6 +83,10 @@ es:
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo desbloquear tu cuenta en unos minutos."
       send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo electrónico con instrucciones sobre cómo desbloquearla en unos minutos."
       unlocked: "Tu cuenta ha sido desbloqueada exitosamente. Por favor, inicia sesión para continuar."
+    shared:
+      links:
+        forgot_password: "¿Olvidaste tu contraseña?"
+        sign_in: "Iniciar sesión"
   errors:
     messages:
       already_confirmed: "ya ha sido confirmado, por favor, intenta iniciar sesión"
@@ -63,3 +97,13 @@ es:
       not_saved:
         one: "1 error prohibió que este %{resource} se guardara:"
         other: "%{count} errores prohibieron que este %{resource} se guardara:"
+  helpers:
+    label:
+      user:
+        email: "Correo electrónico"
+        name: "Nombre"
+        city: "Ciudad"
+        country: "País"
+        password: "Contraseña"
+        password_confirmation: "Confirmación de contraseña"
+        current_password: "Contraseña actual"

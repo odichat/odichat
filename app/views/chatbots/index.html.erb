@@ -1,13 +1,13 @@
-<% content_for :title, "Chatbots" %>
+<% content_for :title, t('.page_title_content_for') %>
 
 <div class="container mx-auto max-w-4xl">
   <div class="flex justify-between items-center py-8">
     <div class="flex items-center">
-      <h1 class="text-3xl font-bold text-base-content">Panel de Chatbots</h1>
+      <h1 class="text-3xl font-bold text-base-content"><%= t('.header_title') %></h1>
     </div>
     <%= link_to new_chatbot_path, class: "btn btn-primary gap-2", data: { turbo: false } do %>
       <%= icon "plus", variant: "mini" %>
-      Crear Chatbot
+      <%= t('.new_chatbot_button') %>
     <% end %>
   </div>
 
@@ -26,7 +26,7 @@
                     "https://images.squarespace-cdn.com/content/v1/5c49568eb27e3974ef358650/11203d78-c2fb-42e5-8711-736229cbfb36/Gustave-Baumann-PInes-Grand-Canyon-13x13-7990.jpg", "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg",
                     "https://clars.com/wp-content/uploads/2023/06/5142_1.jpg"
                   ] %>
-                  <%= image_tag images[index], class: "w-full h-full object-cover rounded-t-lg", alt: "Imagen del Chatbot" %>
+                  <%= image_tag images[index], class: "w-full h-full object-cover rounded-t-lg", alt: t('.chatbot_image_alt') %>
                 <% end %>
               </figure>
               <div class="p-4">
@@ -36,7 +36,7 @@
           </div>
         <% end %>
       <% else %>
-        <p class="text-center text-base-content my-10">No se encontraron chatbots.</p>
+        <p class="text-center text-base-content my-10"><%= t('.no_chatbots_found') %></p>
       <% end %>
     </div>
   </div>

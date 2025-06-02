@@ -3,7 +3,7 @@
   <!-- Public URL -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">Compartir enlace</span>
+      <span class="label-text"><%= t('chatbots.playground.sidebar_form.share_link_label') %></span>
     </label>
     <div class="join w-full">
       <label class="input join-item w-full">
@@ -26,14 +26,14 @@
         data-clipboard-target="button"
       >
         <%= icon "clipboard", class: "size-4" %>
-        <span data-clipboard-target="tooltip" class="absolute -top-8 left-1/2 -translate-x-1/2 tooltip tooltip-primary tooltip-open hidden" data-tip="Copied!"></span>
+        <span data-clipboard-target="tooltip" class="absolute -top-8 left-1/2 -translate-x-1/2 tooltip tooltip-primary tooltip-open hidden" data-tip="<%= t('chatbots.playground.sidebar_form.copied_tooltip') %>"></span>
       </button>
     </div>
   </div>
   <!-- Model selection -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">Modelo</span>
+      <span class="label-text"><%= t('chatbots.playground.sidebar_form.model_label') %></span>
     </label>
     <div class="relative">
       <%= f.collection_select :model_id, 
@@ -48,7 +48,7 @@
   <!-- Temperature slider -->
   <div data-controller="range-slider" class="form-control">
     <label class="label">
-      <span class="label-text">Temperatura</span>
+      <span class="label-text"><%= t('chatbots.playground.sidebar_form.temperature_label') %></span>
       <span class="label-text-alt tabular-nums" data-range-slider-target="display">
         <%= chatbot.temperature %>
       </span>
@@ -68,7 +68,7 @@
   <!-- System instructions -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">Instrucciones del sistema</span>
+      <span class="label-text"><%= t('chatbots.playground.sidebar_form.system_instructions_label') %></span>
     </label>
     <%= f.text_area :system_instructions,
         value: chatbot.system_instructions,
@@ -84,7 +84,7 @@
         id: "button_loader",
         class: "btn btn-primary w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" do %>
         <span id="sidebar_submit_button_text">
-          Guardar cambios
+          <%= t('chatbots.playground.sidebar_form.save_changes_button') %>
         </span>
     <% end %>
   </div>

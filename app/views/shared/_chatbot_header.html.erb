@@ -1,19 +1,19 @@
 <div class="mb-4">
   <div class="tabs justify-center">
     <% if @chatbot %>
-      <%= link_to "Playground",
+      <%= link_to t('shared.chatbot_header.playground'),
           chatbot_playground_path(@chatbot),
           class: "tab #{current_page?(chatbot_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
-      <%= link_to "Actividad",
+      <%= link_to t('shared.chatbot_header.activity'),
           chatbot_chats_path(@chatbot), 
           class: "tab #{current_page?(chatbot_chats_path(@chatbot)) ? 'tab-active' : ''}" %>
-      <%= link_to "Fuentes", 
+      <%= link_to t('shared.chatbot_header.sources'), 
           chatbot_sources_path(@chatbot), 
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>
-      <%= link_to "Integraciones", 
+      <%= link_to t('shared.chatbot_header.integrations'), 
           chatbot_integrations_path(@chatbot), 
           class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) || request.path.include?('/integrations/') ? 'tab-active' : ''}" %>
-      <%= link_to "Configuración", 
+      <%= link_to t('shared.chatbot_header.settings'), 
           chatbot_settings_path(@chatbot), 
           class: "tab #{current_page?(chatbot_settings_path(@chatbot)) ? 'tab-active' : ''}" %>
     <% end %>

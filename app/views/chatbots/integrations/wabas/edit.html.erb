@@ -6,16 +6,16 @@
   <ul>
     <li>
       <%= link_to root_path do %>
-        Home
+        <%= t('.breadcrumb_home') %>
       <% end %>
     </li>
     <li>
       <%= link_to chatbot_integrations_path(@chatbot), class: "link link-hover" do %>
-        Integrations
+        <%= t('.breadcrumb_integrations') %>
       <% end %>
     </li>
     <li>
-      WhatsApp
+      <%= t('.breadcrumb_whatsapp') %>
     </li>
   </ul>
 </div>
@@ -23,45 +23,45 @@
 <!-- Settings heading -->
 <h1 class="text-3xl font-bold mb-8 flex gap-2 items-center">
   <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-12 h-12 mr-2" %>
-  <span>WhatsApp Business Profile</span>
+  <span><%= t('.page_title') %></span>
 </h1>
 
 <div class="flex justify-end mb-4">
-  <%= link_to "View Templates", chatbot_integrations_waba_templates_path(@chatbot), class: "btn btn-primary", data: { turbo: false } %>
+  <%= link_to t('.view_templates_button'), chatbot_integrations_waba_templates_path(@chatbot), class: "btn btn-primary", data: { turbo: false } %>
 </div>
 
 <!-- Main content area -->
 <div class="flex-1 space-y-8">
   <% if !@chatbot.waba.subscribed? %>
     <%= render "shared/banner",
-        message: "<b>Subscribe to enable WhatsApp integration.</b> Your chatbot is not subscribed to WhatsApp Business Profile.",
+        message: raw(t('.subscribe_banner_message_html')),
         type: :warning,
         icon: "exclamation-triangle",
-        button_text: "Subscribe",
+        button_text: t('.subscribe_banner_button'),
         button_path: subscribe_chatbot_integrations_waba_path(@chatbot),
         button_method: :post %>
   <% end %>
 
   <div class="card bg-base-100 shadow-md">
     <div class="card-body">
-      <h2 class="card-title text-2xl mb-6">Connected Phone Number</h2>
+      <h2 class="card-title text-2xl mb-6"><%= t('.connected_phone_card_title') %></h2>
       <div class="overflow-x-auto">
         <table class="table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Number</th>
-              <th>Status</th>
+              <th><%= t('.table_header_name') %></th>
+              <th><%= t('.table_header_number') %></th>
+              <th><%= t('.table_header_status') %></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><%= @connected_phone_number&.verified_name || "N/A" %></td>
-              <td><%= @connected_phone_number&.display_phone_number || "N/A" %></td>
+              <td><%= @connected_phone_number&.verified_name || t('.status_not_available') %></td>
+              <td><%= @connected_phone_number&.display_phone_number || t('.status_not_available') %></td>
               <td>
                 <div class="flex items-center gap-2">
                   <span class="status <%= @connected_phone_number&.status.downcase == "connected" ? "status-success" : "status-error" %>"></span>
-                  <%= @connected_phone_number&.status.downcase.capitalize || "Disconnected" %>
+                  <%= @connected_phone_number&.status.downcase.capitalize || t('.status_disconnected') %>
                 </div>
               </td>
             </tr>
@@ -73,7 +73,7 @@
 
   <div class="card bg-base-100 shadow-md">
     <div class="card-body">
-      <h2 class="card-title text-2xl mb-6">Business Profile Settings</h2>
+      <h2 class="card-title text-2xl mb-6"><%= t('.business_profile_card_title') %></h2>
       
       <!-- Form with Turbo attributes -->
       <%= turbo_frame_tag "business_profile_form" do %>
@@ -84,17 +84,17 @@
 
   <% if @chatbot.waba.subscribed? %>
     <div class="divider divider-error my-10">
-      <span class="text-error font-bold">Danger Zone</span>
+      <span class="text-error font-bold"><%= t('.danger_zone_divider_text') %></span>
     </div>
 
     <div class="card bg-base-100 shadow-md border-error">
       <div class="card-body">
-        <h2 class="card-title text-error text-2xl">Unsubscribe</h2>
+        <h2 class="card-title text-error text-2xl"><%= t('.danger_zone_card_title') %></h2>
         <p>
-          Your <b><%= @chatbot.name %></b> chatbot will no longer be able to send and receive WhatsApp messages (you can always re-subscribe to WhatsApp Business Profile later).
+          <%= raw(t('.danger_zone_unsubscribe_warning_html', chatbot_name: @chatbot.name)) %>
         </p>
         <div class="card-actions mt-4">
-          <%= button_to "Unsubscribe", unsubscribe_chatbot_integrations_waba_path(@chatbot), method: :post, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: "Are you sure you want to unsubscribe this chatbot from your WhatsApp Business Profile?", turbo_submits_with: "Unsubscribing..." } %>
+          <%= button_to t('.danger_zone_unsubscribe_button'), unsubscribe_chatbot_integrations_waba_path(@chatbot), method: :post, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: t('.danger_zone_unsubscribe_confirm'), turbo_submits_with: t('.danger_zone_unsubscribe_submitting') } %>
         </div>
       </div>
     </div>

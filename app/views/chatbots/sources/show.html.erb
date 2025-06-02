@@ -7,12 +7,12 @@
 <% content_for :sidebar do %>
   <div class="w-64 shrink-0">
     <nav class="menu w-full bg-base-200 rounded-box">
-      <li><a class="active focus:outline-none focus-visible:ring focus-visible:ring-primary/50">Files</a></li>
+      <li><a class="active focus:outline-none focus-visible:ring focus-visible:ring-primary/50"><%= t('.sidebar_files_link') %></a></li>
     </nav>
   </div>
 <% end %>
 
-<h1 class="text-3xl font-bold mb-8">Fuentes</h1>
+<h1 class="text-3xl font-bold mb-8"><%= t('.page_title') %></h1>
 
 <div class="flex gap-6">
   <!-- Left sidebar -->
@@ -22,7 +22,7 @@
   <div class="flex-1">
     <div class="card bg-base-100 shadow-md">
       <div class="card-body">
-        <h2 class="card-title text-2xl mb-6">Archivos</h2>
+        <h2 class="card-title text-2xl mb-6"><%= t('.card_title') %></h2>
         <%= render "form", chatbot: @chatbot, documents: @documents %>
       </div>
     </div>

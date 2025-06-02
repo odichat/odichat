@@ -12,7 +12,7 @@
       <% end %>
       <div class="flex flex-col gap-2 w-full">
         <label class="label">
-          <span class="label-text">Profile Picture</span>
+          <span class="label-text">Imagen de perfil</span>
         </label>
         <%= form.file_field :profile_picture_handle, 
           class: "file-input file-input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50",
@@ -23,7 +23,7 @@
   <!-- About field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">About</span>
+      <span class="label-text">Acerca de</span>
     </label>
     <%= form.text_field :about, 
         value: business_profile.about,
@@ -35,7 +35,7 @@
   <!-- Address field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">Address</span>
+      <span class="label-text">Dirección</span>
     </label>
     <%= form.text_field :address, 
         value: business_profile.address,
@@ -47,7 +47,7 @@
   <!-- Description field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">Description</span>
+      <span class="label-text">Descripción</span>
     </label>
     <%= form.text_area :description, 
         value: business_profile.description,
@@ -60,7 +60,7 @@
   <!-- Email field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">Email</span>
+      <span class="label-text">Correo electrónico</span>
     </label>
     <%= form.email_field :email, 
         value: business_profile.email,
@@ -72,7 +72,7 @@
   <!-- Websites field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">Websites</span>
+      <span class="label-text">Sitios web</span>
       <span class="tooltip tooltip-bottom" data-tip="Comma-separated list of URLs">
         <%= icon "information-circle", variant: "mini" %>
       </span>
@@ -86,11 +86,11 @@
   <!-- Vertical field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text">Business Category</span>
+      <span class="label-text">Categoría de negocio</span>
     </label>
     <%= form.select :vertical,
         Waba.available_verticals.map { |key, label| [label, key] },
-        { selected: business_profile.vertical, include_blank: "Select a category" },
+        { selected: business_profile.vertical, include_blank: "Selecciona una categoría" },
         class: "select select-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
   </div>
   

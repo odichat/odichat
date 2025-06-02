@@ -4,13 +4,13 @@
 <% end %>
 
 <div class="w-full">
-  <h1 class="text-3xl font-bold mb-8">Chat Activity</h1>
+  <h1 class="text-3xl font-bold mb-8">Actividad de Chats</h1>
   <div class="card bg-base-100 shadow-md">
     <div class="card-body p-0 gap-0">
       <% if @chats.any? %>
         <div class="w-full p-4 flex border-b border-gray-200">
           <div class="w-2/5 flex items-center">
-            <h2 class="text-2xl font-bold">Chat History</h2>
+            <h2 class="text-2xl font-bold">Historial de Chats</h2>
           </div>
           <div class="w-3/5 flex justify-end">
             <%= turbo_frame_tag "chat_details" do %>
@@ -47,11 +47,11 @@
           <div class="p-8 min-h-[400px] w-full h-full flex flex-col items-center justify-center">
             <div class="flex flex-col items-center justify-center gap-4">
             <% if @chatbot.waba.present? %>
-              <p class="text-center text-md text-gray-800">We'll display the chat history here when a user starts a chat with the chatbot.</p>
+              <p class="text-center text-md text-gray-800">Mostraremos el historial de chat aquí cuando un usuario inicie una conversación con el chatbot.</p>
               <%= icon "chat-bubble-left", variant: "outline" %>
             <% else %>
-                <p class="text-center text-md text-gray-800 text-md max-w-md">Connect your WhatsApp Business Account to start getting messages from your customers. ⚠️</p>
-                <%= link_to "Connect WhatsApp Business Account", chatbot_integrations_path(@chatbot), class: "btn btn-primary" %>
+                <p class="text-center text-md text-gray-800 text-md max-w-md">Conecta tu cuenta de WhatsApp Business para empezar a recibir mensajes de tus clientes. ⚠️</p>
+                <%= link_to "Conectar WhatsApp Business Account", chatbot_integrations_path(@chatbot), class: "btn btn-primary" %>
             <% end %>
             </div>
           </div>

@@ -3,7 +3,7 @@
   <!-- Public URL -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">Share link</span>
+      <span class="label-text">Compartir enlace</span>
     </label>
     <div class="join w-full">
       <label class="input join-item w-full">
@@ -33,7 +33,7 @@
   <!-- Model selection -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">Model</span>
+      <span class="label-text">Modelo</span>
     </label>
     <div class="relative">
       <%= f.collection_select :model_id, 
@@ -48,7 +48,7 @@
   <!-- Temperature slider -->
   <div data-controller="range-slider" class="form-control">
     <label class="label">
-      <span class="label-text">Temperature</span>
+      <span class="label-text">Temperatura</span>
       <span class="label-text-alt tabular-nums" data-range-slider-target="display">
         <%= chatbot.temperature %>
       </span>
@@ -68,7 +68,7 @@
   <!-- System instructions -->
   <div class="form-control">
     <label class="label">
-      <span class="label-text">System Instructions</span>
+      <span class="label-text">Instrucciones del sistema</span>
     </label>
     <%= f.text_area :system_instructions,
         value: chatbot.system_instructions,
@@ -84,7 +84,7 @@
         id: "button_loader",
         class: "btn btn-primary w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" do %>
         <span id="sidebar_submit_button_text">
-          Save Changes
+          Guardar cambios
         </span>
     <% end %>
   </div>

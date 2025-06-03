@@ -30,7 +30,7 @@
                         <%= chat.messages.where(sender: "assistant").first.content.truncate(32) %>
                       </p>
                       <p class="text-xs text-gray-400 flex flex-col justify-center items-end">
-                        <%= time_ago_in_words(chat.created_at).gsub(/\Aabout\s/i, '').capitalize %> ago
+                        <%= time_ago_in_words(chat.created_at, locale: :en).gsub(/\Aabout\s/i, '').capitalize %> ago
                       </p>
                   <% end %>
                 </li>

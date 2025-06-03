@@ -25,13 +25,12 @@
                 <li class="flex flex-col justify-between">
                   <%= link_to chatbot_chat_path(@chatbot, chat),
                       class: "p-4 py-8 w-full flex",
-                      data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do
-                  %>
+                      data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
                       <p class="font-semibold">
                         <%= chat.messages.where(sender: "assistant").first.content.truncate(32) %>
                       </p>
                       <p class="text-xs text-gray-400 flex flex-col justify-center items-end">
-                        <%= time_ago_in_words(chat.created_at).gsub(/\Aabout\s/i, '').capitalize %> <%= t('.timestamp_ago_suffix') %>
+                        <%= time_ago_in_words(chat.created_at).gsub(/\Aabout\s/i, '').capitalize %> ago
                       </p>
                   <% end %>
                 </li>

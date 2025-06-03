@@ -10,4 +10,13 @@ es:
       chatbots_panel: "Dashboard"
       settings: "Configuración"
       billing: "Facturación"
-      logout: "Cerrar sesión" 
+      logout: "Cerrar sesión"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: "La contraseña no puede estar en blanco"
+            password_confirmation:
+              confirmation: "La confirmación de la contraseña no coincide" 

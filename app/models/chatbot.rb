@@ -26,6 +26,14 @@ class Chatbot < ApplicationRecord
     Rails.application.routes.url_helpers.public_playground_url(token: shareable_link.token)
   end
 
+  def time_aware_instructions
+    return if !is_time_aware? || timezone.blank?
+    <<~SYSTEM_INSTRUCTIONS
+      #### Metadata
+      Current time is #{Time.now.in_time_zone(timezone).strftime("%H:%M")}.
+    SYSTEM_INSTRUCTIONS
+  end
+
   private
 
   # **************************************************

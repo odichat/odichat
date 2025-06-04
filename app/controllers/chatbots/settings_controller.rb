@@ -37,6 +37,6 @@ class Chatbots::SettingsController < Chatbots::BaseController
   private
 
   def chatbot_params
-    params.require(:chatbot).permit(:name)
+    params.require(:chatbot).permit(:name, :is_time_aware, :timezone)
   end
 end

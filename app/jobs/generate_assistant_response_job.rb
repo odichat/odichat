@@ -10,12 +10,16 @@ class GenerateAssistantResponseJob < ApplicationJob
     chatbot = chat.chatbot
     model = Model.find(chatbot.model_id)
 
+    # Appends the time aware instructions to the system instructions
+    # If the chatbot is not time aware, nothing is appended
+    system_instructions = chatbot.system_instructions + chatbot.time_aware_instructions
+
     response = client.responses.create(parameters: {
       model: model.name,
       input: [
         {
           role: "developer",
-          content: chatbot.system_instructions
+          content: system_instructions
         },
         {
           role: "user",

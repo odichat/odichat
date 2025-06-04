@@ -8,6 +8,11 @@ en:
         form_section:
           title: "General"
           name_label: "Name"
+          time_aware_label: "Time aware"
+          time_aware_tooltip: "Activate this option if you want the chatbot to take into account the current time when responding. You can use this information within the system instructions (e.g., to change the greeting based on the time of day)"
+          timezone_label: "Chatbot timezone"
+          timezone_prompt: "Select a timezone for the chatbot"
+          timezone_tooltip: "Select the timezone that the chatbot will use to calculate the current time. This only applies if the time aware option is activated."
           save_button: "Save"
         danger_zone:
           title: "Danger Zone"

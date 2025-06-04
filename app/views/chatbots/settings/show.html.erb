@@ -29,13 +29,43 @@
                     url: chatbot_settings_path(@chatbot), 
                     method: :patch, 
                     class: "space-y-6",
-                    data: { turbo: true }) do |form| %>
+                    data: { turbo: true, controller: "timezone-visibility" }) do |form| %>
           <!-- Name field -->
           <div class="form-control w-full">
             <label class="label">
               <span class="label-text"><%= t('.form_section.name_label') %></span>
             </label>
             <%= form.text_field :name, class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50", value: @chatbot.name %>
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label w-full">
+              <span class="label-text">
+                <%= t('.form_section.time_aware_label') %>
+              </span>
+              <span class="tooltip" data-tip="<%= t('.form_section.time_aware_tooltip') %>">
+                <%= icon "information-circle", variant: "mini" %>
+              </span>
+            </label>
+            <%= form.check_box :is_time_aware, 
+                                class: "toggle toggle-primary",
+                                data: { 
+                                  timezone_visibility_target: "toggle", 
+                                  action: "change->timezone-visibility#toggleState" 
+                                } %>
+          </div>
+
+          <div class="form-control w-full" data-timezone-visibility-target="timezoneSelector">
+            <label class="label">
+              <span class="label-text"><%= t('.form_section.timezone_label') %></span>
+              <span class="tooltip" data-tip="<%= t('.form_section.timezone_tooltip') %>">
+                <%= icon "information-circle", variant: "mini" %>
+              </span>
+            </label>
+            <%= form.select :timezone, 
+                  timezone_options_for_select, 
+                  { selected: @chatbot.timezone, prompt: t('.form_section.timezone_prompt') }, 
+                  class: "select w-full" %>
           </div>
           
           <!-- Save button -->

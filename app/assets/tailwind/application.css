@@ -8,9 +8,9 @@
   themes: lofi --default
 }
 
-@layer components {
-  .test {
-    @apply py-2;
+@layer base {
+  .chat-bubble a {
+    @apply link;
   }
 }
 

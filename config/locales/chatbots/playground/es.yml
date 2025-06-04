@@ -17,8 +17,8 @@ es:
       messages:
         start_conversation_prompt: "Start a conversation with %{chatbot_name}"
       form: # Chat input form
-        message_placeholder: "Type your message..."
-        send_button: "Send"
+        message_placeholder: "Escribe tu mensaje..."
+        send_button: "Enviar"
   public_playground: # Public Playground
     header:
       default_assistant_name: "Assistant" # Can reuse or be distinct

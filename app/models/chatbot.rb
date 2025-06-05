@@ -27,7 +27,7 @@ class Chatbot < ApplicationRecord
   end
 
   def time_aware_instructions
-    return if !is_time_aware? || timezone.blank?
+    return "" if !is_time_aware? || timezone.blank?
     <<~SYSTEM_INSTRUCTIONS
       #### Metadata
       Current time is #{Time.now.in_time_zone(timezone).strftime("%H:%M")}.

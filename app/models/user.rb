@@ -49,4 +49,8 @@ class User < ApplicationRecord
   def send_welcome_email
     UserMailer.with(user: self).welcome_email.deliver_later
   end
+
+  def send_new_user_notification
+    Discord::NewUserNotificationJob.perform_later(user: self)
+  end
 end

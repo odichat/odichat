@@ -6,7 +6,7 @@ class SupportTicketsController < ApplicationController
 
   def create
     ticket_data = support_ticket_params.to_h.merge(user_id: current_user.id)
-    SendSupportTicketToDiscordJob.perform_later(
+    Discord::NewSupportTicketNotificationJob.perform_later(
       name: ticket_data[:name],
       phone_number: ticket_data[:phone_number],
       subject: ticket_data[:subject],

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SendSupportTicketToDiscordJobTest < ActiveJob::TestCase
+class Discord::NewSupportTicketNotificationJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,6 +1,4 @@
-require "discordrb/webhooks"
-
-class SendSupportTicketToDiscordJob < ApplicationJob
+class Discord::NewSupportTicketNotificationJob < ApplicationJob
   queue_as :default
 
   def perform(name:, phone_number:, subject:, message:, user_id:)
@@ -14,7 +12,13 @@ class SendSupportTicketToDiscordJob < ApplicationJob
 
     client = Discordrb::Webhooks::Client.new(url: webhook_url)
     client.execute do |builder|
-      builder.content = "#{Rails.env.production? ? "Production" : "Test"} — New Support Ticket Submitted by #{user.email} — #{phone_number}"
+      builder.content = <<~CONTENT
+        ## New Support Ticket
+        - Environment: **#{Rails.env.production? ? "Production" : "Test"}**
+        - User Name: **#{name}**
+        - Email: **#{user.email}**
+        - Phone Number: **#{phone_number}**
+      CONTENT
       builder.add_embed do |embed|
         embed.title = subject
         embed.description = message

@@ -7,7 +7,12 @@
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li><%= link_to "Dashboard", chatbots_path %></li>
-      <li><%= link_to "Ayuda & Soporte", new_support_ticket_path, class: "" %></li>
+      <li>
+        <%= link_to new_support_ticket_path, class: "flex items-center gap-1", title: "Contacta el equipo de Odichat" do %>
+          Ayuda & Soporte
+          <div class="badge badge-sm badge-info">Nuevo</div>
+        <% end %>
+      </li>
     </ul>
   </div>
   <% if user_signed_in? %>

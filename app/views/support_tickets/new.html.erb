@@ -1,0 +1,51 @@
+<div class="container mx-auto max-w-4xl py-8">
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-6">Odichat Ayuda & Soporte</h1>
+      <p class="text-sm text-gray-500 mb-6">
+        Hola👋🏼, te habla Andrés, el CTO de Odichat.
+        <br />
+        <br />
+        Si necesitas ayuda con Odichat, encuentras algún problema o tienes alguna sugerencia, por favor completa el formulario. Explícame tu problema <b>lo más detallado posible</b> para poder ponerme en contacto contigo lo antes posible.
+      </p>
+
+      <div class="mb-6">
+        <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/odichat/assets/logo.svg", class: "w-32", alt: "Logo" %>
+      </div>
+
+      <%= form_with(url: support_tickets_path, method: :post, local: true, html: { class: "space-y-6" }) do |form| %>
+        <div class="form-control">
+          <%= form.label :name, class: "label" do %>
+            <span class="label-text">Nombre*</span>
+          <% end %>
+          <%= form.text_field :name, required: true, class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :phone_number, class: "label" do %>
+            <span class="label-text">Número de teléfono*</span>
+          <% end %>
+          <%= form.telephone_field :phone_number, required: true,class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :subject, class: "label" do %>
+            <span class="label-text">Asunto</span>
+          <% end %>
+          <%= form.text_field :subject, class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :message, class: "label" do %>
+            <span class="label-text">Mensaje*</span>
+          <% end %>
+          <%= form.text_area :message, rows: 6, required: true, class: "textarea textarea-bordered w-full" %>
+        </div>
+
+        <div class="form-control mt-8">
+          <%= form.submit "Enviar Ticket", class: "btn btn-primary w-full" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

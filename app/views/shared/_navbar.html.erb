@@ -4,6 +4,12 @@
       <%= image_tag "https://odisea.nyc3.cdn.digitaloceanspaces.com/odichat/assets/logo.svg", alt: "Logo", class: "h-8 w-auto" %>
     <% end %>
   </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
+      <li><%= link_to "Dashboard", chatbots_path %></li>
+      <li><%= link_to "Ayuda & Soporte", new_support_ticket_path, class: "" %></li>
+    </ul>
+  </div>
   <% if user_signed_in? %>
     <div class="flex-none">
       <ul class="menu menu-horizontal px-1">

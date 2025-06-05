@@ -99,3 +99,5 @@ gem "after_party", "~> 2.0"
 gem "redcarpet", "~> 3.6"
 
 gem "resend", "~> 0.22.0"
+
+gem "discordrb", "~> 3.5"

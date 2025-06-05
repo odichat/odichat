@@ -98,4 +98,4 @@ gem "after_party", "~> 2.0"
 
 gem "redcarpet", "~> 3.6"
 
-gem "postmark-rails", "~> 0.22.1"
+gem "resend", "~> 0.22.0"

@@ -8,15 +8,15 @@
     <ul class="menu menu-horizontal px-1">
       <li><%= link_to "Dashboard", chatbots_path %></li>
       <li>
-        <%= link_to "https://devastador.notion.site/Gu-as-y-documentaci-n-de-Odichat-20af9527e118802aa0f3f8292ee1e223", target: "_blank" do %>
+        <%= link_to "https://devastador.notion.site/Gu-as-y-documentaci-n-de-Odichat-20af9527e118802aa0f3f8292ee1e223", title: "Guías y documentación de Odichat", target: "_blank" do %>
           Guías
-          <div class="badge badge-sm badge-info">Nuevo</div>
+          <div class="badge badge-xs badge-info">Nuevo</div>
         <% end %>
       </li>
       <li>
-        <%= link_to new_support_ticket_path, class: "flex items-center gap-1", title: "Contacta el equipo de Odichat" do %>
+        <%= link_to new_support_ticket_path, title: "Contacta el equipo de Odichat" do %>
           Ayuda & Soporte
-          <div class="badge badge-sm badge-info">Nuevo</div>
+          <div class="badge badge-xs badge-info">Nuevo</div>
         <% end %>
       </li>
     </ul>

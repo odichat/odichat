@@ -82,7 +82,7 @@ gem "rails_icons"
 
 gem "pundit", "~> 2.5"
 
-gem "pay", "~> 8.0"
+gem "pay", "~> 11.0"
 
 gem "stripe", "~> 13.0"
 

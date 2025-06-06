@@ -20,3 +20,57 @@ es:
               blank: "La contraseña no puede estar en blanco"
             password_confirmation:
               confirmation: "La confirmación de la contraseña no coincide" 
+  time:
+    formats:
+      default: "%A, %d de %B de %Y, %H:%M"
+      short: "%d de %b %H:%M"
+      long: "%A, %d de %B de %Y, %H:%M"
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d de %b"
+      long: "%A, %d de %B de %Y"
+    day_names:
+      - Domingo
+      - Lunes
+      - Martes
+      - Miércoles
+      - Jueves
+      - Viernes
+      - Sábado
+    abbr_day_names:
+      - Dom
+      - Lun
+      - Mar
+      - Mié
+      - Jue
+      - Vie
+      - Sáb
+    month_names:
+      - ~
+      - Enero
+      - Febrero
+      - Marzo
+      - Abril
+      - Mayo
+      - Junio
+      - Julio
+      - Agosto
+      - Septiembre
+      - Octubre
+      - Noviembre
+      - Diciembre
+    abbr_month_names:
+      - ~
+      - Ene
+      - Feb
+      - Mar
+      - Abr
+      - May
+      - Jun
+      - Jul
+      - Ago
+      - Sep
+      - Oct
+      - Nov
+      - Dic 

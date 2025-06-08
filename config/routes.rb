@@ -37,7 +37,10 @@ Rails.application.routes.draw do
   }
 
   # Webhooks
-  resources :webhooks, only: [ :index, :create ]
+  namespace :webhooks do
+    get "whatsapp/verify"
+    post "whatsapp/process_payload"
+  end
 
   # Checkout
   get "/subscriptions/billing", to: "subscriptions#show"

@@ -31,7 +31,6 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        GenerateAssistantResponseJob.perform_later(@message.id) if @message.sender == "user"
         format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Message was successfully created." }
         format.turbo_stream do
           render turbo_stream: turbo_stream.append("messages", partial: "messages/message", locals: { message: @message })

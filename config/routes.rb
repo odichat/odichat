@@ -38,8 +38,8 @@ Rails.application.routes.draw do
 
   # Webhooks
   namespace :webhooks do
-    get "whatsapp/verify"
-    post "whatsapp/process_payload"
+    get "whatsapp/process_payload", to: "whatsapp#verify"
+    post "whatsapp/process_payload", to: "whatsapp#process_payload"
   end
 
   # Checkout

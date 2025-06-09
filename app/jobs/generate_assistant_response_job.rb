@@ -69,10 +69,15 @@ class GenerateAssistantResponseJob < ApplicationJob
   rescue Faraday::TooManyRequestsError => e
     Rails.logger.error("Too many requests to OpenAI: #{e.message}")
     Sentry.capture_exception(e)
-  rescue StandardError => e
-    Rails.logger.error("Error adding message to chat_id: #{user_message.chat.id}: #{e.message}")
-    Sentry.capture_exception(e)
-    # TODO: Send a notification to the user
-    raise
+    # TODO: Notify Odichat's discord channel about the error
+  rescue WhatsappSdk::Api::Responses::HttpResponseError => e
+    error_details = {
+      message: e.message,
+      response_code: e.try(:response_code),
+      response_body: e.try(:response_body),
+      waba_id: chatbot.waba.waba_id
+    }
+    Rails.logger.error("WhatsApp API Error: #{error_details.to_json}")
+    Sentry.capture_exception(e, extra: error_details)
   end
 end

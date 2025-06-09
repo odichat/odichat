@@ -16,6 +16,7 @@ class Message < ApplicationRecord
   end
 
   def send_reply
+    return unless sender == "user"
     GenerateAssistantResponseJob.perform_later(id)
   end
 end

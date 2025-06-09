@@ -1,4 +1,4 @@
 web: bin/rails server
 jobs: bin/jobs
 css: bin/rails tailwindcss:watch
-# tunnel: cloudflared tunnel run dev-odichat
+tunnel: cloudflared tunnel run dev-odichat

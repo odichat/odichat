@@ -4,6 +4,7 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
 
   def show
     @chat = @chatbot.chats.where(source: "playground").last
+    @chat = @chatbot.chats.create!(source: "playground") if @chat.nil?
     @messages = @chat.messages.order(created_at: :asc)
   end
 

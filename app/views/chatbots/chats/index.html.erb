@@ -20,18 +20,28 @@
         </div>
         <div class="flex gap-4">
           <div class="max-h-[500px] min-h-[500px] overflow-y-auto w-2/5">
-            <ul class="menu bg-base-100 rounded-box w-full">
+            <ul class="menu rounded-box w-full">
               <% @chats.each do |chat| %>
-                <li class="flex flex-col justify-between">
+                <% user_message = chat.messages.find { |m| m.sender == "user" } %>
+                <% assistant_message = chat.messages.find { |m| m.sender == "assistant" } %>
+                <li class="flex flex-col justify-between even:bg-gray-100">
                   <%= link_to chatbot_chat_path(@chatbot, chat),
-                      class: "p-4 py-8 w-full flex",
+                      class: "p-4 py-4 w-full flex flex-col",
                       data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
-                      <p class="font-semibold">
-                        <%= chat.messages.where(sender: "assistant").first.content.truncate(32) %>
-                      </p>
-                      <p class="text-xs text-gray-400 flex flex-col justify-center items-end">
-                        <%= time_ago_in_words(chat.created_at, locale: :en).gsub(/\Aabout\s/i, '').capitalize %> ago
-                      </p>
+                      <div class="grid grid-cols-3 gap-0 w-full">
+                        <div class="col-span-2 flex flex-col gap-1">
+                          <p class="font-semibold text-sm">
+                            🗣️ <%= user_message.content.truncate(24) %>
+                          </p>
+                          <p class="font-semibold text-sm">
+                            🤖 <%= assistant_message.present? ? assistant_message.content.truncate(24) : "..." %>
+                          </p>
+                        </div>
+                        <div class="flex flex-col gap-1 justify-end items-end">
+                          <p class="text-xs text-gray-400 flex text-right"><%= icon "phone", variant: "outline", class: "size-4" %> +<%= chat.contact_phone %></p>
+                          <p class="text-xs text-gray-400 text-right"><%= time_ago_in_words(chat.created_at, locale: :en).gsub(/\Aabout\s/i, '').capitalize %> ago</p>
+                        </div>
+                      </div>
                   <% end %>
                 </li>
               <% end %>

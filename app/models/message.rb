@@ -9,14 +9,30 @@ class Message < ApplicationRecord
     self.chat.source
   end
 
+  def assistant?
+    sender == "assistant"
+  end
+
+  def user?
+    sender == "user"
+  end
+
   private
 
   def execute_after_create_commit_callbacks
-    send_reply
+    enqueue_post_message_creation_jobs
   end
 
-  def send_reply
-    return unless sender == "user"
-    GenerateAssistantResponseJob.perform_later(id)
+  def enqueue_post_message_creation_jobs
+    enqueue_assistant_response_generation_job if user?
+    enqueue_send_reply_job if assistant?
+  end
+
+  def enqueue_send_reply_job
+    SendReplyJob.perform_later(id)
+  end
+
+  def enqueue_assistant_response_generation_job
+    Llm::AssistantResponseJob.perform_later(id)
   end
 end

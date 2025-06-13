@@ -17,3 +17,4 @@ pin "@sentry-internal/replay-canvas", to: "@sentry-internal--replay-canvas.js" #
 pin "@sentry/core", to: "@sentry--core.js" # @9.17.0
 
 pin "sentry", to: "sentry.js", preload: true
+pin "tailwindcss-stimulus-components" # @6.1.3

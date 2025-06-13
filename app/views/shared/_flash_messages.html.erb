@@ -2,36 +2,24 @@
 <% if flash.any? %>
   <div id="flash" class="fixed top-0 left-0 right-0 z-50 p-4 mx-auto max-w-3xl">
     <% flash.each do |type, message| %>
-      <% 
-        # Determine the appropriate alert class based on the flash type
-        alert_class = case type.to_s
-                      when "notice"
-                        "alert alert-success"
-                      when "alert"
-                        "alert alert-error"
-                      when "warning"
-                        "alert alert-warning"
-                      else
-                        "alert alert-info"
-                      end
-      %>
-      <div role="alert" class="<%= alert_class %> mb-2 shadow-lg">
-        <% if type.to_s == "notice" %>
-          <%= icon "check-circle", variant: "mini" %>
-        <% elsif type.to_s == "alert" %>
-          <%= icon "x-circle", variant: "mini" %>
-        <% elsif type.to_s == "warning" %>
-          <%= icon "exclamation-triangle", variant: "mini" %>
-        <% else %>
-          <%= icon "information-circle", variant: "mini" %>
-        <% end %>
-        <span><%= message %></span>
-        <button class="btn btn-ghost btn-sm" onclick="this.closest('.alert').remove()">
-          <%= icon "x-mark", variant: "mini" %>
-        </button>
+      <div class="fixed inset-x-0 top-0 flex items-end justify-right px-4 py-6 sm:p-6 justify-end z-30 pointer-events-none">
+        <div data-controller="alert" data-alert-dismiss-after-value="3000" class="max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative <%= type == "notice" ? "bg-[#5fcfdd] border-l-4 border-[#008c99] text-black" : "bg-[#ff9282] border-l-4 border-[#c95549] text-black" %> pointer-events-auto">
+          <div class="p-2">
+            <div class="flex items-start">
+              <div class="ml-3 w-0 flex-1 pt-0.5">
+                <p class="text-sm leading-5 font-medium">
+                  <%= message %>
+                </p>
+              </div>
+              <div class="ml-4 flex-shrink-0 flex">
+                <button data-action="alert#close" class="inline-flex text-black focus:outline-none focus:text-gray-300 transition ease-in-out duration-150">
+                  <%= icon "x-mark", variant: "mini", class: "size-5" %>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
   </div>
-<% else %>
-  <div id="flash"></div>
 <% end %> 

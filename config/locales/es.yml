@@ -20,6 +20,22 @@ es:
               blank: "La contraseña no puede estar en blanco"
             password_confirmation:
               confirmation: "La confirmación de la contraseña no coincide" 
+      messages:
+        not_found: "No se encontró el recurso"
+        unprocessable_entity: "No se pudo procesar la entidad"
+        unauthorized: "No tienes permisos para acceder a este recurso"
+        forbidden: "No tienes permisos para acceder a este recurso"
+        bad_request: "Solicitud inválida"
+        internal_server_error: "Error interno del servidor"
+        service_unavailable: "Servicio no disponible"
+        gateway_timeout: "Tiempo de espera agotado"
+        record_invalid: "La entidad no es válida"
+        record_not_found: "No se encontró el recurso"
+        record_not_unique: "El recurso ya existe"
+        record_not_saved: "No se pudo guardar la entidad"
+        record_not_destroyed: "No se pudo eliminar la entidad"
+        record_not_updated: "No se pudo actualizar la entidad"
+        record_not_created: "No se pudo crear la entidad"
   time:
     formats:
       default: "%A, %d de %B de %Y, %H:%M"

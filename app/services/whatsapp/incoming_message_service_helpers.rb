@@ -13,7 +13,7 @@ module Whatsapp::IncomingMessageServiceHelpers
   end
 
   def unprocessable_message_type?(message_type)
-    %w[reaction image unknown audio video document interactive].include?(message_type)
+    %w[reaction image unknown audio video document interactive sticker].include?(message_type)
   end
 
   def error_webhook_event?(message)
@@ -26,5 +26,19 @@ module Whatsapp::IncomingMessageServiceHelpers
 
   def message_content(message)
     message.dig(:text, :body)
+  end
+
+  def handle_unprocessable_message
+    fallback_text = "Lo siento, pero no puedo ver imágenes o videos — solo puedo procesar texto."
+
+    Whatsapp::SendMessageService.new(access_token: @waba.access_token).send_message(
+      sender_id: @waba.phone_number_id,
+      recipient_number: contact_phone_number,
+      message: fallback_text
+    )
+  end
+
+  def contact_phone_number
+    @processed_params[:messages].first[:from]
   end
 end

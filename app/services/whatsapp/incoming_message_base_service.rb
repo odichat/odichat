@@ -20,10 +20,9 @@ class Whatsapp::IncomingMessageBaseService
   private
 
   def process_messages
-    return if unprocessable_message_type?(message_type)
-
     set_waba
     return unless @waba
+    return handle_unprocessable_message if unprocessable_message_type?(message_type)
 
     find_chat_or_create_by_contact_phone_number
     create_messages
@@ -37,7 +36,7 @@ class Whatsapp::IncomingMessageBaseService
 
   def find_chat_or_create_by_contact_phone_number
     @chat = @waba.chatbot.chats.find_or_create_by(
-      contact_phone: @processed_params[:messages].first[:from],
+      contact_phone: contact_phone_number,
       source: "whatsapp"
     )
   end

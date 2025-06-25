@@ -3,7 +3,13 @@ class Chatbots::ChatsController < Chatbots::BaseController
 
   # GET /chats or /chats.json
   def index
-    @chats = @chatbot.chats.includes(:messages).where(source: "whatsapp").order(created_at: :desc).limit(20)
+    @chats = @chatbot.chats
+      .joins(:messages)
+      .where(source: "whatsapp")
+      .select("chats.*, MAX(messages.created_at) AS last_message_at")
+      .group("chats.id")
+      .order("MAX(messages.created_at) DESC")
+      .limit(20)
     @chat = @chats.first
   end
 

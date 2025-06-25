@@ -19,34 +19,7 @@
           </div>
         </div>
         <div class="flex gap-4">
-          <div class="max-h-[500px] min-h-[500px] overflow-y-auto w-2/5">
-            <ul class="menu rounded-box w-full">
-              <% @chats.each do |chat| %>
-                <% user_message = chat.messages.find { |m| m.sender == "user" } %>
-                <% assistant_message = chat.messages.find { |m| m.sender == "assistant" } %>
-                <li class="flex flex-col justify-between even:bg-gray-100">
-                  <%= link_to chatbot_chat_path(@chatbot, chat),
-                      class: "p-4 py-4 w-full flex flex-col",
-                      data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
-                      <div class="grid grid-cols-3 gap-0 w-full">
-                        <div class="col-span-2 flex flex-col gap-1">
-                          <p class="font-semibold text-sm">
-                            🗣️ <%= user_message.content.truncate(24) %>
-                          </p>
-                          <p class="font-semibold text-sm">
-                            🤖 <%= assistant_message.present? ? assistant_message.content.truncate(24) : "..." %>
-                          </p>
-                        </div>
-                        <div class="flex flex-col gap-1 justify-end items-end">
-                          <p class="text-xs text-gray-400 flex text-right"><%= icon "phone", variant: "outline", class: "size-4" %> +<%= chat.contact_phone %></p>
-                          <p class="text-xs text-gray-400 text-right"><%= time_ago_in_words(chat.created_at, locale: :en).gsub(/\Aabout\s/i, '').capitalize %> ago</p>
-                        </div>
-                      </div>
-                  <% end %>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+          <%= render "chatbots/chats/chat_list", chats: @chats, chatbot: @chatbot %>
           <div class="p-4 w-3/5 max-h-[500px] min-h-[500px] overflow-y-auto" data-controller="chat-scroll">
             <%= turbo_frame_tag "chat_messages" do %>
               <%= render "chatbots/chats/chat", chat: @chat %>

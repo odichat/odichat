@@ -17,6 +17,10 @@ class Message < ApplicationRecord
     sender == "user"
   end
 
+  def read?
+    false
+  end
+
   private
 
   def execute_after_create_commit_callbacks

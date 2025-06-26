@@ -19,7 +19,7 @@
                 <p class="text-sm truncate"><%= chat.messages.last.content.truncate(32) %></p>
               </div>
             </div>
-            <span class="text-xs text-gray-400"><%= chat_message_timestamp(chat.messages.last) %></span>
+            <span class="text-xs text-gray-400"><%= chat_message_timestamp(chat.messages.last, chatbot.timezone) %></span>
         <% end %>
       </li>
     <% end %>

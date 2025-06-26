@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   layout "application"
 
   include Pundit::Authorization
+  before_action :set_locale
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -13,6 +14,16 @@ class ApplicationController < ActionController::Base
   private
 
   protected
+
+  # **************************************************
+  # Locale
+  # **************************************************
+  # We are only doing this, hardcoded, for a single customer from Manchester, UK.
+  def set_locale
+    if current_user.present? && current_user.email.include?("@fiftysixlaw.co.uk")
+      I18n.locale = :en
+    end
+  end
 
   # **************************************************
   # Error handling

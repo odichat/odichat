@@ -7,3 +7,4 @@ en:
         card_title: "Files"
       form:
         submit_button_text: "Train Chatbot" 
+        allowed_files_label: "Allowed files: TXT, PDF, DOC, DOCX, HTML"

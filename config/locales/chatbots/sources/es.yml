@@ -7,3 +7,4 @@ es:
         card_title: "Archivos"
       form:
         submit_button_text: "Entrenar Chatbot" 
+        allowed_files_label: "Archivos permitidos: TXT, PDF, DOC, DOCX, HTML"

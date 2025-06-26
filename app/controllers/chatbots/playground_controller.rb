@@ -13,14 +13,16 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
       respond_to do |format|
         format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Chatbot was successfully updated." }
         format.turbo_stream {
-          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages", locals: { flash: { notice: "Chatbot was successfully updated." } })
+          flash.now[:notice] = "Chatbot was successfully updated."
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
         }
       end
     else
       respond_to do |format|
         format.html { redirect_to chatbot_playground_path(@chatbot), alert: "Chatbot was not updated." }
         format.turbo_stream {
-          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages", locals: { flash: { alert: @chatbot.errors.full_messages.join(", ") } })
+          flash.now[:alert] = @chatbot.errors.full_messages.to_sentence
+          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
         }
       end
     end

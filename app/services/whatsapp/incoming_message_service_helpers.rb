@@ -13,7 +13,7 @@ module Whatsapp::IncomingMessageServiceHelpers
   end
 
   def unprocessable_message_type?(message_type)
-    %w[reaction image unknown audio video document interactive sticker].include?(message_type)
+    %w[reaction image unknown audio video document interactive sticker location contacts].include?(message_type)
   end
 
   def error_webhook_event?(message)
@@ -29,7 +29,7 @@ module Whatsapp::IncomingMessageServiceHelpers
   end
 
   def handle_unprocessable_message
-    fallback_text = "Lo siento, pero no puedo ver imágenes o videos — solo puedo procesar texto."
+    fallback_text = fallback_text_for(message_type)
 
     Whatsapp::SendMessageService.new(access_token: @waba.access_token).send_message(
       sender_id: @waba.phone_number_id,
@@ -44,5 +44,32 @@ module Whatsapp::IncomingMessageServiceHelpers
 
   def contact_name
     @processed_params[:contacts].first[:profile][:name]
+  end
+
+  private
+
+  def fallback_text_for(message_type)
+    case message_type
+    when "location"
+      "Lo siento, pero no puedo procesar ubicaciones."
+    when "image"
+      "Lo siento, pero no puedo ver imágenes — solo puedo procesar texto."
+    when "audio"
+      "Lo siento, pero no puedo ver audios — solo puedo procesar texto."
+    when "video"
+      "Lo siento, pero no puedo ver videos — solo puedo procesar texto."
+    when "document"
+      "Lo siento, pero no puedo ver documentos — solo puedo procesar texto."
+    when "interactive"
+      "Lo siento, pero no puedo ver interactivos — solo puedo procesar texto."
+    when "sticker"
+      "Lo siento, pero no puedo ver stickers — solo puedo procesar texto."
+    when "reaction"
+      "Lo siento, pero no puedo ver reacciones — solo puedo procesar texto."
+    when "unknown"
+      "Lo siento, pero no puedo ver mensajes desconocidos — solo puedo procesar texto."
+    when "contacts"
+      "Lo siento, pero no puedo procesar contactos"
+    end
   end
 end

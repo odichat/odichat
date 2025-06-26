@@ -8,11 +8,9 @@ es:
         form_section:
           title: "General"
           name_label: "Nombre"
-          time_aware_label: "Conciencia de hora actual"
-          time_aware_tooltip: "Activa esta opción si quieres que el chatbot tenga en cuenta la hora local al responder. Puedes usar esta información dentro de las instrucciones del sistema (por ejemplo, para cambiar el saludo según el momento del día)"
           timezone_label: "Zona horaria del chatbot"
           timezone_prompt: "Selecciona una zona horaria para el chatbot"
-          timezone_tooltip: "Selecciona la zona horaria que el chatbot usará para calcular la hora local. Esto solo aplica si la opción de conciencia de hora está activada."
+          timezone_tooltip: "La zona horaria del chatbot se usará para mostrar las horas de los mensajes en la interfaz de usuario."
           save_button: "Guardar"
         danger_zone:
           title: "Zona de Riesgo"

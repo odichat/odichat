@@ -35,6 +35,10 @@ class Chatbot < ApplicationRecord
     SYSTEM_INSTRUCTIONS
   end
 
+  def is_time_aware?
+    true
+  end
+
   private
 
   # **************************************************

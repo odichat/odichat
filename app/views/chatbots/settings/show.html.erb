@@ -42,26 +42,6 @@
             <label class="label w-full">
               <div class="badge badge-xs badge-info">Nuevo</div>
             </label>
-            <label class="label w-full">
-              <span class="label-text">
-                <%= t('.form_section.time_aware_label') %>
-              </span>
-              <span class="tooltip" data-tip="<%= t('.form_section.time_aware_tooltip') %>">
-                <%= icon "information-circle", variant: "mini" %>
-              </span>
-            </label>
-            <%= form.check_box :is_time_aware, 
-                                class: "toggle toggle-primary",
-                                data: { 
-                                  timezone_visibility_target: "toggle", 
-                                  action: "change->timezone-visibility#toggleState" 
-                                } %>
-          </div>
-
-          <div class="form-control w-full" data-timezone-visibility-target="timezoneSelector">
-            <label class="label w-full">
-              <div class="badge badge-xs badge-info">Nuevo</div>
-            </label>
             <label class="label">
               <span class="label-text"><%= t('.form_section.timezone_label') %></span>
               <span class="tooltip" data-tip="<%= t('.form_section.timezone_tooltip') %>">

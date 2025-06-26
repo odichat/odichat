@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_26_133016) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_26_150934) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,7 +47,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_26_133016) do
     t.integer "model_id"
     t.float "temperature", default: 0.5
     t.string "system_instructions"
-    t.boolean "is_time_aware", default: false, null: false
     t.string "timezone"
     t.index ["model_id"], name: "index_chatbots_on_model_id"
     t.index ["user_id"], name: "index_chatbots_on_user_id"

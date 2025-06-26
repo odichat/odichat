@@ -2,6 +2,7 @@ class Chat < ApplicationRecord
   include OpenaiClient
 
   belongs_to :chatbot
+  belongs_to :contact, optional: true
 
   has_many :messages, dependent: :destroy
 

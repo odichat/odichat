@@ -4,6 +4,7 @@ class Chatbots::ChatsController < Chatbots::BaseController
   # GET /chats or /chats.json
   def index
     @chats = @chatbot.chats
+      .includes(:contact)
       .joins(:messages)
       .where(source: "whatsapp")
       .select("chats.*, MAX(messages.created_at) AS last_message_at")
@@ -53,6 +54,6 @@ class Chatbots::ChatsController < Chatbots::BaseController
   end
 
   def chat_params
-    params.permit(:chatbot_id, :source)
+    params.permit(:chatbot_id, :source, :contact_id)
   end
 end

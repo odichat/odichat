@@ -41,4 +41,8 @@ module Whatsapp::IncomingMessageServiceHelpers
   def contact_phone_number
     @processed_params[:messages].first[:from]
   end
+
+  def contact_name
+    @processed_params[:contacts].first[:profile][:name]
+  end
 end

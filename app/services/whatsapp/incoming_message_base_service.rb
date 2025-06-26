@@ -24,7 +24,8 @@ class Whatsapp::IncomingMessageBaseService
     return unless @waba
     return handle_unprocessable_message if unprocessable_message_type?(message_type)
 
-    find_chat_or_create_by_contact_phone_number
+    find_or_create_contact
+    find_or_create_chat
     create_messages
   end
 
@@ -34,11 +35,24 @@ class Whatsapp::IncomingMessageBaseService
     Rails.logger.error "Waba not found for BUSINESS PHONE NUMBER ID: #{@processed_params[:metadata][:phone_number_id]}"
   end
 
-  def find_chat_or_create_by_contact_phone_number
-    @chat = @waba.chatbot.chats.find_or_create_by(
-      contact_phone: contact_phone_number,
+  def find_or_create_chat
+    @chat = @contact.chat || @contact.create_chat(
+      chatbot: @waba.chatbot,
       source: "whatsapp"
     )
+  end
+
+  def find_or_create_contact
+    @contact = @waba.chatbot.contacts.find_by(phone_number: contact_phone_number)
+    if @contact.present?
+      # Update contact name if it's not set
+      if @contact.name.blank? && contact_name.present?
+        @contact.update(name: contact_name)
+      end
+    else
+      # Create contact if it doesn't exist
+      @contact = @waba.chatbot.contacts.create!(phone_number: contact_phone_number, name: contact_name)
+    end
   end
 
   def create_messages

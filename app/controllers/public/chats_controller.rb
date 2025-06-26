@@ -24,6 +24,6 @@ class Public::ChatsController < ApplicationController
   end
 
   def chat_params
-    params.require(:chat).permit(:chatbot_id, :source)
+    params.require(:chat).permit(:chatbot_id, :source, :contact_id)
   end
 end

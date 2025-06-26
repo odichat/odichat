@@ -7,7 +7,7 @@
             data: { turbo_stream: true, turbo_frame: "chat_details", turbo_prefetch: "false" } do %>
             <div class="flex-grow">
               <h3 class="text-lg font-medium">
-                +<%= chat.contact_phone %>
+                <%= chat.contact.name || "+" + chat.contact.phone_number %>
               </h3>
               <div class="flex items-center text-sm text-gray-500">
                 <% if chat.messages.last.read? %>
@@ -19,7 +19,7 @@
                 <p class="text-sm truncate"><%= chat.messages.last.content.truncate(32) %></p>
               </div>
             </div>
-            <span class="text-xs text-gray-400">12:37 PM</span>
+            <span class="text-xs text-gray-400"><%= chat_message_timestamp(chat.messages.last) %></span>
         <% end %>
       </li>
     <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_205359) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_26_133016) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -55,12 +55,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_205359) do
 
   create_table "chats", force: :cascade do |t|
     t.integer "chatbot_id", null: false
-    t.string "contact_phone"
     t.string "source", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "previous_response_id"
+    t.integer "contact_id"
     t.index ["chatbot_id"], name: "index_chats_on_chatbot_id"
+    t.index ["contact_id"], name: "index_chats_on_contact_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.integer "chatbot_id", null: false
+    t.string "phone_number", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id", "phone_number"], name: "index_contacts_on_chatbot_id_and_phone_number", unique: true
+    t.index ["chatbot_id"], name: "index_contacts_on_chatbot_id"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -259,6 +270,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_205359) do
   add_foreign_key "chatbots", "models"
   add_foreign_key "chatbots", "users"
   add_foreign_key "chats", "chatbots"
+  add_foreign_key "chats", "contacts"
+  add_foreign_key "contacts", "chatbots"
   add_foreign_key "documents", "chatbots"
   add_foreign_key "messages", "chats"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"

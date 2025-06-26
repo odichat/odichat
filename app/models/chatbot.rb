@@ -6,6 +6,7 @@ class Chatbot < ApplicationRecord
   has_one :shareable_link, dependent: :destroy
 
   has_many :chats, dependent: :destroy
+  has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
 
   validates :model_id, presence: true

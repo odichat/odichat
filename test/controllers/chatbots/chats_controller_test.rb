@@ -17,7 +17,7 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create chat" do
     assert_difference("Chat.count") do
-      post chats_url, params: { chat: { chatbot_id: @chat.chatbot_id, contact_phone: @chat.contact_phone, source: @chat.source, thread_id: @chat.thread_id } }
+      post chats_url, params: { chat: { chatbot_id: @chat.chatbot_id, source: @chat.source, thread_id: @chat.thread_id } }
     end
 
     assert_redirected_to chat_url(Chat.last)

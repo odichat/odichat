@@ -20,7 +20,7 @@
         </div>
         <div class="flex gap-4 max-h-[500px]">
           <%= render "chatbots/chats/chat_list", chats: @chats, chatbot: @chatbot %>
-          <div class="p-4 w-3/5 max-h-[500px] min-h-[500px]" data-controller="chat-scroll">
+          <div class="p-4 w-3/5 max-h-[500px] min-h-[500px] overflow-y-scroll" data-controller="chat-scroll">
             <%= turbo_frame_tag "chat_messages" do %>
               <%= render "chatbots/chats/chat", chat: @chat %>
             <% end %>

@@ -20,6 +20,7 @@ servers:
 proxy:
   ssl: true
   host: dashboard.odichat.app
+  forward_headers: true
 
 # Credentials for your image host.
 registry:
@@ -35,6 +36,7 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
@@ -49,7 +51,9 @@ env:
 
     # Match this to any external database server to configure Active Record correctly
     # Use odisea-db for a db accessory server on same machine via local kamal docker network.
-    # DB_HOST: 192.168.0.2
+    DB_HOST: odisea-db
+    POSTGRES_USER: odisea
+    POSTGRES_DB: odisea_production
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
@@ -94,7 +98,18 @@ builder:
 #   user: app
 
 # Use accessory services (secrets come from .kamal/secrets).
-# accessories:
+accessories:
+  db:
+    image: postgres:17.5
+    host: 5.78.45.114
+    env:
+      clear:
+        POSTGRES_USER: odisea
+        POSTGRES_DB: odisea_production
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2

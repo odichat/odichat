@@ -4,7 +4,7 @@ class Tools::FromUsdToVesService < Tools::BaseService
   end
 
   def description
-    "Use this function when the user asks you to convert a USD price to Venezuelan bolivares (VES)(also known as Bs)."
+    "Use this function when the user asks explicitly to convert a USD price to Venezuelan bolivares (VES), e.g. 'cuanto es ese precio en bolivares?', 'cuanto cuesta en bolivares?'. Never call this tool if the user is NOT asking for a price conversion."
   end
 
   def parameters
@@ -13,10 +13,10 @@ class Tools::FromUsdToVesService < Tools::BaseService
       properties: {
         usd_price: {
           type: "string",
-          description: "The price number in USD to convert to Venezuelan bolivares (VES)(also known as Bs)",
+          description: "The price number in USD to convert to Venezuelan bolivares"
         }
       },
-      required: ["usd_price"],
+      required: [ "usd_price" ],
       additionalProperties: false
     }
   end

@@ -21,9 +21,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
     handle_response(response)
   rescue Faraday::BadRequestError => e
-    Rails.logger.error("Error generating assistant response for Chat ##{chat.id}: #{e.message}")
-    Rails.logger.error("Request Parameters: #{parameters.to_json}")
-    Rails.logger.error("Response Body: #{e.response[:body]}") if e.response
+    log_error(e)
     raise
   end
 
@@ -98,5 +96,14 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   def update_chat_previous_response_id(response)
     response_id = response.dig("id")
     chat.update!(previous_response_id: response_id)
+  end
+
+  private
+
+  def log_error(error)
+    Rails.logger.error("Error generating assistant response for Chat ##{chat.id}: #{error.message}")
+    Rails.logger.error("Request Parameters: #{parameters.to_json}")
+    Rails.logger.error("Response Body: #{error.response[:body]}") if error.response
+    Sentry.capture_exception(error)
   end
 end

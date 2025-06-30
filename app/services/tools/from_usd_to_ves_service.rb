@@ -26,13 +26,16 @@ class Tools::FromUsdToVesService < Tools::BaseService
     uri = URI.parse("https://ve.dolarapi.com/v1/dolares/oficial")
     response = Net::HTTP.get_response(uri)
 
-    if response.is_a?(Net::HTTPSuccess)
+    if query.present? && response.is_a?(Net::HTTPSuccess)
       data = JSON.parse(response.body)
       rate = data["promedio"].to_f
       (query * rate).round(2)
+    elsif query.blank?
+      Rails.logger.error("No `usd_price` provided when calling `convert_price_from_usd_to_ves` tool")
+      "No `usd_price` provided"
     else
       Rails.logger.error("Failed to fetch VES rate: #{response.code} #{response.body}")
-      nil
+      "Error fetching VES rate"
     end
   end
 end

@@ -11,16 +11,20 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def generate_response
-    response = client.responses.create(
-      parameters: {
-        model: model.name,
-        input: @input_messages,
-        tools: @tool_registry&.registered_tools || [],
-        previous_response_id: chat.previous_response_id
-      }
-    )
+    parameters = {
+      model: model.name,
+      input: @input_messages,
+      tools: @tool_registry&.registered_tools || [],
+      previous_response_id: chat.previous_response_id
+    }
+    response = client.responses.create(parameters: parameters)
 
     handle_response(response)
+  rescue Faraday::BadRequestError => e
+    Rails.logger.error("Error generating assistant response for Chat ##{chat.id}: #{e.message}")
+    Rails.logger.error("Request Parameters: #{parameters.to_json}")
+    Rails.logger.error("Response Body: #{e.response[:body]}") if e.response
+    raise
   end
 
   def handle_response(response)

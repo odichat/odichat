@@ -4,7 +4,9 @@ class Llm::BaseOpenAiService
   attr_reader :client, :model
 
   def initialize(model_id: nil)
-    @client = OpenAI::Client.new
+    @client = OpenAI::Client.new do |f|
+      f.response :logger, Logger.new($stdout), bodies: true
+    end
     setup_model(model_id)
   rescue => e
     raise "Failed to initialize OpenAI client: #{e.message}"

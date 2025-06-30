@@ -21,7 +21,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
     handle_response(response)
   rescue Faraday::BadRequestError => e
-    log_error(e)
+    log_error(e, parameters)
     raise
   end
 
@@ -100,7 +100,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
   private
 
-  def log_error(error)
+  def log_error(error, parameters)
     Rails.logger.error("Error generating assistant response for Chat ##{chat.id}: #{error.message}")
     Rails.logger.error("Request Parameters: #{parameters.to_json}")
     Rails.logger.error("Response Body: #{error.response[:body]}") if error.response

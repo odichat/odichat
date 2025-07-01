@@ -92,7 +92,7 @@ gem "flipper-active_record", "~> 1.3"
 
 gem "sentry-ruby", "~> 5.23"
 
-gem "sentry-rails", "~> 5.23"
+gem "sentry-rails", "~> 5.26"
 
 gem "after_party", "~> 2.0"
 

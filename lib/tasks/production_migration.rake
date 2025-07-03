@@ -295,7 +295,7 @@ namespace :db do
 
     puts "🚨 PRODUCTION MIGRATION STARTING"
     puts "This will migrate your production data from SQLite to PostgreSQL"
-    puts "=" * 60
+    puts "============================================================"
 
     # Same logic as test, but with production-specific paths and safeguards
     sqlite_db_path = Rails.root.join("storage", "production.sqlite3")
@@ -322,12 +322,51 @@ namespace :db do
     require "sqlite3"
     sqlite_db = SQLite3::Database.new(sqlite_db_path.to_s)
 
-    # Get tables to migrate
-    tables = sqlite_db.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    # **FIXED: Define tables in dependency order**
+    tables_in_order = [
+      # Independent tables first
+      "models",
+      "users",
+      "flipper_features",
+      "flipper_gates",
+      "task_records",
+
+      # Pay tables (independent)
+      "pay_customers",
+      "pay_merchants",
+      "pay_payment_methods",
+      "pay_subscriptions",
+      "pay_charges",
+      "pay_webhooks",
+
+      # Active Storage (independent)
+      "active_storage_blobs",
+      "active_storage_attachments",
+      "active_storage_variant_records",
+
+      # Chatbot and its dependencies
+      "chatbots",        # depends on users
+      "contacts",        # depends on chatbots
+      "documents",       # depends on chatbots
+      "vector_stores",   # depends on chatbots
+      "wabas",          # depends on chatbots
+      "shareable_links", # depends on chatbots
+      "chats",          # depends on chatbots, optionally contacts
+      "messages"        # depends on chats
+    ]
+
+    # Filter to only include tables that exist
+    existing_tables = sqlite_db.execute("SELECT name FROM sqlite_master WHERE type='table'")
       .map(&:first)
       .reject { |table| %w[schema_migrations ar_internal_metadata sqlite_sequence].include?(table) }
 
-    puts "📋 Found #{tables.length} tables to migrate: #{tables.join(', ')}"
+    tables_to_migrate = tables_in_order.select { |table| existing_tables.include?(table) }
+    additional_tables = existing_tables - tables_to_migrate
+
+    # Add any additional tables at the end
+    tables_to_migrate += additional_tables
+
+    puts "📋 Found #{tables_to_migrate.length} tables to migrate: #{tables_to_migrate.join(', ')}"
 
     # Define problematic columns (same as production)
     boolean_columns = {
@@ -353,7 +392,7 @@ namespace :db do
       migration_success = true
 
       begin
-        tables.each do |table|
+        tables_to_migrate.each do |table|
           log.puts "\n📋 Processing table: #{table}"
           puts "📋 Processing table: #{table}"
 
@@ -488,12 +527,11 @@ namespace :db do
       all_match = true
       sqlite_db = SQLite3::Database.new(sqlite_db_path.to_s)
 
-      tables.each do |table|
+      tables_to_migrate.each do |table|
         sqlite_count = sqlite_db.execute("SELECT COUNT(*) FROM #{table}").first.first
         pg_count = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM #{table}").first["count"]
 
-        # Allow for small differences due to data corruption/invalid data
-        match = (sqlite_count == pg_count) || (pg_count >= sqlite_count * 0.95)
+        match = (sqlite_count == pg_count)
         all_match = false unless match
 
         status = match ? "✅" : "❌"
@@ -503,18 +541,18 @@ namespace :db do
 
       sqlite_db.close
 
-      if migration_success && all_match
-        log.puts "\n🎉 MIGRATION COMPLETED SUCCESSFULLY!"
-        puts "\n🎉 MIGRATION COMPLETED SUCCESSFULLY!"
+      if all_match && migration_success
+        puts "\n🎉 PRODUCTION MIGRATION SUCCESSFUL!"
+        log.puts "\n🎉 PRODUCTION MIGRATION SUCCESSFUL!"
       else
-        log.puts "\n💥 MIGRATION FAILED - CHECK LOGS AND ROLLBACK"
         puts "\n💥 MIGRATION FAILED - CHECK LOGS AND ROLLBACK"
+        log.puts "\n💥 MIGRATION FAILED - CHECK LOGS AND ROLLBACK"
       end
 
-      log.puts "\n📅 Migration completed at: #{Time.current}"
+      puts "📄 Migration log saved to: #{log_file}"
+      log.puts "📄 Migration log saved to: #{log_file}"
     end
 
-    puts "📄 Migration log saved to: #{log_file}"
     puts "\n🎉 PRODUCTION MIGRATION COMPLETED"
   end
 

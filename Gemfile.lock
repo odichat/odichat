@@ -297,6 +297,7 @@ GEM
       racc
     pay (8.3.0)
       rails (>= 6.0.0)
+    pg (1.5.9)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -542,6 +543,7 @@ DEPENDENCIES
   kamal
   mission_control-jobs
   pay (~> 8.0)
+  pg (~> 1.5)
   propshaft
   puma (>= 5.0)
   pundit (~> 2.5)

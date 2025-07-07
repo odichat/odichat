@@ -97,8 +97,19 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def update_chat_previous_response_id(response)
+    # If message is older than 24 hours, reset the previous response id
+    # We don't want to have memory of previous conversations.
+    if should_reset_previous_response_id?
+      chat.update!(previous_response_id: nil)
+      return
+    end
+
     response_id = response.dig("id")
     chat.update!(previous_response_id: response_id)
+  end
+
+  def should_reset_previous_response_id?
+    chat.messages.any? && chat.messages.last.created_at > 24.hours.ago
   end
 
   private

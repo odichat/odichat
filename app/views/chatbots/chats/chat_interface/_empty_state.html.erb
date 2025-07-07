@@ -1,0 +1,11 @@
+<div class="p-8 min-h-[400px] w-full h-full flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center gap-4">
+  <% if @chatbot.waba.present? %>
+    <p class="text-center text-md text-gray-800"><%= t('chatbots.chats.chat_interface.empty_state.empty_state_waba_present') %></p>
+    <%= icon "chat-bubble-left", variant: "outline" %>
+  <% else %>
+    <p class="text-center text-md text-gray-800 text-md max-w-md"><%= t('chatbots.chats.chat_interface.empty_state.empty_state_no_waba') %></p>
+    <%= link_to t('chatbots.chats.chat_interface.empty_state.connect_waba_button'), chatbot_integrations_path(@chatbot), class: "btn btn-primary" %>
+  <% end %>
+  </div>
+</div>

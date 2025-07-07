@@ -1,0 +1,10 @@
+<div class="card bg-base-100 shadow-md">
+    <div class="card-body p-0 gap-0 border-b-0 shadow-none">
+      <% if @chats.any? %>
+        <%= render "chatbots/chats/chat_interface/header" %>
+        <%= render "chatbots/chats/chat_interface/body" %>
+      <% else %>
+        <%= render "chatbots/chats/chat_interface/empty_state" %>
+      <% end %>
+    </div>
+  </div>

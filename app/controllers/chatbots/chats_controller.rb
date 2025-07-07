@@ -1,17 +1,27 @@
 class Chatbots::ChatsController < Chatbots::BaseController
+  include Pagy::Backend
   before_action :set_chat, only: %i[ show ]
 
   # GET /chats or /chats.json
   def index
-    @chats = @chatbot.chats
-      .includes(:contact)
-      .joins(:messages)
-      .where(source: "whatsapp")
-      .select("chats.*, MAX(messages.created_at) AS last_message_at")
-      .group("chats.id")
-      .order("MAX(messages.created_at) DESC")
-      .limit(20)
+    @pagy, @chats = pagy_countless(
+      @chatbot.chats
+        .includes(:contact)
+        .joins(:messages)
+        .where(source: "whatsapp")
+        .select("chats.*, MAX(messages.created_at) AS last_message_at")
+        .group("chats.id")
+        .order("last_message_at DESC")
+        .distinct,
+      items: 20
+    )
+
     @chat = @chats.first
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   # GET /chats/1 or /chats/1.json
@@ -22,7 +32,7 @@ class Chatbots::ChatsController < Chatbots::BaseController
         render turbo_stream:
         [
           turbo_stream.update("chat_messages", partial: "chatbots/chats/chat", locals: { chat: @chat }),
-          turbo_stream.update("chat_details", partial: "chatbots/chats/chat_header_info", locals: { chat: @chat })
+          turbo_stream.update("chat_details", partial: "chatbots/chats/chat_interface/header_info", locals: { chat: @chat })
         ]
       end
     end

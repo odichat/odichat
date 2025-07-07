@@ -3,6 +3,6 @@
     <%= t('chatbots.chats.chat_header_info.customer_number_label') %>
   </p>
   <p class="flex items-center gap-2 text-gray-500">
-    <%= icon "phone", variant: "outline", class: "size-5" %> +<%= chat.contact.phone_number %>
+    <%= icon "phone", variant: "outline", class: "size-5" %> +<%= @chat&.contact&.phone_number %>
   </p>
 </div>

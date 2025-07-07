@@ -1,0 +1,6 @@
+<div class="bg-white shadow-md rounded-lg overflow-y-scroll min-w-[370px] max-h-[100%] h-full">
+  <ul class="menu rounded-box w-full" id="chat-list" data-controller="active-chat">
+    <%= render partial: "chatbots/chats/chat_interface/chat_list_item", collection: @chats, as: :chat %>
+  </ul>
+  <%= render "chatbots/chats/chat_interface/load_more", chatbot: @chatbot, pagy: @pagy %>
+</div>

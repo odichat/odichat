@@ -125,8 +125,6 @@ class GenerateAssistantResponseJob < ApplicationJob
     uri = URI.parse("https://ve.dolarapi.com/v1/dolares/oficial")
     response = Net::HTTP.get_response(uri)
 
-    binding.break
-
     if response.is_a?(Net::HTTPSuccess)
       data = JSON.parse(response.body)
       rate = data["promedio"].to_f

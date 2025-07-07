@@ -103,3 +103,5 @@ gem "redcarpet", "~> 3.6"
 gem "resend", "~> 0.22.0"
 
 gem "discordrb", "~> 3.5"
+
+gem "pagy", "~> 9.3"

@@ -1,5 +1,5 @@
 <div class="overflow-y-auto flex flex-col gap-4">
-  <% chat.messages.order(created_at: :asc).each do |message| %>
+  <% @chat.messages.order(created_at: :asc).each do |message| %>
     <%= render "messages/message", message: message %>
   <% end %>
-</div> 
+</div>

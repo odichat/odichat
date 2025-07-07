@@ -70,7 +70,10 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
   def register_tools
     @tool_registry = Tools::RegistryService.new
-    @tool_registry.register_tool(Tools::FromUsdToVesService)
+    # TODO: Remove this once we have a way to register tools for each user
+    unless chatbot.user.email == "ferronortehomeventas@gmail.com"
+      @tool_registry.register_tool(Tools::FromUsdToVesService)
+    end
     @tool_registry.register_tool(Tools::FileSearchService, vector_store_id: chatbot.vector_store.vector_store_id)
   end
 

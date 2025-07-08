@@ -4,8 +4,9 @@ module Whatsapp::IncomingMessageServiceHelpers
     @processed_params ||= params
   end
 
-  def process_statuses
-    Rails.logger.info("Processing statuses: #{processed_params.inspect}")
+  def find_message_by_source_id(source_id)
+    return unless source_id
+    @message = Message.find_by(source_id: source_id)
   end
 
   def message_type

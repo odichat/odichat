@@ -20,11 +20,12 @@ class SendReplyJob < ApplicationJob
   end
 
   def send_message_to_whatsapp
-    Whatsapp::SendMessageService.new(access_token: waba.access_token).send_message(
+    response = Whatsapp::SendMessageService.new(access_token: waba.access_token).send_message(
       sender_id: waba.phone_number_id.to_i,
       recipient_number: chat.contact.phone_number.to_i,
       message: message.content
     )
+    message.update(source_id: response.messages&.first&.id)
   rescue WhatsappSdk::Api::Responses::HttpResponseError => e
     error_message = "SendReplyJob failed for message_id: #{message.id}, and WABA #{waba.id} with error: #{e.message} for sender_id: #{waba.phone_number_id.to_i} and recipient_number: #{chat.contact.phone_number.to_i}"
     Sentry.capture_exception(e)

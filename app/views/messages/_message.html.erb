@@ -1,4 +1,4 @@
-<div id="<%= dom_id(message) %>">
+<div id="message_<%= message.id %>">
   <% if message.sender == "user" %>
     <div class="chat chat-end">
       <div class="chat-bubble chat-bubble-primary"><%= markdown(message.content) %></div>

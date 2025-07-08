@@ -1,4 +1,5 @@
-<div class="overflow-y-auto flex flex-col gap-4">
+<%= turbo_stream_from "chat_#{@chat.id}_messages" %>
+<div class="overflow-y-auto flex flex-col gap-4" id="chat_messages_<%= @chat.id %>">
   <% @chat.messages.order(created_at: :asc).each do |message| %>
     <%= render "messages/message", message: message %>
   <% end %>

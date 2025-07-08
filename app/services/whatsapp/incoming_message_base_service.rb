@@ -29,6 +29,20 @@ class Whatsapp::IncomingMessageBaseService
     create_messages
   end
 
+  def process_statuses
+    return unless find_message_by_source_id(@processed_params[:statuses].first[:id])
+    update_message_with_status(@message, @processed_params[:statuses].first)
+  end
+
+  def update_message_with_status(message, status)
+    message.status = Message.statuses[status[:status].to_sym]
+    if status[:status] == "failed" && status[:errors].present?
+      error = status[:errors]&.first
+      message.external_error = "#{error[:code]}: #{error[:title]}"
+    end
+    message.save!
+  end
+
   def set_waba
     @waba = ::Waba.includes(:chatbot).find_by(phone_number_id: @processed_params[:metadata][:phone_number_id])
   rescue ActiveRecord::RecordNotFound

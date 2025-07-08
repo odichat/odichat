@@ -1,0 +1,4 @@
+<div class="flex items-center text-sm text-gray-500" id="chat_list_item_message_preview_<%= chat.id %>">
+  <%= render "chatbots/chats/chat_interface/chat_list_item/status", chat: chat, last_message: chat.messages.last %>
+  <p class="text-sm truncate"><%= chat.messages.last.content.truncate(32) %></p>
+</div>

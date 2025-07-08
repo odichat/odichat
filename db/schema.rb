@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_08_153426) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_201927) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,6 +62,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_153426) do
     t.datetime "updated_at", null: false
     t.string "previous_response_id"
     t.integer "contact_id"
+    t.boolean "intervention_enabled", default: false, null: false
+    t.datetime "intervened_at"
     t.index ["chatbot_id"], name: "index_chats_on_chatbot_id"
     t.index ["contact_id"], name: "index_chats_on_contact_id"
   end
@@ -111,6 +113,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_153426) do
     t.integer "status"
     t.json "content_attributes", default: {}
     t.string "source_id"
+    t.integer "message_type", default: 0
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 

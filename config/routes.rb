@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   resources :chatbots do
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
-    resources :chats, only: [ :index, :show, :create ], controller: "chatbots/chats"
+    resources :chats, only: [ :index, :show, :create ], controller: "chatbots/chats" do
+      post :intervene, on: :member
+    end
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
     resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
     resource :integrations, only: [ :show ], controller: "chatbots/integrations" do

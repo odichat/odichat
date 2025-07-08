@@ -23,6 +23,9 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   rescue Faraday::BadRequestError => e
     log_error(e, parameters)
     raise
+  rescue OpenAI::Error => e
+    log_error(e, parameters)
+    raise
   end
 
   def handle_response(response)
@@ -41,6 +44,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   def persist_message(response_message, sender = "assistant")
     chat.messages.create!(
       sender: sender,
+      message_type: :auto,
       content: response_message
     )
   end

@@ -8,6 +8,28 @@ class Chat < ApplicationRecord
 
   validates :source, presence: true
 
+  def toggle_intervention!
+    if intervention_enabled?
+      disable_intervention!
+    else
+      enable_intervention!
+    end
+  end
+
+  def enable_intervention!
+    update(
+      intervention_enabled: true,
+      intervened_at: Time.current
+    )
+  end
+
+  def disable_intervention!
+    update(
+      intervention_enabled: false,
+      intervened_at: nil
+    )
+  end
+
   def whatsapp_channel?
     source == "whatsapp"
   end

@@ -84,6 +84,7 @@ class Whatsapp::IncomingMessageBaseService
   def create_message(message)
     @message = @chat.messages.build(
       sender: "user",
+      message_type: nil,
       content: message_content(message)
     )
   end

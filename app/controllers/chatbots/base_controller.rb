@@ -1,7 +1,6 @@
 class Chatbots::BaseController < ApplicationController
   before_action :authenticate_user!
   before_action :set_chatbot
-  before_action :authorize_chatbot
 
   private
 
@@ -15,9 +14,5 @@ class Chatbots::BaseController < ApplicationController
         render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
       }
     end
-  end
-
-  def authorize_chatbot
-    authorize @chatbot
   end
 end

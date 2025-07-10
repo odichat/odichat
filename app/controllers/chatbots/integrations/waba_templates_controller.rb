@@ -1,6 +1,5 @@
 class Chatbots::Integrations::WabaTemplatesController < Chatbots::BaseController
   before_action :set_waba
-  skip_before_action :authorize_chatbot, only: [ :index, :destroy_message_template ]
 
   def index
     @templates = @waba.message_templates.records

@@ -1,5 +1,4 @@
 class Chatbots::Integrations::WabasController < Chatbots::BaseController
-  skip_before_action :authorize_chatbot
   before_action :set_waba, only: [ :update, :destroy, :subscribe, :unsubscribe ]
   before_action :authorize_waba, only: [ :update, :destroy, :subscribe, :unsubscribe ]
 

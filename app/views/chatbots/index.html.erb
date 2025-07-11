@@ -30,8 +30,8 @@
                 <% end %>
               </figure>
               <div class="p-4">
-                <h3 class="card-title text-base-content"><%= chatbot.name %></h3>
-              </div>
+                <h3 class="card-title text-base-content"><%= chatbot&.name || "Chatbot #{index + 1}" %></h3>
+              </div>  
             <% end %>
           </div>
         <% end %>

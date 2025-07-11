@@ -4,8 +4,8 @@
     <%= f.hidden_field :sender, value: "assistant" %>
     <%= f.hidden_field :message_type, value: :manual %>
     <div class="flex flex-grow gap-1">
-      <%= f.text_field :content, class: "input w-full", disabled: !chat.intervention_enabled?, placeholder: "Escribe tu mensaje aquí..." %>
-      <%= button_tag type: "submit", class: "btn btn-primary hover:bg-primary/80", disabled: !chat.intervention_enabled? do %>
+      <%= f.text_field :content, class: "input w-full", disabled: (!chat.intervention_enabled? || !chat.whatsapp_reply_window_open?), placeholder: "Escribe tu mensaje aquí..." %>
+      <%= button_tag type: "submit", class: "btn btn-primary hover:bg-primary/80", disabled: (!chat.intervention_enabled? || !chat.whatsapp_reply_window_open?) do %>
         <%= icon "paper-airplane", variant: "outline", class: "size-4" %>
       <% end %>
     </div>

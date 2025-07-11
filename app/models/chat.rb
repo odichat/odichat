@@ -41,4 +41,8 @@ class Chat < ApplicationRecord
   def public_playground_channel?
     source == "public_playground"
   end
+
+  def whatsapp_reply_window_open?
+    whatsapp_channel? && (messages.where(sender: "user").last&.created_at > 24.hours.ago)
+  end
 end

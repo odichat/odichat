@@ -113,7 +113,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def should_reset_previous_response_id?
-    chat.messages.any? && chat.messages.last.created_at > 24.hours.ago
+    chat.messages.any? && chat.messages.last.created_at < 24.hours.ago
   end
 
   private

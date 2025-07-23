@@ -122,6 +122,21 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
     Rails.logger.error("Error generating assistant response for Chat ##{chat.id}: #{error.message}")
     Rails.logger.error("Request Parameters: #{parameters.to_json}") if parameters.present?
     Rails.logger.error("Response Body: #{error.response[:body]}") if error.response.present?
+    send_discord_notification(error, parameters)
     Sentry.capture_exception(error)
+  end
+
+  def send_discord_notification(error, parameters = {})
+    webhook_url = Rails.application.credentials.dig(:discord, :webhook_url)
+    return unless webhook_url.present?
+    client = Discordrb::Webhooks::Client.new(url: webhook_url)
+    client.execute do |builder|
+      builder.content = <<~CONTENT
+        ## Error generating assistant response for Chat ##{chat.id}
+        - Error: **#{error.message}**
+        - Request Parameters: **#{parameters.to_json}**
+        - Response Body: **#{error.response[:body]}**
+      CONTENT
+    end
   end
 end

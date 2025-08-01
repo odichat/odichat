@@ -1,4 +1,6 @@
 class Llm::AssistantResponseService < Llm::BaseOpenAiService
+  DEFAULT_MODEL = "gpt-4o-mini"
+
   attr_reader :input_message, :input_messages, :system_message, :chat, :chatbot
 
   def initialize(input_message:, chat:, chatbot:)
@@ -12,7 +14,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
   def generate_response
     parameters = {
-      model: model.name,
+      model: DEFAULT_MODEL,
       input: @input_messages,
       tools: @tool_registry&.registered_tools || [],
       previous_response_id: chat.previous_response_id

@@ -2,19 +2,24 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
   queue_as :default
 
   def perform(document_ids)
-    documents = Document.where(id: document_ids)
+    documents = Document.includes(file_attachment: :blob).where(id: document_ids)
     return if documents.empty?
 
-    chatbot = documents.first.chatbot
-    successful_uploads = []
-    failed_uploads = []
+    documents.group_by(&:chatbot).each_value do |documents_for_chatbot|
+      chatbot = documents_for_chatbot.first.chatbot
+      successful_uploads = []
+      failed_uploads = []
 
-    begin
-      documents.each do |document|
-        if process_document_upload(document)
-          successful_uploads << document
-        else
-          failed_uploads << document
+      documents_for_chatbot.each do |document|
+        next if document.file_id.present?
+        document.with_lock do
+          file_id = process_document_upload(document)
+          if file_id.present?
+            document.update!(file_id: file_id)
+            successful_uploads << file_id
+          else
+            failed_uploads << document.id
+          end
         end
       end
 
@@ -23,12 +28,17 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
       if failed_uploads.empty?
         flash_message = { notice: "Documents uploaded successfully." }
       else
-        flash_message = { alert: "Some documents failed to upload. Please check the logs for details." }
+        docs = Document.where(id: failed_uploads)
+        flash_message = { alert: "Some documents failed to upload: #{docs.map(&:file).map(&:filename).join(", ")}." }
       end
       notify_ui_of_status(chatbot, flash_message)
-    rescue StandardError => e
-      Rails.logger.error("Overall error in UploadDocumentsToOpenAiJob for chatbot #{chatbot.id}: #{e.message}")
-      notify_ui_of_status(chatbot, { alert: "An unexpected error occurred during document upload. Please try again." })
+    end
+  rescue => e
+    Rails.logger.error("UploadDocumentsToOpenAIJob error (job_id=#{job_id}): #{e.class}: #{e.message}")
+    # Attempt to notify all related chatbots for these documents, if any
+    related_chatbots = Document.where(id: document_ids).includes(:chatbot).map(&:chatbot).uniq.compact
+    related_chatbots.each do |cb|
+      notify_ui_of_status(cb, { alert: "An unexpected error occurred during document upload. Please try again." })
     end
   end
 
@@ -76,7 +86,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
       }
     end
     Turbo::StreamsChannel.broadcast_replace_to(
-      "sources",
+      [:sources, chatbot],
       target: "sources-form",
       partial: "chatbots/sources/form",
       locals: {
@@ -85,7 +95,7 @@ class UploadDocumentsToOpenAiJob < ApplicationJob
       }
     )
     Turbo::StreamsChannel.broadcast_replace_to(
-      "sources",
+      [:sources, chatbot],
       target: "flash",
       partial: "shared/flash_messages",
       locals: {

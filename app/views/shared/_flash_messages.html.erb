@@ -3,8 +3,9 @@
   <% if flash.any? %>
     <div class="fixed top-0 left-0 right-0 z-50 p-4 mx-auto max-w-3xl">
       <% flash.each do |type, message| %>
+        <% normalized_type = type.to_s %>
         <div class="fixed inset-x-0 top-0 flex items-end justify-right px-4 py-6 sm:p-6 justify-end z-30 pointer-events-none">
-          <div data-controller="alert" data-alert-dismiss-after-value="3000" class="max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative <%= type == "notice" ? "bg-[#5fcfdd] border-l-4 border-[#008c99] text-black" : "bg-[#ff9282] border-l-4 border-[#c95549] text-black" %> pointer-events-auto">
+          <div data-controller="alert" data-alert-dismiss-after-value="3000" class="max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative <%= normalized_type == "notice" ? "bg-[#5fcfdd] border-l-4 border-[#008c99] text-black" : "bg-[#ff9282] border-l-4 border-[#c95549] text-black" %> pointer-events-auto">
             <div class="p-2">
               <div class="flex items-start">
                 <div class="ml-3 w-0 flex-1 pt-0.5">

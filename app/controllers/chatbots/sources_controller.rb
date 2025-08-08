@@ -31,7 +31,23 @@ class Chatbots::SourcesController < Chatbots::BaseController
         UploadDocumentsToOpenAiJob.perform_later(document_ids)
 
         format.html { redirect_to chatbots_source_path(@chatbot), notice: "Files uploaded successfully. Processing in background..." }
-        format.turbo_stream
+        format.turbo_stream do
+          flash.now[:notice] = "Files uploaded successfully. Processing in background..."
+          # Re-render the form and flash to reset submit button/loading state immediately
+          @documents = @chatbot.documents.map do |document|
+            {
+              id: document.id,
+              filename: document.file.filename.to_s,
+              file_id: document.file_id,
+              size: document.file.byte_size,
+              signed_id: document.file.signed_id
+            }
+          end
+          render turbo_stream: [
+            turbo_stream.replace("sources-form", partial: "chatbots/sources/form", locals: { chatbot: @chatbot, documents: @documents }),
+            turbo_stream.update("flash", partial: "shared/flash_messages")
+          ]
+        end
       else
         format.html { redirect_to chatbots_source_path(@chatbot), alert: "No files uploaded." }
         format.turbo_stream {

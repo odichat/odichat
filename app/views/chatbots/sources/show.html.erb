@@ -1,4 +1,4 @@
-<%= turbo_stream_from "sources" %>
+<%= turbo_stream_from [:sources, @chatbot] %>
 
 <% content_for :sub_navigation do %>
   <%= render "shared/chatbot_header" %>

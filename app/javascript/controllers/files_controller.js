@@ -22,6 +22,12 @@ export default class extends Controller {
         name: doc.filename,
         size: doc.size
       }, null, doc.id)
+      // Highlight existing docs differently depending on upload status
+      if (doc.file_id) {
+        card.classList.add('bg-success/10')
+      } else {
+        card.classList.add('bg-warning/10')
+      }
       this.containerTarget.appendChild(card)
     })
   }
@@ -73,7 +79,6 @@ export default class extends Controller {
     
     if (existingFileId) {
       card.dataset.existingFileId = existingFileId
-      card.classList.add('bg-success/10') // Add success background to existing files
     }
     
     card.querySelector('h3').textContent = file.name

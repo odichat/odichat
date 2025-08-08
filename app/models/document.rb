@@ -7,11 +7,6 @@ class Document < ApplicationRecord
 
   def upload_file(file_path, purpose = "user_data")
     response = openai_client.files.upload(parameters: { file: file_path, purpose: purpose })
-    puts "************************** RESPONSE"
-    puts response.inspect
-    Rails.logger.info "************************** RESPONSE"
-    Rails.logger.info response.inspect
-
     response["id"]
   end
 

@@ -3,6 +3,9 @@ class Document < ApplicationRecord
 
   belongs_to :chatbot
   has_one_attached :file
+
+  enum :status, { pending: 0, uploaded: 1, failed: 2, deleting: 3 }
+
   validates :file, content_type: [ "application/pdf", "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/html" ]
 
   def upload_file(file_path, purpose = "user_data")

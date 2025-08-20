@@ -1,5 +1,5 @@
 class Llm::AssistantResponseService < Llm::BaseOpenAiService
-  DEFAULT_MODEL = "gpt-4o-mini"
+  DEFAULT_MODEL = "gpt-4.1-nano-2025-04-14"
 
   attr_reader :input_message, :input_messages, :system_message, :chat, :chatbot
 

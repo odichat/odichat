@@ -30,40 +30,6 @@
       </button>
     </div>
   </div>
-  <!-- Model selection -->
-  <div class="form-control">
-    <label class="label">
-      <span class="label-text"><%= t('chatbots.playground.sidebar_form.model_label') %></span>
-    </label>
-    <div class="relative">
-      <%= f.collection_select :model_id, 
-          models, 
-          :id, 
-          :name, 
-          { selected: chatbot.model_id },
-          class: "cursor-pointer select select-bordered w-full focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" %>
-    </div>
-  </div>
-
-  <!-- Temperature slider -->
-  <div data-controller="range-slider" class="form-control">
-    <label class="label">
-      <span class="label-text"><%= t('chatbots.playground.sidebar_form.temperature_label') %></span>
-      <span class="label-text-alt tabular-nums" data-range-slider-target="display">
-        <%= chatbot.temperature %>
-      </span>
-    </label>
-    <%= f.range_field :temperature, 
-        min: 0, 
-        max: 2, 
-        step: 0.1, 
-        class: "w-full range range-xs range-primary focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20",
-        data: { 
-          "range-slider-target": "input",
-          action: "input->range-slider#updateDisplay"
-        },
-        value: chatbot.temperature %>
-  </div>
 
   <!-- System instructions -->
   <div class="form-control">

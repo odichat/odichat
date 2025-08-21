@@ -25,6 +25,9 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   rescue Faraday::BadRequestError => e
     log_error(e, parameters)
     raise "Faraday::BadRequestError: #{e.response.dig(:body)}"
+  rescue Faraday::ServerError => e
+    log_error(e, parameters)
+    raise e
   rescue OpenAI::Error => e
     log_error(e, parameters)
     raise "OpenAI::Error: #{e.message}"

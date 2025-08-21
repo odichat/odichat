@@ -26,6 +26,10 @@ class SendReplyJob < ApplicationJob
       message: message.content
     )
     message.update(source_id: response.messages&.first&.id)
+  rescue Whatsapp::DisplayNameApprovalError => e
+    # Notify user about display name approval needed
+    user = waba.chatbot.user
+    UserNotifierMailer.with(user: user, waba: waba).display_name_approval_needed.deliver_later
   rescue WhatsappSdk::Api::Responses::HttpResponseError => e
     error_message = "SendReplyJob failed for message_id: #{message.id}, and WABA #{waba.id} with error: #{e.message} for sender_id: #{waba.phone_number_id.to_i} and recipient_number: #{chat.contact.phone_number.to_i}"
     Sentry.capture_exception(e)

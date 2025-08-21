@@ -11,8 +11,13 @@ class Whatsapp::SendMessageService
       message: message
     )
   rescue WhatsappSdk::Api::Responses::HttpResponseError => e
-    Rails.logger.error("WhatsApp API Error: #{e.message}")
-    raise e
+    if e.message.match?(/"code"=>131037/)
+      # This error indicates that the display name needs approval
+      raise Whatsapp::DisplayNameApprovalError, e.message
+    else
+      Rails.logger.error("WhatsApp API Error: #{e.message}")
+      raise e
+    end
   end
 
   private

@@ -31,12 +31,19 @@ class Chatbot < ApplicationRecord
     return "" if !is_time_aware? || timezone.blank?
     <<~SYSTEM_INSTRUCTIONS
       #### Metadata
-      Current time is #{Time.now.in_time_zone(timezone).strftime("%H:%M")}.
+      - Current time is #{Time.now.in_time_zone(timezone).strftime("%H:%M")}.
     SYSTEM_INSTRUCTIONS
   end
 
   def is_time_aware?
     true
+  end
+
+  def additional_system_instructions
+    <<~SYSTEM_INSTRUCTIONS
+      - Do not include documents references or citations in your responses, here's an example: `【34:citation/reference"】`.
+      Anything that looks like a citation or reference should be removed from the response.
+    SYSTEM_INSTRUCTIONS
   end
 
   private

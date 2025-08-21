@@ -87,7 +87,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def system_message
-    system_instructions = chatbot.system_instructions + chatbot.time_aware_instructions
+    system_instructions = chatbot.system_instructions + chatbot.time_aware_instructions + chatbot.additional_system_instructions
     {
       role: "developer",
       content: system_instructions

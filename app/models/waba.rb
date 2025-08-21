@@ -147,6 +147,28 @@ class Waba < ApplicationRecord
     raise "Error unsubscribing: #{e}"
   end
 
+  def register_phone_number
+    uri = URI("https://graph.facebook.com/v22.0/#{self.phone_number_id}/register")
+
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Bearer #{self.access_token}"
+    request["Content-Type"] = "application/json"
+    request.body = {
+      messaging_product: "whatsapp",
+      pin: "000000"
+    }.to_json
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "Failed to register phone number: #{response.body}"
+    end
+
+    response
+  end
+
   private
 
   def start_upload_session(filename, size, content_type)

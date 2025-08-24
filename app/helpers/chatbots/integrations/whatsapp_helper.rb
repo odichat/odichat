@@ -1,4 +1,4 @@
-module Chatbots::Integrations::WabasHelper
+module Chatbots::Integrations::WhatsappHelper
   def whatsapp_card_styles
     "relative group cursor-pointer"
   end
@@ -7,8 +7,8 @@ module Chatbots::Integrations::WabasHelper
     "absolute -inset-1.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-500"
   end
 
-  def waba_connected?(chatbot)
-    chatbot.waba.present? && chatbot.waba.access_token.present?
+  def whatsapp_connected?(chatbot)
+    chatbot.whatsapp_inbox.present? && chatbot.whatsapp_inbox.channel.access_token.present?
   end
 
   def is_disabled?

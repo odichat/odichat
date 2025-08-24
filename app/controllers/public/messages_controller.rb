@@ -1,6 +1,7 @@
 class Public::MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
+    @message.inbox = @message.chat.inbox
     @chatbot = @message.chat.chatbot
 
     respond_to do |format|

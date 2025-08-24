@@ -3,8 +3,15 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
   before_action :set_public_url, only: [ :show ]
 
   def show
-    @chat = @chatbot.chats.where(source: "playground").last
-    @chat = @chatbot.chats.create!(source: "playground") if @chat.nil?
+    @chat = @chatbot.last_playground_chat
+    if @chat.nil?
+      @chatbot.send(:create_playground_resources)
+      @chat = @chatbot.last_playground_chat
+
+      unless @chat
+        redirect_to chatbots_path, alert: "Failed to create playground chat."
+      end
+    end
     @messages = @chat.messages.order(created_at: :asc)
   end
 

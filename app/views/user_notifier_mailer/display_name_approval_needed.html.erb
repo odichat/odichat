@@ -1,9 +1,9 @@
 <p>Hello <%= @user.name %>,</p>
 
-<p>Your WhatsApp number associated with chatbot <%= @waba.chatbot.name %> requires display name approval from Meta.</p>
+<p>Your WhatsApp number associated with chatbot <%= @channel.chatbot.name %> requires display name approval from Meta.</p>
 
 <p>
-  Please go to your <a href="https://business.facebook.com/latest/settings/whatsapp_account?business_id=<%= @waba.waba_id%>">WhatsApp Business Account</a> settings and follow the instructions in <a href="https://www.heltar.com/blogs/troubleshooting-whatsapp-api-error-131037-display-name-approval-required-cm5fcd3j8000gkg77yurinpkq">this guide</a> to get your display name approved.
+  Please go to your <a href="https://business.facebook.com/latest/settings/whatsapp_account?business_id=<%= @channel.business_account_id%>">WhatsApp Business Account</a> settings and follow the instructions in <a href="https://www.heltar.com/blogs/troubleshooting-whatsapp-api-error-131037-display-name-approval-required-cm5fcd3j8000gkg77yurinpkq">this guide</a> to get your display name approved.
 </p>
 
 <p>Thanks,<br>

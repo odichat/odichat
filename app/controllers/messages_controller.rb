@@ -26,6 +26,7 @@ class MessagesController < ApplicationController
   # POST /messages or /messages.json
   def create
     @message = Message.new(message_params)
+    @message.inbox = @message.chat.inbox
     @chatbot = @message.chat.chatbot
     authorize @message
 

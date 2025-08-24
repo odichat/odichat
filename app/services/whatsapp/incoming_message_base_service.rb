@@ -20,11 +20,12 @@ class Whatsapp::IncomingMessageBaseService
   private
 
   def process_messages
-    set_waba
-    return unless @waba
+    set_whatsapp_channel
+    return unless @whatsapp_channel
     return handle_unprocessable_message if unprocessable_message_type?(message_type)
 
     find_or_create_contact
+    find_or_create_contact_inbox
     find_or_create_chat
     create_messages
   end
@@ -43,21 +44,24 @@ class Whatsapp::IncomingMessageBaseService
     message.save!
   end
 
-  def set_waba
-    @waba = ::Waba.includes(:chatbot).find_by(phone_number_id: @processed_params[:metadata][:phone_number_id])
+  def set_whatsapp_channel
+    @whatsapp_channel = Channel::Whatsapp.find_by(phone_number_id: @processed_params[:metadata][:phone_number_id])
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.error "Waba not found for BUSINESS PHONE NUMBER ID: #{@processed_params[:metadata][:phone_number_id]}"
+    Rails.logger.error "Whatsapp channel not found for business_account_id: #{@processed_params[:metadata][:phone_number_id]}"
   end
 
   def find_or_create_chat
-    @chat = @contact.chat || @contact.create_chat(
-      chatbot: @waba.chatbot,
+    @chat = @contact_inbox.chats.last || @contact_inbox.chats.create!(
+      chatbot: @whatsapp_channel.chatbot,
+      inbox: @whatsapp_channel.inbox,
+      contact: @contact,
       source: "whatsapp"
     )
   end
 
   def find_or_create_contact
-    @contact = @waba.chatbot.contacts.find_by(phone_number: contact_phone_number)
+    @contact = @whatsapp_channel.chatbot.contacts.find_by(phone_number: contact_phone_number)
+
     if @contact.present?
       # Update contact name if it's not set
       if @contact.name.blank? && contact_name.present?
@@ -65,8 +69,15 @@ class Whatsapp::IncomingMessageBaseService
       end
     else
       # Create contact if it doesn't exist
-      @contact = @waba.chatbot.contacts.create!(phone_number: contact_phone_number, name: contact_name)
+      @contact = @whatsapp_channel.chatbot.contacts.create!(phone_number: contact_phone_number, name: contact_name)
     end
+  end
+
+  def find_or_create_contact_inbox
+    @contact_inbox = @contact.contact_inboxes.find_by(inbox: @whatsapp_channel.inbox, source_id: contact_source_id)
+    return if @contact_inbox.present?
+
+    @contact_inbox = @contact.contact_inboxes.create!(inbox: @whatsapp_channel.inbox, source_id: contact_source_id)
   end
 
   def create_messages
@@ -84,8 +95,9 @@ class Whatsapp::IncomingMessageBaseService
   def create_message(message)
     @message = @chat.messages.build(
       sender: "user",
-      message_type: nil,
-      content: message_content(message)
+      message_type: nil, # Only AI generated messages have a type [auto, manual]
+      content: message_content(message),
+      inbox: @whatsapp_channel.inbox,
     )
   end
 end

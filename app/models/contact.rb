@@ -1,7 +1,6 @@
 class Contact < ApplicationRecord
   belongs_to :chatbot
-  has_one :chat, dependent: :destroy
-
-  validates :phone_number, presence: true
-  validates :phone_number, uniqueness: { scope: :chatbot_id }
+  has_many :contact_inboxes, dependent: :destroy
+  has_many :inboxes, through: :contact_inboxes
+  has_many :chats, through: :contact_inboxes
 end

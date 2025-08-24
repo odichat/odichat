@@ -28,7 +28,7 @@ class WabasController < ApplicationController
     end
   rescue StandardError => e
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("waba-connection-loader", "") }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("whatsapp-connection-loader", "") }
       format.json { render json: { error: e.message }, status: :unprocessable_entity }
     end
   end

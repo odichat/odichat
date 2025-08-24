@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_24_140727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "channel_playground", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.jsonb "settings", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_channel_playground_on_chatbot_id"
+  end
+
+  create_table "channel_public_playground", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.jsonb "settings", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_channel_public_playground_on_chatbot_id"
+  end
+
+  create_table "channel_whatsapp", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.string "phone_number_id"
+    t.string "business_account_id"
+    t.string "access_token"
+    t.boolean "subscribed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_channel_whatsapp_on_chatbot_id"
+  end
+
   create_table "chatbots", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
@@ -64,8 +91,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
     t.integer "contact_id"
     t.boolean "intervention_enabled", default: false, null: false
     t.datetime "intervened_at"
+    t.bigint "inbox_id"
+    t.bigint "contact_inbox_id"
     t.index ["chatbot_id"], name: "index_chats_on_chatbot_id"
     t.index ["contact_id"], name: "index_chats_on_contact_id"
+    t.index ["contact_inbox_id"], name: "index_chats_on_contact_inbox_id"
+    t.index ["inbox_id"], name: "index_chats_on_inbox_id"
+  end
+
+  create_table "contact_inboxes", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.bigint "inbox_id", null: false
+    t.string "source_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_contact_inboxes_on_contact_id"
+    t.index ["inbox_id"], name: "index_contact_inboxes_on_inbox_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -104,6 +145,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
+  create_table "inboxes", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.string "channel_type", null: false
+    t.bigint "channel_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_type", "channel_id"], name: "index_inboxes_on_channel"
+    t.index ["chatbot_id"], name: "index_inboxes_on_chatbot_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.integer "chat_id", null: false
     t.string "sender"
@@ -116,7 +167,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
     t.json "content_attributes", default: {}
     t.string "source_id"
     t.integer "message_type", default: 0
+    t.bigint "inbox_id"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["inbox_id"], name: "index_messages_on_inbox_id"
   end
 
   create_table "models", force: :cascade do |t|
@@ -277,13 +330,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_09_194759) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "channel_playground", "chatbots"
+  add_foreign_key "channel_public_playground", "chatbots"
+  add_foreign_key "channel_whatsapp", "chatbots"
   add_foreign_key "chatbots", "models"
   add_foreign_key "chatbots", "users"
   add_foreign_key "chats", "chatbots"
+  add_foreign_key "chats", "contact_inboxes"
   add_foreign_key "chats", "contacts"
+  add_foreign_key "chats", "inboxes"
+  add_foreign_key "contact_inboxes", "contacts"
+  add_foreign_key "contact_inboxes", "inboxes"
   add_foreign_key "contacts", "chatbots"
   add_foreign_key "documents", "chatbots"
+  add_foreign_key "inboxes", "chatbots"
   add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "inboxes"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"
   add_foreign_key "pay_charges", "pay_subscriptions", column: "subscription_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"

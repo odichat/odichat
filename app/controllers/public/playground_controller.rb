@@ -11,12 +11,20 @@ class Public::PlaygroundController < ApplicationController
       @chat = @chatbot.chats.where(source: "public_playground").find_by(id: chat_id_for_chatbot)
     end
 
-    # If chat is not found (e.g., ID from an old session or chat was deleted) or doesn't exist
-    unless @chat
-      @chat = @chatbot.chats.create(source: "public_playground")
-      session[:public_chatbot_chats][@chatbot.id.to_s] = @chat.id
+    @chat ||= @chatbot.last_public_playground_chat
+
+    if @chat.nil?
+      @chatbot.send(:create_public_playground_resources)
+      @chat = @chatbot.last_public_playground_chat
+
+      # Safety check
+      unless @chat
+        redirect_to root_path, alert: "Unable to access playground"
+        return
+      end
     end
 
+    session[:public_chatbot_chats][@chatbot.id.to_s] = @chat.id
     @messages = @chat.messages.order(created_at: :asc)
   end
 

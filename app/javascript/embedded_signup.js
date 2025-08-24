@@ -3,9 +3,9 @@ const fbLoginCallback = (response) => {
     const code = response.authResponse.code;
     const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
 
-    fetch(`/wabas/exchange_token_and_subscribe_app`, {
+    fetch(`/whatsapp/exchange_token_and_subscribe_app`, {
       method: 'POST',
-      body: JSON.stringify({ chatbot_id: chatbotId, waba: { code } }),
+      body: JSON.stringify({ whatsapp: { chatbot_id: chatbotId, code: code } }),
       headers: {
         "Content-Type": "application/json",
         "Accept": "text/vnd.turbo-stream.html, application/json",
@@ -63,15 +63,22 @@ window.addEventListener('message', (event) => {
         const chatbotId = document.querySelector('button[data-chatbot-id]').getAttribute('data-chatbot-id');
         const { phone_number_id, waba_id } = data.data;
 
-        fetch(`/wabas`, {
+        fetch(`/whatsapp`, {
           method: 'POST',
-          body: JSON.stringify({ chatbot_id: chatbotId, waba: { phone_number_id, waba_id } }),
+          body: JSON.stringify({ whatsapp: { chatbot_id: chatbotId, phone_number_id, waba_id } }),
           headers: {
             "Content-Type": "application/json",
             "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
           }
         })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(errorData => {
+              throw new Error(errorData.error || `${response.status}: ${response.statusText}`); 
+            });
+          }
+          return response.json();
+        })
         .then(data => {
           console.info("Phone number ID ", phone_number_id, " WhatsApp business account ID ", waba_id);
         })

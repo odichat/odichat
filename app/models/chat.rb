@@ -2,11 +2,14 @@ class Chat < ApplicationRecord
   include OpenaiClient
 
   belongs_to :chatbot
+  belongs_to :inbox
+  belongs_to :contact_inbox, optional: true
   belongs_to :contact, optional: true
 
   has_many :messages, dependent: :destroy
 
   validates :source, presence: true
+  validates :inbox_id, presence: true
 
   def toggle_intervention!
     if intervention_enabled?
@@ -31,15 +34,15 @@ class Chat < ApplicationRecord
   end
 
   def whatsapp_channel?
-    source == "whatsapp"
+    inbox&.whatsapp_channel?
   end
 
   def playground_channel?
-    source == "playground"
+    inbox&.playground_channel?
   end
 
   def public_playground_channel?
-    source == "public_playground"
+    inbox&.public_playground_channel?
   end
 
   def whatsapp_reply_window_open?

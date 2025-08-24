@@ -26,19 +26,15 @@
   <span><%= t('.page_title') %></span>
 </h1>
 
-<div class="flex justify-end mb-4">
-  <%= link_to t('.view_templates_button'), chatbot_integrations_waba_templates_path(@chatbot), class: "btn btn-primary", data: { turbo: false } %>
-</div>
-
 <!-- Main content area -->
 <div class="flex-1 space-y-8">
-  <% if !@chatbot.waba.subscribed? %>
+  <% if !@chatbot.whatsapp_inbox.channel.subscribed? %>
     <%= render "shared/banner",
         message: raw(t('.subscribe_banner_message_html')),
         type: :warning,
         icon: "exclamation-triangle",
         button_text: t('.subscribe_banner_button'),
-        button_path: subscribe_chatbot_integrations_waba_path(@chatbot),
+        button_path: subscribe_chatbot_integrations_whatsapp_path(@chatbot),
         button_method: :post %>
   <% end %>
 
@@ -82,7 +78,7 @@
     </div>
   </div>
 
-  <% if @chatbot.waba.subscribed? %>
+  <% if @chatbot.whatsapp_inbox.channel.subscribed? %>
     <div class="divider divider-error my-10">
       <span class="text-error font-bold"><%= t('.danger_zone_divider_text') %></span>
     </div>
@@ -94,7 +90,7 @@
           <%= raw(t('.danger_zone_unsubscribe_warning_html', chatbot_name: @chatbot.name)) %>
         </p>
         <div class="card-actions mt-4">
-          <%= button_to t('.danger_zone_unsubscribe_button'), unsubscribe_chatbot_integrations_waba_path(@chatbot), method: :post, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: t('.danger_zone_unsubscribe_confirm'), turbo_submits_with: t('.danger_zone_unsubscribe_submitting') } %>
+          <%= button_to t('.danger_zone_unsubscribe_button'), unsubscribe_chatbot_integrations_whatsapp_path(@chatbot), method: :post, class: "btn btn-error focus:outline-none focus-visible:ring focus-visible:ring-error/50", data: { turbo_confirm: t('.danger_zone_unsubscribe_confirm'), turbo_submits_with: t('.danger_zone_unsubscribe_submitting') } %>
         </div>
       </div>
     </div>

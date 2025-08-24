@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="flex-none">
-    <%= button_to chatbot_chats_path(chatbot, source: "playground"), 
+    <%= button_to chatbot_chats_path(chatbot, source: "playground", inbox_id: chatbot.playground_inbox&.id), 
         method: :post,
         class: "btn btn-ghost btn-circle",
         title: t('chatbots.playground.header.new_chat_button_title'),

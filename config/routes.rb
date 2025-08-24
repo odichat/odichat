@@ -15,12 +15,9 @@ Rails.application.routes.draw do
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
     resource :settings, only: [ :show, :update, :destroy ], controller: "chatbots/settings"
     resource :integrations, only: [ :show ], controller: "chatbots/integrations" do
-      resource :waba, only: [ :edit, :update ], controller: "chatbots/integrations/wabas" do
+      resource :whatsapp, only: [ :edit, :update ], controller: "chatbots/integrations/whatsapp" do
         post :subscribe
         post :unsubscribe
-      end
-      resources :waba_templates, only: [ :index, :create, :new ], controller: "chatbots/integrations/waba_templates" do
-        post :destroy_message_template
       end
     end
   end
@@ -31,6 +28,9 @@ Rails.application.routes.draw do
       post :exchange_token_and_subscribe_app
     end
   end
+
+  post "whatsapp", to: "whatsapp#create"
+  post "whatsapp/exchange_token_and_subscribe_app", to: "whatsapp#exchange_token_and_subscribe_app"
 
   # Devise
   devise_for :users, controllers: {

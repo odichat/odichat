@@ -3,13 +3,13 @@ en:
     integrations:
       show:
         page_title: "Integrations"
-        waba_card:
+        whatsapp_card:
           title: "WhatsApp"
           description: "Connect your chatbot to a WhatsApp number and let it respond to your customers' messages."
           update_button: "Update"
           reconnect_button: "Reconnect"
           connect_button: "Connect"
-      wabas:
+      whatsapp:
         edit:
           breadcrumb_home: "Home"
           breadcrumb_integrations: "Integrations"

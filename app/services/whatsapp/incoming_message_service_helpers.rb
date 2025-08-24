@@ -32,8 +32,8 @@ module Whatsapp::IncomingMessageServiceHelpers
   def handle_unprocessable_message
     fallback_text = fallback_text_for(message_type)
 
-    Whatsapp::SendMessageService.new(access_token: @waba.access_token).send_message(
-      sender_id: @waba.phone_number_id,
+    Whatsapp::SendMessageService.new(access_token: @whatsapp_channel.access_token).send_message(
+      sender_id: @whatsapp_channel.phone_number_id,
       recipient_number: contact_phone_number,
       message: fallback_text
     )
@@ -45,6 +45,10 @@ module Whatsapp::IncomingMessageServiceHelpers
 
   def contact_name
     @processed_params[:contacts].first[:profile][:name]
+  end
+
+  def contact_source_id
+    @processed_params[:contacts].first[:wa_id]
   end
 
   private

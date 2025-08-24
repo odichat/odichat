@@ -20,6 +20,7 @@ module Odisea
     config.i18n.available_locales = [ :en, :es ]
     # Set default locale
     config.i18n.default_locale = :es
+    config.i18n.fallbacks = [ :en ]
 
     config.autoload_lib(ignore: %w[assets tasks])
 

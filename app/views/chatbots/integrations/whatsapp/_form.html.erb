@@ -1,4 +1,4 @@
-<%= form_with(url: chatbot_integrations_waba_path(chatbot), 
+<%= form_with(url: chatbot_integrations_whatsapp_path(chatbot), 
               method: :patch, 
               class: "space-y-6") do |form| %>
   <div class="form-control w-full">
@@ -12,7 +12,7 @@
       <% end %>
       <div class="flex flex-col gap-2 w-full">
         <label class="label">
-          <span class="label-text"><%= t('chatbots.integrations.wabas.form.profile_picture_label') %></span>
+          <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.profile_picture_label') %></span>
         </label>
         <%= form.file_field :profile_picture_handle, 
           class: "file-input file-input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50",
@@ -23,7 +23,7 @@
   <!-- About field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.about_label') %></span>
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.about_label') %></span>
     </label>
     <%= form.text_field :about, 
         value: business_profile.about,
@@ -35,7 +35,7 @@
   <!-- Address field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.address_label') %></span>
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.address_label') %></span>
     </label>
     <%= form.text_field :address, 
         value: business_profile.address,
@@ -47,7 +47,7 @@
   <!-- Description field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.description_label') %></span>
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.description_label') %></span>
     </label>
     <%= form.text_area :description, 
         value: business_profile.description,
@@ -60,7 +60,7 @@
   <!-- Email field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.email_label') %></span>
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.email_label') %></span>
     </label>
     <%= form.email_field :email, 
         value: business_profile.email,
@@ -72,30 +72,30 @@
   <!-- Websites field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.websites_label') %></span>
-      <span class="tooltip tooltip-bottom" data-tip="<%= t('chatbots.integrations.wabas.form.websites_tooltip') %>">
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.websites_label') %></span>
+      <span class="tooltip tooltip-bottom" data-tip="<%= t('chatbots.integrations.whatsapp.form.websites_tooltip') %>">
         <%= icon "information-circle", variant: "mini" %>
       </span>
     </label>
     <%= form.text_field :websites, 
         value: business_profile.websites&.join(", "),
-        placeholder: t('chatbots.integrations.wabas.form.websites_placeholder'),
+        placeholder: t('chatbots.integrations.whatsapp.form.websites_placeholder'),
         class: "input input-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
   </div>
 
   <!-- Vertical field -->
   <div class="form-control w-full">
     <label class="label">
-      <span class="label-text"><%= t('chatbots.integrations.wabas.form.vertical_label') %></span>
+      <span class="label-text"><%= t('chatbots.integrations.whatsapp.form.vertical_label') %></span>
     </label>
     <%= form.select :vertical,
-        Waba.available_verticals.map { |key, label| [label, key] },
-        { selected: business_profile.vertical, include_blank: t('chatbots.integrations.wabas.form.vertical_select_placeholder') },
+        Channel::Whatsapp.available_verticals.map { |key, label| [label, key] },
+        { selected: business_profile.vertical, include_blank: t('chatbots.integrations.whatsapp.form.vertical_select_placeholder') },
         class: "select select-bordered w-full focus:outline-none focus-visible:ring focus-visible:ring-primary/50" %>
   </div>
   
   <!-- Save button -->
   <div class="card-actions justify-end">
-    <%= form.submit t('chatbots.integrations.wabas.form.save_button'), class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50", data: { turbo_submits_with: t('chatbots.integrations.wabas.form.save_button_submitting')} %>
+    <%= form.submit t('chatbots.integrations.whatsapp.form.save_button'), class: "btn btn-primary focus:outline-none focus-visible:ring focus-visible:ring-primary/50", data: { turbo_submits_with: t('chatbots.integrations.whatsapp.form.save_button_submitting')} %>
   </div>
 <% end %> 

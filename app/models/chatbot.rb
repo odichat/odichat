@@ -5,9 +5,13 @@ class Chatbot < ApplicationRecord
   has_one :vector_store, dependent: :destroy
   has_one :shareable_link, dependent: :destroy
 
-  has_many :chats, dependent: :destroy
-  has_many :contacts, dependent: :destroy
-  has_many :documents, dependent: :destroy
+  has_many :inboxes, dependent: :destroy_async
+  has_many :chats, dependent: :destroy_async
+  has_many :contacts, dependent: :destroy_async
+  has_many :documents, dependent: :destroy_async
+  has_many :playground_channels, dependent: :destroy_async, class_name: "Channel::Playground"
+  has_many :public_playground_channels, dependent: :destroy_async, class_name: "Channel::PublicPlayground"
+  has_many :whatsapp_channels, dependent: :destroy_async, class_name: "Channel::Whatsapp"
 
   validates :model_id, presence: true
   validates :temperature, presence: true
@@ -18,8 +22,8 @@ class Chatbot < ApplicationRecord
 
   after_create :create_shareable_link
   after_create :create_vector_store
-  after_create :create_playground_chat
-  after_create :create_public_playground_chat
+  after_create :create_playground_resources
+  after_create :create_public_playground_resources
 
   after_destroy :enqueue_cleanup_job
 
@@ -46,6 +50,26 @@ class Chatbot < ApplicationRecord
     SYSTEM_INSTRUCTIONS
   end
 
+  def last_playground_chat
+    playground_inbox&.chats&.last
+  end
+
+  def last_public_playground_chat
+    public_playground_inbox&.chats&.last
+  end
+
+  def playground_inbox
+    playground_channels&.first&.inbox
+  end
+
+  def public_playground_inbox
+    public_playground_channels&.first&.inbox
+  end
+
+  def whatsapp_inbox
+    whatsapp_channels&.first&.inbox
+  end
+
   private
 
   # **************************************************
@@ -67,15 +91,55 @@ class Chatbot < ApplicationRecord
     VectorStore.create!(chatbot: self, name: "#{self.name.parameterize}:#{self.id}")
   end
 
-  def create_playground_chat
-    return if self.chats.where(source: "playground").any?
-    chats.create!(source: "playground")
+  # **************************************************
+  # Playground
+  # **************************************************
+
+  def create_playground_resources
+    channel = find_or_create_playground_channel
+    inbox = find_or_create_playground_inbox(channel)
+    create_playground_chat_for_inbox(inbox)
   end
 
-  def create_public_playground_chat
-    return if self.chats.where(source: "public_playground").any?
-    chats.create!(source: "public_playground")
+  def find_or_create_playground_channel
+    playground_channels.first_or_create!
   end
+
+  def find_or_create_playground_inbox(channel)
+    channel.inbox || inboxes.create!(channel: channel)
+  end
+
+  def create_playground_chat_for_inbox(inbox)
+    return if inbox.chats.where(source: "playground").exists?
+    inbox.chats.create!(chatbot: self, source: "playground")
+  end
+
+  # **************************************************
+  # Public Playground
+  # **************************************************
+
+  def create_public_playground_resources
+    channel = find_or_create_public_playground_channel
+    inbox = find_or_create_public_playground_inbox(channel)
+    create_public_playground_chat_for_inbox(inbox)
+  end
+
+  def find_or_create_public_playground_channel
+    public_playground_channels.first_or_create!
+  end
+
+  def find_or_create_public_playground_inbox(channel)
+    channel.inbox || inboxes.create!(channel: channel)
+  end
+
+  def create_public_playground_chat_for_inbox(inbox)
+    return if inbox.chats.where(source: "public_playground").exists?
+    inbox.chats.create!(chatbot: self, source: "public_playground")
+  end
+
+  # **************************************************
+  # Cleanup
+  # **************************************************
 
   def enqueue_cleanup_job
     HandleChatbotCleanupJob.perform_later(

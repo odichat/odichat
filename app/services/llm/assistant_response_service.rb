@@ -50,7 +50,8 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
     chat.messages.create!(
       sender: sender,
       message_type: :auto,
-      content: response_message
+      content: response_message,
+      inbox: chat.inbox
     )
   end
 

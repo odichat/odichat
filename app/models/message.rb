@@ -1,5 +1,6 @@
 class Message < ApplicationRecord
   belongs_to :chat
+  belongs_to :inbox, optional: true
 
   validates :content, presence: true
 

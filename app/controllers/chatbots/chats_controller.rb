@@ -80,6 +80,6 @@ class Chatbots::ChatsController < Chatbots::BaseController
   end
 
   def chat_params
-    params.permit(:chatbot_id, :source, :contact_id)
+    params.permit(:chatbot_id, :source, :contact_id, :inbox_id)
   end
 end

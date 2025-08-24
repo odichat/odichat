@@ -1,5 +1,5 @@
-<div id="waba-card" class="<%= waba_connected?(chatbot) ? whatsapp_card_styles : '' %>">
-  <div class="<%= waba_connected?(chatbot) ? whatsapp_card_gradient_styles : '' %>"></div>
+<div id="whatsapp-card" class="<%= whatsapp_connected?(chatbot) ? whatsapp_card_styles : '' %>">
+  <div class="<%= whatsapp_connected?(chatbot) ? whatsapp_card_gradient_styles : '' %>"></div>
   <div class="relative">
     <div class="absolute inset-0 bg-radial-[at_25%_25%] from-[#dcf8c6] via-[#F0F2F5] to-[#cef7b0] rounded-lg animate-[pulse_4s_ease-in-out_infinite] opacity-70"></div>
     <div class="card bg-base-100/70 backdrop-blur-sm shadow-md relative border border-gray-200">
@@ -8,24 +8,24 @@
           <div class="w-12 h-12 rounded-lg">
             <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/wa.svg", class: "w-full h-full object-cover" %>
           </div>
-          <h2 class="card-title text-stone-600 ml-4"><%= t('chatbots.integrations.show.waba_card.title') %></h2>
+          <h2 class="card-title text-stone-600 ml-4"><%= t('chatbots.integrations.show.whatsapp_card.title') %></h2>
         </div>
-        <p class="text-stone-600"><%= t('chatbots.integrations.show.waba_card.description') %></p>
+        <p class="text-stone-600"><%= t('chatbots.integrations.show.whatsapp_card.description') %></p>
         <div class="card-actions w-full mt-2">
           <div class="flex w-full">
             <% if is_disabled? %>
-              <%= link_to t('chatbots.integrations.show.waba_card.update_button'), subscriptions_pricing_path, class: "btn btn-success flex-1" %>
+              <%= link_to t('chatbots.integrations.show.whatsapp_card.update_button'), subscriptions_pricing_path, class: "btn btn-success flex-1" %>
             <% else %>
               <button onclick="launchWhatsAppSignup()" data-chatbot-id="<%= chatbot.id %>" class="btn btn-success flex-1">
-                <% if waba_connected?(chatbot) %>
-                  <%= t('chatbots.integrations.show.waba_card.reconnect_button') %>
+                <% if whatsapp_connected?(chatbot) %>
+                  <%= t('chatbots.integrations.show.whatsapp_card.reconnect_button') %>
                 <% else %>
-                  <%= t('chatbots.integrations.show.waba_card.connect_button') %>
+                  <%= t('chatbots.integrations.show.whatsapp_card.connect_button') %>
                 <% end %>
-                <span id="waba-connection-loader"></span>
+                <span id="whatsapp-connection-loader"></span>
               </button>
-              <% if waba_connected?(chatbot) %>
-                <%= link_to edit_chatbot_integrations_waba_path(chatbot), class: "btn btn-soft ml-1" do %>
+              <% if whatsapp_connected?(chatbot) %>
+                <%= link_to edit_chatbot_integrations_whatsapp_path(chatbot), class: "btn btn-soft ml-1" do %>
                   <%= icon "wrench", variant: "mini" %>
                 <% end %>
               <% end %>

@@ -15,7 +15,7 @@
         class: "btn btn-ghost btn-circle",
         title: t('public_playground.header.new_chat_button_title'),
         aria: { label: t('public_playground.header.new_chat_button_title') },
-        params: { chat: { chatbot_id: chatbot.id, source: "public_playground" } } do %>
+        params: { chat: { chatbot_id: chatbot.id, source: "public_playground", inbox_id: chatbot.public_playground_inbox&.id } } do %>
       <%= icon "arrow-path", variant: "mini" %>
     <% end %>
   </div>

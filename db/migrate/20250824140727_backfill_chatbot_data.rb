@@ -61,22 +61,21 @@ class BackfillChatbotData < ActiveRecord::Migration[8.0]
   def up
     Chatbot.find_each do |chatbot|
       # Create Playground and Public Playground channels and inboxes
-      playground_channel = Channel::Playground.create!(chatbot: chatbot)
-      Inbox.create!(chatbot: chatbot, channel: playground_channel)
+      playground_channel = Channel::Playground.find_or_create_by!(chatbot: chatbot)
+      Inbox.find_or_create_by!(chatbot: chatbot, channel: playground_channel)
 
-      public_playground_channel = Channel::PublicPlayground.create!(chatbot: chatbot)
-      Inbox.create!(chatbot: chatbot, channel: public_playground_channel)
+      public_playground_channel = Channel::PublicPlayground.find_or_create_by!(chatbot: chatbot)
+      Inbox.find_or_create_by!(chatbot: chatbot, channel: public_playground_channel)
 
       # Handle WhatsApp channel and inbox if waba exists
-      if chatbot.waba.present?
-        whatsapp_channel = Channel::Whatsapp.create!(
-          chatbot: chatbot,
-          phone_number_id: chatbot.waba.phone_number_id,
-          business_account_id: chatbot.waba.waba_id,
-          access_token: chatbot.waba.access_token,
-          subscribed: chatbot.waba.subscribed
-        )
-        Inbox.create!(chatbot: chatbot, channel: whatsapp_channel)
+      if chatbot.waba.present? && chatbot.waba.phone_number_id.present?
+        whatsapp_channel = Channel::Whatsapp.find_or_create_by!(phone_number_id: chatbot.waba.phone_number_id) do |channel|
+          channel.chatbot = chatbot
+          channel.business_account_id = chatbot.waba.waba_id
+          channel.access_token = chatbot.waba.access_token
+          channel.subscribed = chatbot.waba.subscribed
+        end
+        Inbox.find_or_create_by!(chatbot: chatbot, channel: whatsapp_channel)
       end
 
       # Update chats and messages

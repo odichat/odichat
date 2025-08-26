@@ -19,6 +19,14 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
       tools: @tool_registry&.registered_tools || [],
       previous_response_id: chat.previous_response_id
     }
+
+    # TODO: Clean this up
+    # These users are using reasoning models
+    if chatbot.user.email.in?(["marketingcodizulca@gmail.com", "soporte.grupopronto@hotmail.com", "admin@odichat.app", "andres@odichat.app"])
+      parameters[:text] = { verbosity: "low"}
+      parameters[:model] = "gpt-5-mini-2025-08-07"
+    end
+
     response = client.responses.create(parameters: parameters)
 
     handle_response(response)
@@ -40,6 +48,10 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
       tool_calls = response.dig("output")
       process_tool_calls(tool_calls)
       generate_response
+    elsif message_type(response) == "reasoning"
+      response_object = response["output"].find { |o| o["type"] == "message" }
+      response_message = response_object.dig("content", 0, "text")
+      persist_message(response_message, "assistant")
     else
       response_message = response.dig("output", 0, "content", 0, "text") || response.dig("output", 1, "content", 0, "text")
       persist_message(response_message, "assistant")
@@ -88,7 +100,13 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def system_message
-    system_instructions = chatbot.system_instructions + chatbot.time_aware_instructions + chatbot.additional_system_instructions
+    # TODO: Clean this up
+    if chatbot.user.email.in?(["marketingcodizulca@gmail.com", "soporte.grupopronto@hotmail.com", "admin@odichat.app", "andres@odichat.app"])
+      system_instructions = "Formatting re-enabled\n" + chatbot.system_instructions + chatbot.time_aware_instructions + chatbot.additional_system_instructions
+    else
+      system_instructions = chatbot.system_instructions + chatbot.time_aware_instructions + chatbot.additional_system_instructions
+    end
+
     {
       role: "developer",
       content: system_instructions

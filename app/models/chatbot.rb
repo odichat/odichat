@@ -6,7 +6,7 @@ class Chatbot < ApplicationRecord
   has_one :shareable_link, dependent: :destroy
 
   has_many :inboxes, dependent: :destroy_async
-  has_many :chats, dependent: :destroy_async
+  has_many :chats, dependent: :destroy
   has_many :contacts, dependent: :destroy_async
   has_many :documents, dependent: :destroy_async
   has_many :playground_channels, dependent: :destroy_async, class_name: "Channel::Playground"

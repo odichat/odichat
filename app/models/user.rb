@@ -24,12 +24,20 @@ class User < ApplicationRecord
     }
   end
 
-  def basic_plan?
-    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :basic_monthly))
+  def premium_plan?
+    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :premium_monthly))
   end
 
   def pro_plan?
     payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :pro_monthly))
+  end
+
+  def legacy_premium_plan?
+    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :legacy_premium_monthly))
+  end
+
+  def legacy_pro_plan?
+    payment_processor&.subscribed?(processor_plan: Rails.application.credentials.dig(:stripe, :prices, :legacy_pro_monthly))
   end
 
   def subscribed?

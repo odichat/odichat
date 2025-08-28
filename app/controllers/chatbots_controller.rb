@@ -68,15 +68,15 @@ class ChatbotsController < ApplicationController
         subscriptions_pricing_path,
         alert: "You need an active subscription to create a new chatbot"
       )
-    elsif current_user.basic_plan? && current_user.chatbots.count >= 1
-      redirect_to(
-        subscriptions_pricing_path,
-        alert: "You have reached the maximum number of chatbots for your subscription. Please upgrade to a higher plan."
-      )
-    elsif current_user.pro_plan? && current_user.chatbots.count >= 3
+    elsif (current_user.pro_plan? && current_user.chatbots.count >= 1) || (current_user.legacy_pro_plan? && current_user.chatbots.count >= 1)
       redirect_to(
         chatbots_path,
         alert: "You have reached the maximum number of chatbots for your subscription. Please contact us for a higher limit."
+      )
+    elsif (current_user.premium_plan? && current_user.chatbots.count >= 3) || (current_user.legacy_premium_plan? && current_user.chatbots.count >= 3)
+      redirect_to(
+        subscriptions_pricing_path,
+        alert: "You have reached the maximum number of chatbots for your subscription. Please upgrade to a higher plan."
       )
     end
   end

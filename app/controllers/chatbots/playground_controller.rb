@@ -45,7 +45,7 @@ class Chatbots::PlaygroundController < Chatbots::BaseController
     if Rails.env.production?
       if !current_user.subscribed?
         @models = Model.where(name: "gpt-4o-mini")
-      elsif current_user.basic_plan?
+      elsif current_user.premium_plan?
         @models = Model.where(name: [ "gpt-4o-mini", "gpt-4o", "o4-mini" ])
       elsif current_user.pro_plan?
         @models = Model.all

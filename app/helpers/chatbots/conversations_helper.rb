@@ -1,0 +1,2 @@
+module Chatbots::ConversationsHelper
+end

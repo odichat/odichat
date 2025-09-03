@@ -1,0 +1,7 @@
+<%= turbo_stream_from "chatbot_#{@chatbot.id}_chat_list_container" %>
+<div class="overflow-y-scroll w-full max-h-[600px] h-[600px] border-r border-gray-200">
+  <ul class="menu rounded-box w-full px-0 overflow-x-hidden" id="side_chat_list_container" data-controller="active-chat">
+    <%= render partial: "chatbots/conversations/list/conversation_item", collection: @conversations, as: :conversation %>
+  </ul>
+  <%= render "chatbots/conversations/list/load_more", chatbot: @chatbot, pagy: @pagy %>
+</div>

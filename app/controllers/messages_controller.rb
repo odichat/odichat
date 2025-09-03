@@ -25,19 +25,27 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = Message.new(message_params)
-    @message.inbox = @message.chat.inbox
-    @chatbot = @message.chat.chatbot
+    if message_params[:conversation_id]
+      @conversation = Conversation.find(message_params[:conversation_id])
+      @chat = @conversation.chats.order(created_at: :desc).first
+    elsif message_params[:chat_id]
+      @chat = Chat.find(message_params[:chat_id])
+      @conversation = @chat.conversation
+    end
+
+    @message = @chat.messages.build(message_params.except(:conversation_id, :chat_id))
+    @message.inbox = @chat.inbox
+    @chatbot = @chat.chatbot
     authorize @message
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to chatbot_playground_path(@chatbot), notice: "Message was successfully created." }
+        format.html { redirect_to redirect_path, notice: "Message was successfully created." }
         format.turbo_stream do
           render turbo_stream: turbo_stream.append("messages", partial: "messages/message", locals: { message: @message })
         end
       else
-        format.html { redirect_to chatbot_playground_path(@chatbot), status: :unprocessable_entity, alert: @message.errors.full_messages.join(", ") }
+        format.html { redirect_to redirect_path, status: :unprocessable_entity, alert: @message.errors.full_messages.join(", ") }
         format.turbo_stream do
           flash.now[:alert] = @message.errors.full_messages.to_sentence
           render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
@@ -79,6 +87,6 @@ class MessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:chat_id, :sender, :wa_message_id, :assistant_message_id, :content, :message_type)
+      params.require(:message).permit(:chat_id, :conversation_id, :sender, :wa_message_id, :assistant_message_id, :content, :message_type)
     end
 end

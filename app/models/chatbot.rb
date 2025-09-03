@@ -7,15 +7,15 @@ class Chatbot < ApplicationRecord
 
   has_many :inboxes, dependent: :destroy
   has_many :chats, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
   has_many :public_playground_channels, dependent: :destroy, class_name: "Channel::PublicPlayground"
   has_many :whatsapp_channels, dependent: :destroy, class_name: "Channel::Whatsapp"
 
+  validates :name, presence: true
   validates :model_id, presence: true
-  validates :temperature, presence: true
-  validates :temperature, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 2 }
 
   before_create :set_default_system_instructions
   before_create :set_default_temperature
@@ -76,11 +76,11 @@ class Chatbot < ApplicationRecord
   # Callbacks
   # **************************************************
   def set_default_system_instructions
-    self.system_instructions = "You are a helpful assistant."
+    self.system_instructions ||= "You are a helpful assistant."
   end
 
   def set_default_temperature
-    self.temperature = 1.0
+    self.temperature ||= 1.0
   end
 
   def create_shareable_link

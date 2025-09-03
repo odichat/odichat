@@ -1,8 +1,11 @@
 class Message < ApplicationRecord
+  include Message::Predicates
+
   belongs_to :chat
   belongs_to :inbox, optional: true
 
   validates :content, presence: true
+  validates :sender, presence: true, inclusion: { in: %w[ user assistant ] }
 
   enum :status, { sent: 0, delivered: 1, read: 2, failed: 3 }
   enum :message_type, { auto: 0, manual: 1 }
@@ -10,57 +13,68 @@ class Message < ApplicationRecord
   # [:external_error : Can specify if the message creation failed due to an error at external API
   store_accessor :content_attributes, :external_error
 
-  scope :automated, -> { where(message_type: :auto) }
-  scope :manual, -> { where(message_type: :manual) }
+  scope :automated, ->  { where(sender: "assistant", message_type: :auto) }
+  scope :manual,    ->  { where(sender: "assistant", message_type: :manual) }
+
+  delegate :source, :whatsapp_channel?, to: :chat
 
   after_create_commit :execute_after_create_commit_callbacks
   after_update_commit :execute_after_update_commit_callbacks
 
-  def source
-    self.chat.source
-  end
-
-  def whatsapp?
-    chat.whatsapp_channel?
-  end
-
-  def assistant?
-    sender == "assistant"
-  end
-
-  def user?
-    sender == "user"
-  end
-
   private
 
   def execute_after_create_commit_callbacks
-    # Updates the chat list item status and message preview
-    broadcast_update_chat_interface_chat_list_item
+    # Updates the conversation item status and message preview
     # Appends new message to the selected chat in the chat interface
-    broadcast_append_chat_interface_message_to_chat
+    broadcast_append_channel_router
     enqueue_post_message_creation_jobs
+    update_conversation_record
   end
 
   def execute_after_update_commit_callbacks
     # Updates the chat list item status and message preview
-    broadcast_update_chat_interface_chat_list_item if saved_change_to_status?
+    if saved_change_to_status?
+      chat.conversation.update_from_message(self)
+      # broadcast_update_conversation_item
+    end
   end
 
-  def broadcast_update_chat_interface_chat_list_item
-    Turbo::StreamsChannel.broadcast_replace_to(
-      "chatbot_#{chat.chatbot.id}_chat_list_container",
-      target: "chat_list_item_#{chat.id}",
-      partial: "chatbots/chats/chat_interface/side/chat_list_item",
-      locals: { chat: chat }
+  def broadcast_append_channel_router
+    if chat.whatsapp_channel?
+      # Broadcast to whatsapp conversation interface
+      broadcast_to_conversations_interface
+    elsif chat.playground_channel?
+      # Broadcast to playground chat interface
+      broadcast_to_playground_interface
+    elsif chat.public_playground_channel?
+      # Broadcast to public playground chat interface
+      broadcast_to_public_playground_interface
+    end
+  end
+
+  def broadcast_to_conversations_interface
+    Turbo::StreamsChannel.broadcast_append_to(
+      "conversation_contact_#{chat.conversation.id}_messages",
+      target: "conversation_#{chat.conversation.id}_messages",
+      partial: "messages/message",
+      locals: { message: self }
     )
   end
 
-  def broadcast_append_chat_interface_message_to_chat
+  def broadcast_to_playground_interface
     Turbo::StreamsChannel.broadcast_append_to(
-      "chat_#{chat.id}_messages",
-      target: "chat_messages_#{chat.id}",
+      "playground_chat_#{chat.id}_messages",
+      target: "messages",
       partial: "messages/message",
+      locals: { message: self }
+    )
+  end
+
+  def broadcast_to_public_playground_interface
+    Turbo::StreamsChannel.broadcast_append_to(
+      "public_playground_chat_#{chat.id}_messages",
+      target: "messages",
+      partial: "public/messages/message",
       locals: { message: self }
     )
   end
@@ -75,7 +89,12 @@ class Message < ApplicationRecord
   end
 
   def enqueue_assistant_response_generation_job
-    return if chat.intervention_enabled?
+    return if chat&.conversation&.intervention_enabled?
     Llm::AssistantResponseJob.perform_later(id)
+  end
+
+  def update_conversation_record
+    return unless chat.conversation.present?
+    chat.conversation.update_from_message(self)
   end
 end

@@ -15,8 +15,6 @@ class SendReplyJob < ApplicationJob
 
   def send_message_to_channel
     send_message_to_whatsapp if inbox.whatsapp_channel?
-    send_message_to_playground if inbox.playground_channel?
-    send_message_to_public_playground if inbox.public_playground_channel?
   end
 
   def send_message_to_whatsapp
@@ -36,23 +34,5 @@ class SendReplyJob < ApplicationJob
     error_message = "SendReplyJob failed for message_id: #{message.id}, and WABA #{inbox.channel.business_account_id} with error: #{e.message} for sender_id: #{inbox.channel.phone_number_id.to_i} and recipient_number: #{chat.contact.phone_number.to_i}"
     Sentry.capture_exception(e)
     raise e, error_message
-  end
-
-  def send_message_to_playground
-    Turbo::StreamsChannel.broadcast_append_to(
-      "chat_#{chat.id}_messages",
-      target: "messages",
-      partial: "messages/message",
-      locals: { message: message }
-    )
-  end
-
-  def send_message_to_public_playground
-    Turbo::StreamsChannel.broadcast_append_to(
-      "public_chat_#{chat.id}_messages",
-      target: "messages",
-      partial: "public/messages/message",
-      locals: { message: message }
-    )
   end
 end

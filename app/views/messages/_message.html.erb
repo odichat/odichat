@@ -18,23 +18,25 @@
     <div class="chat chat-end">
       <% unless is_playground %>
         <div class="chat-header text-gray-500">
-          <%= message.message_type.humanize %>
+          <%= message.message_type&.humanize %>
         </div>
       <% end%>
       <div class="chat-bubble chat-bubble-primary"><%= markdown(message.content) %></div>
       <% unless is_playground %>
         <div class="chat-footer opacity-50 relative mr-2">
-          <% if message.status == "sent" %>
-            <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-gray-500" %>
-          <% elsif message.status == "delivered" %>
-            <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-gray-500" %>
-            <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-1 text-gray-500" %>
-          <% elsif message.status == "read" %>
-            <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-blue-500" %>
-            <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-1 text-blue-500" %>
-          <% end%>
+          <% if message.status.present? %>
+            <% if message.sent? %>
+              <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-gray-500" %>
+            <% elsif message.delivered? %>
+              <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-gray-500" %>
+              <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-1 text-gray-500" %>
+            <% elsif message.read? %>
+              <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-0 text-blue-500" %>
+              <%= icon "check", variant: "outline", class: "size-4 absolute top-0 left-1 text-blue-500" %>
+            <% end %>
+          <% end %>
         </div>
-      <% end%>
+      <% end %>
     </div>
   <% end %>
 </div>

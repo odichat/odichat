@@ -1,0 +1,8 @@
+<div class="flex flex-col">
+  <%= render "chatbots/conversations/main/header", conversation: @conversation %>
+
+  <%# TODO: We need to work on this to uncoment it %>
+  <%= turbo_frame_tag "chat_interface_conversation_messages_frame", src: chatbot_conversation_path(@chatbot, @conversation, format: :turbo_stream) do %>
+    <%= render "chatbots/conversations/main/skeleton" %>
+  <% end %>
+</div>

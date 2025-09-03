@@ -64,6 +64,13 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
+end
+
+group :development, :test do
+  gem "rspec-rails", "~> 8.0"
+  gem "factory_bot_rails", "~> 6.5"
+  gem "shoulda-matchers", "~> 6.5"
 end
 
 gem "whatsapp_sdk"
@@ -105,3 +112,5 @@ gem "resend", "~> 0.22.0"
 gem "discordrb", "~> 3.5"
 
 gem "pagy", "~> 9.3"
+
+gem "faker", "~> 3.5"

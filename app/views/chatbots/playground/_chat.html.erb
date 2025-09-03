@@ -1,11 +1,11 @@
-<%= turbo_stream_from "chat_#{chat.id}_messages" %>
+<%= turbo_stream_from "playground_chat_#{chat.id}_messages" %>
 <div id="chat" class="card bg-base-100 shadow-sm w-full">
   <!-- Header section -->
   <%= render "chatbots/playground/header", chatbot: chatbot %>
   
   <!-- Chat messages area -->
   <div class="min-h-[500px] max-h-[500px] overflow-y-auto p-6" data-controller="chat-scroll">
-    <%= render "chatbots/playground/messages", messages: messages, chatbot: chatbot %>
+    <%= render "chatbots/playground/messages", messages: messages, chatbot: chatbot, chat: chat %>
   </div>
 
   <!-- Input area -->

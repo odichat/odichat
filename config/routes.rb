@@ -9,7 +9,8 @@ Rails.application.routes.draw do
 
   resources :chatbots do
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
-    resources :chats, only: [ :index, :show, :create ], controller: "chatbots/chats" do
+    resources :chats, only: [ :create ], controller: "chatbots/chats"
+    resources :conversations, controller: "chatbots/conversations" do
       post :intervene, on: :member
     end
     resource :sources, only: [ :show, :update, :destroy ], controller: "chatbots/sources"
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
         post :unsubscribe
       end
     end
+    # get "contacts/:contact_id/conversation", to: "chatbots/conversations#show", as: :contact_conversation
   end
 
   # Whatsapp Integration

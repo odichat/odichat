@@ -1,0 +1,26 @@
+<% content_for :title, t('.page_title_content_for') %>
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
+<div class="w-full">
+  <h1 class="text-3xl font-bold mb-8"><%= t('.header_title') %></h1>
+
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body p-0 gap-0 border-b-0 shadow-none">
+      <% if @conversations.any? %>
+        <div class="grid grid-cols-12">
+          <div class="col-span-4">
+            <%= render "chatbots/conversations/list" %>
+          </div>
+          <div class="col-span-8">
+            <%= render "chatbots/conversations/main" %>
+          </div>
+        </div>
+      <% else %>
+        <%= render "chatbots/conversations/empty_state" %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

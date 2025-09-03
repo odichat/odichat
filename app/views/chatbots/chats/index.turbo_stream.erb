@@ -1,7 +1,0 @@
-<%= turbo_stream.append "side_chat_list_container" do %>
-  <%= render partial: "chatbots/chats/chat_interface/side/chat_list_item", collection: @chats, as: :chat %>
-<% end %>
-
-<%= turbo_stream.replace :pagination do %>
-  <%= render "chatbots/chats/chat_interface/side/load_more", chatbot: @chatbot, pagy: @pagy %>    
-<% end %>

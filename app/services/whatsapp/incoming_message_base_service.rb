@@ -26,6 +26,7 @@ class Whatsapp::IncomingMessageBaseService
 
     find_or_create_contact
     find_or_create_contact_inbox
+    find_or_create_conversation
     find_or_create_chat
     create_messages
   end
@@ -50,13 +51,31 @@ class Whatsapp::IncomingMessageBaseService
     Rails.logger.error "Whatsapp channel not found for business_account_id: #{@processed_params[:metadata][:phone_number_id]}"
   end
 
+  def find_or_create_conversation
+    @conversation = @contact.conversation || @contact.create_conversation!(chatbot: @whatsapp_channel.chatbot)
+  end
+
   def find_or_create_chat
-    @chat = @contact_inbox.chats.last || @contact_inbox.chats.create!(
-      chatbot: @whatsapp_channel.chatbot,
-      inbox: @whatsapp_channel.inbox,
-      contact: @contact,
-      source: "whatsapp"
-    )
+    most_recent_active_chat = @contact_inbox
+      .chats
+      .joins(:messages)
+      .group("chats.id")
+      .select("chats.id, MAX(messages.created_at) as last_message_at")
+      .order("last_message_at DESC")
+      .limit(1)
+      .first
+
+    if most_recent_active_chat.present? && (most_recent_active_chat.last_message_at > 24.hours.ago)
+      @chat = @contact_inbox.chats.last
+    else
+      @chat = @conversation.chats.create!(
+        chatbot: @whatsapp_channel.chatbot,
+        inbox: @whatsapp_channel.inbox,
+        contact_inbox: @contact_inbox,
+        contact: @contact,
+        source: "whatsapp"
+      )
+    end
   end
 
   def find_or_create_contact
@@ -97,7 +116,7 @@ class Whatsapp::IncomingMessageBaseService
       sender: "user",
       message_type: nil, # Only AI generated messages have a type [auto, manual]
       content: message_content(message),
-      inbox: @whatsapp_channel.inbox,
+      inbox: @whatsapp_channel.inbox
     )
   end
 end

@@ -5,8 +5,8 @@
           chatbot_playground_path(@chatbot),
           class: "tab #{current_page?(chatbot_playground_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.activity'),
-          chatbot_chats_path(@chatbot),
-          class: "tab #{current_page?(chatbot_chats_path(@chatbot)) ? 'tab-active' : ''}" %>
+          chatbot_conversations_path(@chatbot),
+          class: "tab #{current_page?(chatbot_conversations_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.sources'), 
           chatbot_sources_path(@chatbot), 
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>

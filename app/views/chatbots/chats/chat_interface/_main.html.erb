@@ -1,7 +1,0 @@
-<div class="flex flex-col">
-  <%= render "chatbots/chats/chat_interface/main/header", chat: @chat %>
-
-  <%= turbo_frame_tag "chat_interface_chat_messages_frame", src: chatbot_chat_path(@chatbot, @chat, format: :turbo_stream) do %>
-    <%= render "chatbots/chats/chat_interface/main/skeleton" %>
-  <% end %>
-</div>

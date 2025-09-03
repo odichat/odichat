@@ -1,13 +1,13 @@
 module Chatbots::ChatsHelper
-  def chat_message_timestamp(message, timezone = nil)
-    return "" unless message
+  def last_message_timestamp(timestamp, timezone = nil)
+    return "" unless timestamp.present?
 
     # Try to use the provided timezone if it's valid, otherwise use the message's own timezone
     time_in_zone =
       if timezone.present? && ActiveSupport::TimeZone[timezone]
-        message.created_at.in_time_zone(timezone)
+        timestamp.in_time_zone(timezone)
       else
-        message.created_at
+        timestamp
       end
 
     now_in_zone =

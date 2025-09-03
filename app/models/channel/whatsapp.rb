@@ -67,7 +67,7 @@ class Channel::Whatsapp < ApplicationRecord
   end
 
   def subscribe
-    uri = URI("https://graph.facebook.com/v22.0/#{self.waba_id}/subscribed_apps")
+    uri = URI("https://graph.facebook.com/v22.0/#{self.business_account_id}/subscribed_apps")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(uri)
@@ -91,7 +91,7 @@ class Channel::Whatsapp < ApplicationRecord
   end
 
   def unsubscribe
-    uri = URI("https://graph.facebook.com/v22.0/#{self.waba_id}/subscribed_apps")
+    uri = URI("https://graph.facebook.com/v22.0/#{self.business_account_id}/subscribed_apps")
 
     # Set up the DELETE request
     http = Net::HTTP.new(uri.host, uri.port)

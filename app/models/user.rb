@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   has_many :chatbots, dependent: :destroy
 
+  enum :role, { user: 0, admin: 1 }
+
   after_create_commit :send_welcome_email
 
   pay_customer stripe_attributes: :stripe_attributes

@@ -26,14 +26,10 @@ class Users::SessionsController < Devise::SessionsController
   # end
   #
   def after_sign_in_path_for(resource)
-    if Flipper.enabled?(:paywall)
-      if resource.subscribed?
-        chatbots_path
-      else
-        subscriptions_pricing_path
-      end
-    else
+    if resource.admin? || !Flipper.enabled?(:paywall) || resource.subscribed?
       chatbots_path
+    else
+      subscriptions_pricing_path
     end
   end
 end

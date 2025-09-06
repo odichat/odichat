@@ -1,7 +1,7 @@
 class ChatbotsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_chatbot, only: [ :update ]
-  before_action :check_subscription, only: [ :new, :create ], unless: -> { Rails.env.development? }
+  before_action :check_subscription, only: [ :new, :create ], unless: -> { current_user.admin? || Rails.env.development? }
 
   # GET /chatbots or /chatbots.json
   def index

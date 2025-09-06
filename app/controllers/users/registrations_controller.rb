@@ -55,14 +55,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     stored_path = stored_location_for(resource)
     return stored_path if stored_path.present?
 
-    if Flipper.enabled?(:paywall)
-      if current_user&.payment_processor&.subscribed?
-        chatbots_path
-      else
-        subscriptions_pricing_path
-      end
-    else
+    if resource.admin? || !Flipper.enabled?(:paywall) || resource.subscribed?
       chatbots_path
+    else
+      subscriptions_pricing_path
     end
   end
 

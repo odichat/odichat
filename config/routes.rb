@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  authenticate :user, ->(u) { u.admin? } do
+    mount_avo at: "/admin"
+  end
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   # Messages

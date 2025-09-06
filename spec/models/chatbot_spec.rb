@@ -149,4 +149,20 @@ RSpec.describe Chatbot, type: :model do
       end
     end
   end
+
+  describe '.timezone_options' do
+    it 'returns a hash of timezone options' do
+      chatbot = build(:chatbot)
+      options = chatbot.class.timezone_options
+      expect(options).to be_a(Hash)
+      expect(options.keys).to include('(GMT-05:00) America/Bogota')
+      expect(options.values).to include('America/Bogota')
+    end
+
+    it 'returns the correct number of timezones' do
+      chatbot = build(:chatbot)
+      options = chatbot.class.timezone_options
+      expect(options.size).to eq(9)
+    end
+  end
 end

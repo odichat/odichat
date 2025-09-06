@@ -1,5 +1,5 @@
 class Llm::BaseOpenAiService
-  DEFAULT_MODEL = "gpt-4o-mini".freeze
+  DEFAULT_MODEL = "gpt-5-mini-2025-08-07".freeze
 
   attr_reader :client, :model
 

@@ -137,6 +137,6 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
     Rails.logger.error("Error generating assistant response for Chat ##{chat&.id}: #{error.message}")
     Rails.logger.error("Request Parameters: #{parameters.to_json}") if parameters.present?
     Rails.logger.error("Response Body: #{error.response[:body]}") if error.response.present?
-    Sentry.capture_exception(error, parameters: { chat_id: chat&.id, user_id: chat&.user.id }.merge(parameters))
+    Sentry.capture_exception(error, parameters: { chat_id: chat&.id, user_id: chat&.user&.id }.merge(parameters))
   end
 end

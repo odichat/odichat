@@ -17,6 +17,6 @@ class Llm::BaseOpenAiService
   private
 
   def setup_model(model_id)
-    @model = Model.find(model_id) || Model.find_by(name: DEFAULT_MODEL)
+    @model = Model.find_by(id: model_id) || Model.find_by(name: DEFAULT_MODEL)
   end
 end

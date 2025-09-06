@@ -96,7 +96,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def system_message
-    system_instructions = "Formatting re-enabled\n" + chatbot.system_instructions + chatbot.time_aware_instructions + chatbot.additional_system_instructions
+    system_instructions = chatbot.aggregated_system_instructions
 
     {
       role: "developer",

@@ -39,17 +39,13 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
 
   def handle_response(response)
     update_chat_previous_response_id(response)
-
     if message_type(response) == "function_call"
-      tool_calls = response.dig("output")
+      tool_calls = response.dig("output").select { |hash| hash["type"] == "function_call" }
       process_tool_calls(tool_calls)
       generate_response
-    elsif message_type(response) == "reasoning"
-      response_object = response["output"].find { |o| o["type"] == "message" }
-      response_message = response_object.dig("content", 0, "text")
-      persist_message(response_message, "assistant")
     else
-      response_message = response.dig("output", 0, "content", 0, "text") || response.dig("output", 1, "content", 0, "text")
+      # If message type is 'message'
+      response_message = response.dig("output", -1, "content", -1, "text") # || response.dig("output", 1, "content", 0, "text")
       persist_message(response_message, "assistant")
     end
   end
@@ -112,7 +108,7 @@ class Llm::AssistantResponseService < Llm::BaseOpenAiService
   end
 
   def message_type(response)
-    response.dig("output", 0, "type")
+    response.dig("output", -1, "type")
   end
 
   def update_chat_previous_response_id(response)

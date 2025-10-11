@@ -1,5 +1,6 @@
 class Chatbots::ResponsesController < Chatbots::BaseController
   include Pagy::Backend
+  before_action :set_response, only: %i[ destroy ]
 
   def index
     @pagy, @responses = pagy_countless(
@@ -38,11 +39,28 @@ class Chatbots::ResponsesController < Chatbots::BaseController
   end
 
   def destroy
+    @response.destroy
+
+    respond_to do |format|
+      format.html { redirect_to chatbot_responses_path(@chatbot), notice: "FAQ successfuly deleted." }
+      format.turbo_stream do
+        flash.now[:notice] = "FAQ successfuly deleted."
+
+        render turbo_stream: [
+          turbo_stream.remove(@response),
+          turbo_stream.update("flash", partial: "shared/flash_messages")
+        ]
+      end
+    end
   end
 
   private
 
     def response_params
       params.require(:response).permit(:question, :answer)
+    end
+
+    def set_response
+      @response = @chatbot.responses.find(params[:id])
     end
 end

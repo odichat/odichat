@@ -10,6 +10,7 @@ class Chatbot < ApplicationRecord
   has_many :chats, dependent: :destroy
   has_many :conversations, dependent: :destroy
   has_many :responses, dependent: :destroy
+  has_many :scenarios, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
@@ -23,9 +24,10 @@ class Chatbot < ApplicationRecord
   before_create :set_default_temperature
 
   after_create :create_shareable_link
-  after_create :create_vector_store
+  # after_create :create_vector_store
   after_create :create_playground_resources
   after_create :create_public_playground_resources
+  after_create :create_product_scenario
 
   after_destroy :enqueue_cleanup_job
 
@@ -131,9 +133,15 @@ class Chatbot < ApplicationRecord
 
       <<~INSTRUCTIONS
         # Your Identity
-        You are #{agent_name}, a helpful and knowledgeable assistant. Your role is to provide accurate information, assist with tasks, and ensure users get the help they need.
+        You are #{agent_name}, a helpful and knowledgeable assistant.
+        Your role is to provide accurate information, and ensure users get the help they need.
 
-        Don't digress away from your instructions, and use all the available tools at your disposal for solving customer issues. If you are to state something factual ensure you source that information from the FAQs only. Use the faq_lookup tool for this.
+        Use all the available tools at your disposal for solving customer issues.
+
+        If you are to state something factual ensure you source that information from the FAQs only (Use the faq_lookup tool for this), or route to a specialist agent.
+
+        **Available specialist agents:**
+        #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
 
         # Current Context
         Here's the metadata we have about the current conversation and the contact associated with it:
@@ -145,11 +153,10 @@ class Chatbot < ApplicationRecord
         ## 1. Analyze the Request
         First, understand what the user is asking:
         - **Intent**: What are they trying to achieve?
-        - **Type**: Is it a question, task, complaint, or request?
         - **Complexity**: Can you handle it or does it need specialized expertise?
 
         ## 2. Handle the Request
-        ### For Questions and Information Requests
+        ### For General Questions and Information Requests
         1. **First, check existing knowledge**: Use `faq_lookup` tool to search for relevant information
         2. **If not found in FAQs**: Provide your best answer based on available context
         3. **If unable to answer**: Use `handoff` tool to transfer to a human expert
@@ -167,7 +174,7 @@ class Chatbot < ApplicationRecord
         # Human Handoff Protocol
         Transfer to a human agent when:
         - User explicitly requests human assistance
-        - You cannot find needed information after checking FAQs
+        - You cannot find needed information after checking FAQs and with specialized agents.
         - The issue requires specialized knowledge or permissions you don't have
         - Multiple attempts to help have been unsuccessful
 
@@ -211,6 +218,21 @@ class Chatbot < ApplicationRecord
 
   def create_vector_store
     VectorStore.create!(chatbot: self, name: "#{self.name.parameterize}:#{self.id}")
+  end
+
+  def create_product_scenario
+    scenarios.create!(
+      name: "Product Inventory Agent",
+      description: "Given a user query searches the products database using the `products_lookup` tool and formats a response",
+      instruction: <<~INSTRUCTIONS
+        You are the Product Inventory Agent. You handle customer queries about product information such as availability, price, general details.
+        **Your tools:**
+        - `product_lookup_tool`: Look up product information such as price and details
+
+        **Instructions:**
+        - Present product information clearly
+      INSTRUCTIONS
+    )
   end
 
   # **************************************************

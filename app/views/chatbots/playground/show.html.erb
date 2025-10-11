@@ -23,11 +23,16 @@
   <!-- Main content area with sidebar and chat -->
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="flex gap-6">
-      <!-- Left sidebar with form -->
-      <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
+      
+      <% if Flipper.enabled?(:v2, current_user) %>
+        <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
+      <% else %>
+        <!-- Left sidebar with form -->
+        <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
+        <!-- Right side chat interface -->
+        <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
+      <% end %>
 
-      <!-- Right side chat interface -->
-      <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
     </div>
   </div>
 </div>

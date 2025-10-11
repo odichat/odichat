@@ -1,0 +1,13 @@
+es:
+  chatbots:
+    responses:
+      index:
+        title: "Fuentes"
+        create_faq_button: "Crear FAQ"
+      modal:
+        add_new_faq: "Agregar FAQ"
+        description: 'Agrega una pregunta y su respuesta correspondiente a la base de conocimiento de "%{chatbot_name}".'
+      form:
+        question: "Pregunta"
+        answer: "Respuesta"
+        save_response: "Guardar FAQ"

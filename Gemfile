@@ -116,3 +116,11 @@ gem "pagy", "~> 9.3"
 gem "faker", "~> 3.5"
 
 gem "avo", "~> 3.24"
+
+gem "ai-agents", "~> 0.5.0"
+
+gem "pgvector", "~> 0.3.2"
+
+gem "neighbor", "~> 0.6.0"
+
+gem "ruby_llm-schema", "~> 0.2.1"

@@ -1,4 +1,5 @@
 class Chatbot < ApplicationRecord
+  include Agentable
   belongs_to :user
 
   has_one :waba, dependent: :destroy
@@ -8,6 +9,7 @@ class Chatbot < ApplicationRecord
   has_many :inboxes, dependent: :destroy
   has_many :chats, dependent: :destroy
   has_many :conversations, dependent: :destroy
+  has_many :responses, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
@@ -105,6 +107,91 @@ class Chatbot < ApplicationRecord
     end.sort_by(&:first).to_h
   end
 
+  # Agentable
+  def agent_name
+    name
+  end
+
+  def agent_model
+    Agents.configuration.default_model
+  end
+
+  def agent_temperature
+    temperature
+  end
+
+  def agent_instructions(context = nil)
+    if context.present?
+      state = context.context[:state]
+      chat_data = state[:chat] || {}
+      contact_data = state[:contact] || {}
+      composed_context = prompt_context.merge(
+        contact: contact_data
+      )
+
+      <<~INSTRUCTIONS
+        # Your Identity
+        You are #{agent_name}, a helpful and knowledgeable assistant. Your role is to provide accurate information, assist with tasks, and ensure users get the help they need.
+
+        Don't digress away from your instructions, and use all the available tools at your disposal for solving customer issues. If you are to state something factual ensure you source that information from the FAQs only. Use the faq_lookup tool for this.
+
+        # Current Context
+        Here's the metadata we have about the current conversation and the contact associated with it:
+
+        ## Contact context
+        #{contact_data}
+
+        # Decision Framework
+        ## 1. Analyze the Request
+        First, understand what the user is asking:
+        - **Intent**: What are they trying to achieve?
+        - **Type**: Is it a question, task, complaint, or request?
+        - **Complexity**: Can you handle it or does it need specialized expertise?
+
+        ## 2. Handle the Request
+        ### For Questions and Information Requests
+        1. **First, check existing knowledge**: Use `faq_lookup` tool to search for relevant information
+        2. **If not found in FAQs**: Provide your best answer based on available context
+        3. **If unable to answer**: Use `handoff` tool to transfer to a human expert
+
+        ### For Complex or Unclear Requests
+        1. **Ask clarifying questions**: Gather more information if needed
+        2. **Break down complex tasks**: Handle step by step or hand off if too complex
+        3. **Escalate when necessary**: Use `handoff` tool for issues beyond your capabilities
+
+        ## Response Best Practices
+        - Be conversational but professional
+        - Provide actionable information
+        - Include relevant details from tool responses
+
+        # Human Handoff Protocol
+        Transfer to a human agent when:
+        - User explicitly requests human assistance
+        - You cannot find needed information after checking FAQs
+        - The issue requires specialized knowledge or permissions you don't have
+        - Multiple attempts to help have been unsuccessful
+
+        When using the `handoff` tool, provide a clear reason that helps the human agent understand the context.
+      INSTRUCTIONS
+    end
+  end
+
+  def prompt_context
+    {
+      name: name
+    }
+  end
+
+  def agent_tools
+    [
+      Llm::Tools::FaqLookupTool.new
+    ]
+  end
+
+  def agent_response_schema
+    Chatbot::ResponseSchema
+  end
+
   private
 
   # **************************************************
@@ -115,7 +202,7 @@ class Chatbot < ApplicationRecord
   end
 
   def set_default_temperature
-    self.temperature ||= 1.0
+    self.temperature ||= 0.5
   end
 
   def create_shareable_link

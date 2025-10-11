@@ -1,3 +1,4 @@
+<%# TODO: Use the view helper to evaluate active tabs %>
 <div class="mb-4">
   <div class="tabs justify-center">
     <% if @chatbot %>
@@ -9,7 +10,7 @@
           class: "tab #{current_page?(chatbot_conversations_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.sources'), 
           chatbot_sources_path(@chatbot), 
-          class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>
+          class: "tab #{current_page?(chatbot_sources_path(@chatbot)) || current_page?(chatbot_responses_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.integrations'), 
           chatbot_integrations_path(@chatbot), 
           class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) || request.path.include?('/integrations/') ? 'tab-active' : ''}" %>

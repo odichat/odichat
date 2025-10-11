@@ -1,0 +1,2 @@
+module Chatbots::ResponsesHelper
+end

@@ -1,0 +1,42 @@
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <div class="w-64 shrink-0">
+    <nav class="menu w-full bg-base-200 rounded-box">
+      <li>
+        <%= link_to chatbot_responses_path(@chatbot), class: "active" do %>
+          FAQs
+        <% end%>
+      </li>
+    </nav>
+  </div>
+<% end %>
+
+<div class="flex justify-between">
+  <h1 class="text-3xl font-bold mb-8"><%= t('.title') %></h1>
+  <button class="btn btn-primary" onclick="responses_modal.showModal()"><%= t('.create_faq_button') %></button>
+  <%= render partial: "modal" %>  
+</div>
+
+
+<div class="flex gap-6">
+  <!-- Left sidebar -->
+  <%= yield :sidebar %>
+
+  <!-- Main content area -->
+  <div class="flex-1">
+    <% if @responses.any? %>
+      <div class="flex flex-col justify-between items-center pb-5 gap-2">
+        <%= render partial: "chatbots/responses/response", collection: @responses, as: :response %>
+        <%= render "chatbots/responses/load_more", chatbot: @chatbot, pagy: @pagy %>
+      </div>
+    <% else %>
+      <div class="w-full h-64 border-2 border-dashed border-gray-300 flex justify-center items-center">
+        You don't have any FAQs yet
+      </div>
+    <% end %>
+  </div>
+
+</div>

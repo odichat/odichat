@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_06_153343) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_27_145140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "vector"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -293,6 +294,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_06_153343) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "responses", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.string "question"
+    t.string "answer"
+    t.vector "embedding", limit: 1536
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_responses_on_chatbot_id"
+  end
+
   create_table "shareable_links", force: :cascade do |t|
     t.integer "chatbot_id", null: false
     t.string "token"
@@ -370,6 +381,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_06_153343) do
   add_foreign_key "pay_charges", "pay_subscriptions", column: "subscription_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
+  add_foreign_key "responses", "chatbots"
   add_foreign_key "shareable_links", "chatbots"
   add_foreign_key "vector_stores", "chatbots"
   add_foreign_key "wabas", "chatbots"

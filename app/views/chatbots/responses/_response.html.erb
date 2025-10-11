@@ -1,0 +1,25 @@
+<%= tag.div class: "card w-full bg-base-100 card-md shadow-sm", id: dom_id(response) do %>
+  <div class="flex">
+    <%= link_to "#", class: "card-body w-full" do %> 
+      <div class="flex justify-between">
+        <h2 class="card-title mb-2"><%= response.question %></h2>
+      </div>
+      <p><%= response.answer %></p>
+    <% end %>
+    <div class="p-2 flex items-start">
+      <button class="btn btn-circle" popovertarget="popover-<%= response.id %>" style="anchor-name:--anchor-<%= response.id %>">
+        <%= icon "ellipsis-vertical", class: "size-5" %>
+      </button>
+    </div>
+    <ul class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
+      popover id="popover-<%= response.id %>" style="position-anchor:--anchor-<%= response.id %>">
+      <li>
+        <%= link_to "Delete", chatbot_responses_path(response.chatbot, response),
+                  class: "bg-error/20 hover:bg-error",
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                  popovertarget: "popover-#{response.id}",
+                  style: "anchor-name:--anchor-#{response.id}" %>
+      </li>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,3 @@
+<% if pagy.next.present? %>
+  <%= turbo_frame_tag :pagination, loading: :lazy, src: chatbot_responses_path(chatbot, page: pagy.next, format: :turbo_stream) %>
+<% end %>

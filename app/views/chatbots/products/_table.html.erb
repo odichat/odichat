@@ -1,0 +1,45 @@
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+  <table class="table table-zebra">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <% next unless product.persisted? %>
+        <tr>
+          <td><%= product.name %> </td>
+          <td><%= product.description %></td>
+          <td><%= product.price %></td>
+          <td class="flex gap-1">
+            <button type="button"
+                    class="text-primary hover:text-gray-600 hover:cursor-pointer"
+                    onclick="document.getElementById('<%= dom_id(product, :modal) %>').showModal()"
+                    title="Edit <%= product.name %>">
+              <%= icon "pencil-square", class: "size-4" %>
+            </button>
+            <%= link_to chatbot_product_path(@chatbot, product),
+                        data: { turbo_method: :delete, turbo_confirm: "Delete this product?" },
+                        class: "text-error hover:text-red-400",
+                        title: "Delete #{product.name}" do %>
+              <%= icon "trash", class: "size-4" %>
+            <% end %>
+            <%= render partial: "modal",
+                       locals: {
+                         modal_id: dom_id(product, :modal),
+                         product: product,
+                         title: "Edit Product",
+                         description: "Update product details",
+                         submit_label: "Update Product"
+                       } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

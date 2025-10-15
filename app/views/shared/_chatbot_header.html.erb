@@ -11,6 +11,9 @@
       <%= link_to t('shared.chatbot_header.sources'), 
           chatbot_sources_path(@chatbot), 
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) || current_page?(chatbot_responses_path(@chatbot)) ? 'tab-active' : ''}" %>
+      <%= link_to "Products", 
+          chatbot_products_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_products_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.integrations'), 
           chatbot_integrations_path(@chatbot), 
           class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) || request.path.include?('/integrations/') ? 'tab-active' : ''}" %>

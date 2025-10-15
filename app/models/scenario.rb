@@ -3,10 +3,11 @@ class Scenario < ApplicationRecord
 
   validates :name, presence: true
   validates :description, presence: true
-  validates :instruction, presence: true
   validates :chatbot_id, presence: true
+  validates :roleable, presence: true
 
   belongs_to :chatbot
+  belongs_to :roleable, polymorphic: true
 
   def agent_name
     name
@@ -17,19 +18,32 @@ class Scenario < ApplicationRecord
   end
 
   def agent_instructions(context = nil)
-    instruction
+    return "" unless roleable.respond_to?(:agent_instructions)
+
+    roleable.agent_instructions(context)
   end
 
   def prompt_context
-    {
+    base_context = {
       name: name,
       description: description
     }
+
+    role_context =
+      if roleable.respond_to?(:prompt_context)
+        roleable.prompt_context
+      else
+        {}
+      end
+
+    base_context.merge(role_context)
   end
 
   def agent_tools
-    [
-      Llm::Tools::ProductLookupTool.new
-    ]
+    if roleable.respond_to?(:agent_tools)
+      roleable.agent_tools
+    else
+      []
+    end
   end
 end

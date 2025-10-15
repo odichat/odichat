@@ -1,0 +1,48 @@
+<% submit_label = local_assigns.fetch(:submit_label) { product.persisted? ? "Update Product" : "Create Product" } %>
+
+<%= form_with(model: [ @chatbot, product ], local: true, data: { turbo: false }, class: "flex flex-col gap-2") do |form| %>
+  <% if product.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this response from being saved:</h2>
+
+      <ul>
+        <% product.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :product_inventory_id, value: @product_inventory.id %>
+
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm">
+        <span class="label-text"><%= t('.name') %></span>
+      </label>
+      <%= form.text_field :name, class: "input w-full", required: true %>
+    </div>
+  </div>
+
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm">
+        <span class="label-text"><%= t('.description') %></span>
+      </label>
+      <%= form.text_area :description, class: "textarea textarea-bordered w-full", rows: 4, required: true %>
+    </div>
+  </div>
+
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm">
+        <span class="label-text"><%= t('.price') %></span>
+      </label>
+      <%= form.number_field :price, step: '0.1', min: 0, class: "input w-full", required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-end mt-2">
+    <%= form.submit submit_label, class: "btn btn-primary" %>
+  </div>
+<% end %>

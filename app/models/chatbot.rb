@@ -159,26 +159,18 @@ class Chatbot < ApplicationRecord
         ### For General Questions and Information Requests
         1. **First, check existing knowledge**: Use `faq_lookup` tool to search for relevant information
         2. **If not found in FAQs**: Provide your best answer based on available context
-        3. **If unable to answer**: Use `handoff` tool to transfer to a human expert
+        
 
         ### For Complex or Unclear Requests
         1. **Ask clarifying questions**: Gather more information if needed
         2. **Break down complex tasks**: Handle step by step or hand off if too complex
-        3. **Escalate when necessary**: Use `handoff` tool for issues beyond your capabilities
+
 
         ## Response Best Practices
         - Be conversational but professional
         - Provide actionable information
         - Include relevant details from tool responses
 
-        # Human Handoff Protocol
-        Transfer to a human agent when:
-        - User explicitly requests human assistance
-        - You cannot find needed information after checking FAQs and with specialized agents.
-        - The issue requires specialized knowledge or permissions you don't have
-        - Multiple attempts to help have been unsuccessful
-
-        When using the `handoff` tool, provide a clear reason that helps the human agent understand the context.
       INSTRUCTIONS
     end
   end
@@ -221,17 +213,12 @@ class Chatbot < ApplicationRecord
   end
 
   def create_product_scenario
+    inventory_role = Roleable::ProductInventory.create!(chatbot: self)
+
     scenarios.create!(
       name: "Product Inventory Agent",
-      description: "Given a user query searches the products database using the `products_lookup` tool and formats a response",
-      instruction: <<~INSTRUCTIONS
-        You are the Product Inventory Agent. You handle customer queries about product information such as availability, price, general details.
-        **Your tools:**
-        - `product_lookup_tool`: Look up product information such as price and details
-
-        **Instructions:**
-        - Present product information clearly
-      INSTRUCTIONS
+      description: "Given a user query searches the products database using the `product_lookup` tool and formats a response",
+      roleable: inventory_role
     )
   end
 
@@ -288,7 +275,7 @@ class Chatbot < ApplicationRecord
   def enqueue_cleanup_job
     HandleChatbotCleanupJob.perform_later(
       documents.pluck(:file_id),
-      vector_store.vector_store_id
+      vector_store&.vector_store_id
     )
   end
 end

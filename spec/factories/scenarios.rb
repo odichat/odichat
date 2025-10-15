@@ -1,9 +1,8 @@
 FactoryBot.define do
   factory :scenario do
-    chatbot { nil }
+    association :chatbot
     name { "MyString" }
     description { "MyText" }
-    instruction { "MyText" }
-    tools { "" }
+    association :roleable, factory: :roleable_product_inventory
   end
 end

@@ -1,0 +1,27 @@
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
+<div class="flex justify-between">
+  <h1 class="text-3xl font-bold mb-8">Products</h1>
+  <% if @products.filter(&:persisted?).any? %>
+    <button class="btn btn-primary" onclick="product_modal.showModal()">Create Product</button>
+    <%= render partial: "modal" %>
+  <% end %>
+</div>
+
+<% if @products.filter(&:persisted?).any? %>
+  <%= render partial: "table" %>
+<% else %>
+  <div class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+    <div class="flex flex-col gap-2 text-center mb-4">
+      <h2 class="text-xl font-semibold">No products yet</h2>
+      <p class="text-md font-regular">Add your first product manually or import from a CSV</p>
+    </div>
+    <div class="flex justify-center gap-2">
+      <button class="btn btn-primary" onclick="product_modal.showModal()">Create Product</button>
+      <button class="btn btn-default btn-soft">Upload CSV</button>
+      <%= render partial: "modal" %>
+    </div>
+  </div>
+<% end %>

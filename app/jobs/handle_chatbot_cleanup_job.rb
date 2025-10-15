@@ -3,6 +3,9 @@ class HandleChatbotCleanupJob < ApplicationJob
   retry_on OpenAI::Error, wait: :polynomially_longer, attempts: 5, priority: :low
 
   def perform(file_ids, vector_store_id)
+    return if file.ids.size.zero? || file_ids.nil?
+    return if vector_store_id.nil?
+
     begin
       file_ids.each do |file_id|
         Document.remove_from_storage(vector_store_id, file_id)

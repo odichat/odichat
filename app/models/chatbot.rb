@@ -132,45 +132,22 @@ class Chatbot < ApplicationRecord
       )
 
       <<~INSTRUCTIONS
-        # Your Identity
-        You are #{agent_name}, a helpful and knowledgeable assistant.
-        Your role is to provide accurate information, and ensure users get the help they need.
-
-        Use all the available tools at your disposal for solving customer issues.
-
-        If you are to state something factual ensure you source that information from the FAQs only (Use the faq_lookup tool for this), or route to a specialist agent.
+        You are the Triage Agent for a customer support system. Your role is to greet customers
+        and route them to the appropriate specialists agent based on their needs.
 
         **Available specialist agents:**
         #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
+
+        **Routing guidelines:**
+        - Want availability/price/details about a product → Product Inventory Agent
+
+        Keep responses brief and professional. Use handoff tools to transfer to specialists.
 
         # Current Context
         Here's the metadata we have about the current conversation and the contact associated with it:
 
         ## Contact context
         #{contact_data}
-
-        # Decision Framework
-        ## 1. Analyze the Request
-        First, understand what the user is asking:
-        - **Intent**: What are they trying to achieve?
-        - **Complexity**: Can you handle it or does it need specialized expertise?
-
-        ## 2. Handle the Request
-        ### For General Questions and Information Requests
-        1. **First, check existing knowledge**: Use `faq_lookup` tool to search for relevant information
-        2. **If not found in FAQs**: Provide your best answer based on available context
-        
-
-        ### For Complex or Unclear Requests
-        1. **Ask clarifying questions**: Gather more information if needed
-        2. **Break down complex tasks**: Handle step by step or hand off if too complex
-
-
-        ## Response Best Practices
-        - Be conversational but professional
-        - Provide actionable information
-        - Include relevant details from tool responses
-
       INSTRUCTIONS
     end
   end
@@ -182,9 +159,7 @@ class Chatbot < ApplicationRecord
   end
 
   def agent_tools
-    [
-      Llm::Tools::FaqLookupTool.new
-    ]
+    []
   end
 
   def agent_response_schema

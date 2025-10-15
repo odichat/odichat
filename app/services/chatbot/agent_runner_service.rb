@@ -20,8 +20,12 @@ class Chatbot::AgentRunnerService
   private
 
     def build_and_wire_agents
-      chatbot_agent = @chatbot.agent
-      [ chatbot_agent ]
+      triage_agent = @chatbot.agent
+      scenario_agents = @chatbot.scenarios.map(&:agent)
+
+      triage_agent.register_handoffs(*scenario_agents) if scenario_agents.any?
+      scenario_agents.each { |scenario_agent| scenario_agent.register_handoffs(triage_agent) }
+      [ triage_agent ] + scenario_agents
     end
 
     def build_context(message_history)

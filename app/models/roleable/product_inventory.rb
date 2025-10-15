@@ -20,8 +20,8 @@ module Roleable
         # )
       <<~INSTRUCTIONS
         You are the Product Inventory Agent. You handle customer queries about product information such as availability, price, or general details.
-        **Your tool:**
-        - `product_lookup`: Look up product information such as price and details
+        **Your tools:**
+        #{agent_tools.map { |tool| "- **#{tool.name}**: #{tool.description}" }.join("\n")}
 
         **Instructions:**
         - Present product information clearly

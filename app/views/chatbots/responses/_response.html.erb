@@ -14,7 +14,7 @@
     <ul class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
       popover id="popover-<%= response.id %>" style="position-anchor:--anchor-<%= response.id %>">
       <li>
-         <%= link_to "Delete", chatbot_response_path(response.chatbot, response),
+         <%= link_to "Delete", chatbot_response_path(chatbot, response),
                   class: "bg-error/20 hover:bg-error",
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                   popovertarget: "popover-#{response.id}",

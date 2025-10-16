@@ -10,9 +10,11 @@ class Llm::Tools::FaqLookupTool < Agents::Tool
     chatbot_id = tool_context.state.dig(:chatbot_id)
     @agent = Chatbot.find_by(id: chatbot_id)
 
+    faq_scenario = Roleable::Faq.find_by(chatbot_id: @agent.id) if @agent.present?
+
     log_tool_usage("searching", { query: query })
 
-    responses = @agent.responses.search(query) if @agent.present?
+    responses = faq_scenario&.responses&.search(query)
 
     if responses.present?
       log_tool_usage("found_results", { query: query, count: responses.size })

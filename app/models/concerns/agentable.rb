@@ -1,10 +1,6 @@
 module Agentable
   extend ActiveSupport::Concern
 
-  included do
-    has_many :responses, dependent: :destroy
-  end
-
   def agent
     Agents::Agent.new(
       name: agent_name,

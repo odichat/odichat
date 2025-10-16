@@ -9,7 +9,6 @@ class Chatbot < ApplicationRecord
   has_many :inboxes, dependent: :destroy
   has_many :chats, dependent: :destroy
   has_many :conversations, dependent: :destroy
-  has_many :responses, dependent: :destroy
   has_many :scenarios, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
@@ -28,6 +27,7 @@ class Chatbot < ApplicationRecord
   after_create :create_playground_resources
   after_create :create_public_playground_resources
   after_create :create_product_scenario
+  after_create :create_faqs_scenario
 
   after_destroy :enqueue_cleanup_job
 
@@ -194,6 +194,16 @@ class Chatbot < ApplicationRecord
       name: "Product Inventory Agent",
       description: "Given a user query searches the products database using the `product_lookup` tool and formats a response",
       roleable: inventory_role
+    )
+  end
+
+  def create_faqs_scenario
+    faq_role = Roleable::Faq.create!(chatbot: self)
+
+    scenarios.create!(
+      name: "FAQs Agent",
+      description: "Searches the general knowledge base to answer FAQs using the `faq_lookup` tool and formats a response",
+      roleable: faq_role
     )
   end
 

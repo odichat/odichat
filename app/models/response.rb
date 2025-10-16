@@ -1,5 +1,8 @@
 class Response < ApplicationRecord
-  belongs_to :chatbot
+  belongs_to :faq,
+            class_name: "Roleable::Faq",
+            foreign_key: :roleable_faq_id,
+            inverse_of: :responses
 
   validates :question, presence: true
   validates :answer, presence: true

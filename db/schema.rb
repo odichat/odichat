@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_15_170637) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -307,13 +307,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_170637) do
   end
 
   create_table "responses", force: :cascade do |t|
-    t.bigint "chatbot_id", null: false
     t.string "question"
     t.string "answer"
     t.vector "embedding", limit: 1536
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["chatbot_id"], name: "index_responses_on_chatbot_id"
+    t.bigint "roleable_faq_id", null: false
+    t.index ["roleable_faq_id"], name: "index_responses_on_roleable_faq_id"
+  end
+
+  create_table "roleable_faqs", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_roleable_faqs_on_chatbot_id"
   end
 
   create_table "roleable_product_inventories", force: :cascade do |t|
@@ -413,7 +420,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_15_170637) do
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
   add_foreign_key "products", "roleable_product_inventories"
-  add_foreign_key "responses", "chatbots"
+  add_foreign_key "responses", "roleable_faqs"
+  add_foreign_key "roleable_faqs", "chatbots"
   add_foreign_key "roleable_product_inventories", "chatbots"
   add_foreign_key "scenarios", "chatbots"
   add_foreign_key "shareable_links", "chatbots"

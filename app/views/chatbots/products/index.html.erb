@@ -5,7 +5,15 @@
 <div class="flex justify-between">
   <h1 class="text-3xl font-bold mb-8">Products</h1>
   <% if @products.filter(&:persisted?).any? %>
-    <button class="btn btn-primary" onclick="product_modal.showModal()">Create Product</button>
+
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-primary m-1">Actions <%= icon "arrow-down", class: "size-4" %></div>
+      <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+        <li><a onclick="product_modal.showModal()">Create Product</a></li>
+        <li><a>Import CSV</a></li>
+      </ul>
+    </div>
+    
     <%= render partial: "modal" %>
   <% end %>
 </div>

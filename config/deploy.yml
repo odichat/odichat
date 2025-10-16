@@ -100,7 +100,7 @@ builder:
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
   db:
-    image: postgres:17.5
+    image: andresurdaneta/postgres-pgvector:17.5
     host: 5.78.45.114
     env:
       clear:

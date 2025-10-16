@@ -52,14 +52,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    stored_path = stored_location_for(resource)
-    return stored_path if stored_path.present?
-
-    if resource.admin? || !Flipper.enabled?(:paywall) || resource.subscribed?
-      chatbots_path
-    else
-      subscriptions_pricing_path
-    end
+    after_signup_path(:create_chatbot)
   end
 
   # The path used after sign up for inactive accounts.

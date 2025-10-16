@@ -17,7 +17,6 @@ class Chatbot < ApplicationRecord
   has_many :whatsapp_channels, dependent: :destroy, class_name: "Channel::Whatsapp"
 
   validates :name, presence: true
-  validates :model_id, presence: true
 
   before_create :set_default_system_instructions
   before_create :set_default_temperature

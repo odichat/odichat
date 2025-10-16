@@ -7,7 +7,7 @@ class Scenario < ApplicationRecord
   validates :roleable, presence: true
 
   belongs_to :chatbot
-  belongs_to :roleable, polymorphic: true
+  belongs_to :roleable, polymorphic: true, dependent: :destroy
 
   def agent_name
     name

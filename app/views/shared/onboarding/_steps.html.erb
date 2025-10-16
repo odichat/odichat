@@ -1,0 +1,27 @@
+<% current_index = steps.index(current_step) || -1 %>
+<% labels = {
+  create_chatbot: "Create Chatbot",
+  create_faqs: "FAQs",
+  create_products: "Products",
+  test_playground: "Test Playground",
+  connect_whatsapp: "Connect WhatsApp"
+} %>
+
+<ul class="steps w-full mb-8">
+  <% steps.each_with_index do |wizard_step, idx| %>
+    <% label = labels.fetch(wizard_step, wizard_step.to_s.humanize) %>
+    <% state_class =
+      if idx < current_index
+        "step-info"
+      elsif idx == current_index
+        "step-info step-active"
+      else
+        nil
+      end
+    %>
+
+    <li class="step text-sm <%= state_class %>">
+      <%= label %>
+    </li>
+  <% end %>
+</ul>

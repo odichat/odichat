@@ -124,3 +124,5 @@ gem "pgvector", "~> 0.3.2"
 gem "neighbor", "~> 0.6.0"
 
 gem "ruby_llm-schema", "~> 0.2.1"
+
+gem "wicked", "~> 2.0"

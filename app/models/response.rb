@@ -6,6 +6,7 @@ class Response < ApplicationRecord
 
   validates :question, presence: true
   validates :answer, presence: true
+  validates :roleable_faq_id, presence: true
 
   has_neighbors :embedding, normalize: true
 

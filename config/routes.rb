@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :chatbots do
     resources :products, controller: "chatbots/products"
     resources :responses, controller: "chatbots/responses"
+    resources :documents, controller: "chatbots/documents"
     resource :playground, only: [ :show, :update ], controller: "chatbots/playground"
     resources :chats, only: [ :create ], controller: "chatbots/chats"
     resources :conversations, controller: "chatbots/conversations" do

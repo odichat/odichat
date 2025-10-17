@@ -4,6 +4,9 @@ class Document < ApplicationRecord
   belongs_to :chatbot
   has_one_attached :file
 
+  after_create_commit :enqueue_crawl_job
+  after_commit :enqueue_response_builder_job, on: :update, if: :should_enqueue_response_builder?
+
   enum :status, { pending: 0, uploaded: 1, failed: 2, deleting: 3 }
 
   validates :file, content_type: [ "application/pdf", "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/html" ]
@@ -29,5 +32,31 @@ class Document < ApplicationRecord
       Rails.logger.error("Error removing document from OpenAI: #{e.message}")
       raise OpenAI::Error, "Error removing document from OpenAI: #{e.message}"
     end
+  end
+
+  def store_openai_file_id(file_id)
+    update!(file_id:)
+  end
+
+  def pdf_document?
+    file.attached? && file.content_type == "application/pdf"
+  end
+
+  private
+
+  def should_enqueue_response_builder?
+    saved_change_to_status? && uploaded?
+  end
+
+  def enqueue_crawl_job
+    return if !pending?
+
+    Documents::CrawlJob.perform_later(self.id)
+  end
+
+  def enqueue_response_builder_job
+    return if !uploaded?
+
+    Documents::ResponseBuilderJob.perform_later(self.id)
   end
 end

@@ -10,6 +10,7 @@ class Chatbots::ResponsesController < Chatbots::BaseController
     )
 
     @response = @faq_agent.responses.build
+    @processing_documents = @chatbot.documents.pending
 
     respond_to do |format|
       format.html

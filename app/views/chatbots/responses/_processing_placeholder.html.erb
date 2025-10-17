@@ -1,0 +1,8 @@
+<% processing_documents ||= [] %>
+<div id="<%= dom_id(chatbot, :processing_placeholder) %>" class="w-full flex flex-col justify-center items-center gap-4">
+  <% if processing_documents.any? %>
+    <%= render partial: "chatbots/responses/processing_document",
+               collection: processing_documents,
+               as: :document %>
+  <% end %>
+</div>

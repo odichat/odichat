@@ -1,3 +1,4 @@
+<% processing_documents ||= [] %>
 <div id="<%= dom_id(chatbot, :responses_list) %>">
   <% if responses.any? %>
     <div class="flex flex-col justify-between items-center pb-5 gap-2">
@@ -5,8 +6,25 @@
       <%= render "chatbots/responses/load_more", chatbot: chatbot, pagy: pagy %>
     </div>
   <% else %>
-    <div class="w-full h-64 border-2 border-dashed border-gray-300 flex justify-center items-center">
-      You don't have any FAQs yet
-    </div>
+    <% if processing_documents.any? %>
+      <div class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+        <%= render "chatbots/responses/processing_placeholder",
+            chatbot: chatbot,
+            processing_documents: processing_documents %>
+      </div>
+    <% else %>
+      <div class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+        <div class="flex flex-col gap-2 text-center mb-4">
+          <h2 class="text-xl font-semibold">You don't have any FAQs yet.</h2>
+          <p class="text-md font-regular">Add your first FAQs manually or import from a PDF</p>
+        </div>
+        <div class="flex justify-center gap-2">
+          <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
+          <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+          <%= render partial: "modal" %>
+          <%= render partial: "pdf_upload_modal" %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>

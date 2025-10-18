@@ -10,7 +10,7 @@ class Chatbots::ResponsesController < Chatbots::BaseController
     )
 
     @response = @faq_agent.responses.build
-    @processing_documents = @chatbot.documents.pending
+    @is_processing_documents = @chatbot.documents.pending.any?
 
     respond_to do |format|
       format.html
@@ -29,7 +29,7 @@ class Chatbots::ResponsesController < Chatbots::BaseController
 
     respond_to do |format|
       if @response.save
-        format.html { redirect_to chatbot_responses_path(@chatbot), notice: "Chatbot response was successfully created." }
+        format.html { redirect_to chatbot_responses_path(@chatbot), notice: "FAQ was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -48,12 +48,17 @@ class Chatbots::ResponsesController < Chatbots::BaseController
     respond_to do |format|
       format.html { redirect_to chatbot_responses_path(@chatbot), notice: "FAQ successfuly deleted." }
       format.turbo_stream do
-        flash.now[:notice] = "FAQ successfuly deleted."
-
-        render turbo_stream: [
-          turbo_stream.remove(@response),
-          turbo_stream.update("flash", partial: "shared/flash_messages")
-        ]
+        if params[:redirect].present?
+          redirect_to params[:redirect],
+              notice: "FAQ successfully deleted.",
+              status: :see_other
+        else
+          flash.now[:notice] = "FAQ successfuly deleted."
+          render turbo_stream: [
+            turbo_stream.remove(@response),
+            turbo_stream.update("flash", partial: "shared/flash_messages")
+          ]
+        end
       end
     end
   end

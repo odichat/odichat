@@ -1,0 +1,6 @@
+<div class="flex justify-center gap-2">
+  <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
+  <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+  <%= render partial: "after_signup/faqs/modal", locals: { chatbot: chatbot, chatbot_response: chatbot_response } %>
+  <%= render partial: "after_signup/faqs/pdf_upload_modal", locals: { chatbot: chatbot } %>
+</div>

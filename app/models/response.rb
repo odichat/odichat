@@ -10,7 +10,7 @@ class Response < ApplicationRecord
 
   has_neighbors :embedding, normalize: true
 
-  after_create_commit :execute_after_create_commit_callbacks
+  # after_create_commit :execute_after_create_commit_callbacks
   after_commit :generate_embedding, on: [ :create, :update ]
 
   def self.search(query)
@@ -18,13 +18,7 @@ class Response < ApplicationRecord
     nearest_neighbors(:embedding, embedding, distance: :cosine).limit(3)
   end
 
-  private
-
-    def execute_after_create_commit_callbacks
-      broadcast_append_to_responses_list
-    end
-
-    def broadcast_append_to_responses_list
+  def broadcast_append_to_responses_list(partial: "chatbots/responses/response")
       chatbot = faq&.chatbot
       return unless chatbot
 
@@ -39,12 +33,18 @@ class Response < ApplicationRecord
       broadcast_prepend_later_to(
         stream,
         target: target,
-        partial: "chatbots/responses/response",
+        partial: partial,
         locals: {
           response: self,
           chatbot: chatbot
         }
       )
+    end
+
+  private
+
+    def execute_after_create_commit_callbacks
+      broadcast_append_to_responses_list
     end
 
     def generate_embedding

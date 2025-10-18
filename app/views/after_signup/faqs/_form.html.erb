@@ -1,0 +1,35 @@
+<%= form_with(model: [ chatbot, chatbot_response ], url: wizard_path, method: :put, local: true, data: { turbo: false }, class: "flex flex-col gap-2") do |form| %>
+  <% if chatbot_response.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(chatbot_response.errors.count, "error") %> prohibited this response from being saved:</h2>
+
+      <ul>
+        <% chatbot_response.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm">
+        <span class="label-text"><%= t('.question') %></span>
+      </label>
+      <%= form.text_field :question, class: "input w-full", required: true %>
+    </div>
+  </div>
+
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm">
+        <span class="label-text"><%= t('.answer') %></span>
+      </label>
+      <%= form.text_area :answer, class: "textarea textarea-bordered w-full", rows: 4, required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-end mt-2">
+    <%= form.submit t('.save_response'), class: "btn btn-primary" %>
+  </div>
+<% end %>

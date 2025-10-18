@@ -1,0 +1,21 @@
+<% chatbot_response ||= chatbot.responses.build %>
+<div id="<%= dom_id(chatbot, :responses_list) %>">
+  <% if !responses.any? && !is_processing_documents.present? %>
+    <div id="<%= dom_id(chatbot, :no_responses_uploaded) %>">
+      <%= render "after_signup/faqs/empty", chatbot: chatbot, chatbot_response: chatbot_response %>
+    </div>
+  <% elsif !responses.any? && is_processing_documents.present? %>
+    <div id="<%= dom_id(chatbot, :processing_wrapper) %>" class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+      <%= render "chatbots/responses/processing_loader", chatbot: chatbot %>
+    </div>
+  <% else %>
+    <div id="<%= dom_id(chatbot, :responses_items) %>" class="flex flex-col gap-2">
+      <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
+      <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+      <%= render partial: "after_signup/faqs/modal", locals: { chatbot: chatbot, chatbot_response: chatbot_response } %>
+      <%= render partial: "after_signup/faqs/pdf_upload_modal", locals: { chatbot: chatbot } %>
+      <%= render partial: "after_signup/faqs/response", collection: responses, as: :response, locals: { chatbot: chatbot } %>
+    </div>
+    <%= render "chatbots/responses/load_more", chatbot: chatbot, pagy: pagy %>
+  <% end %>
+</div>

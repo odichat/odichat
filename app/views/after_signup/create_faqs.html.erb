@@ -1,5 +1,10 @@
-<div class="max-w-xl mx-auto space-y-4 text-center">
-  <h1 class="text-2xl font-semibold text-gray-900">Set up your FAQs</h1>
-  <p class="text-base text-gray-600">Great! Your chatbot is ready. This is a placeholder for the next step of the onboarding wizard.</p>
-  <%= link_to "Continue", next_wizard_path, class: "inline-flex items-center justify-center rounded-md bg-black px-4 py-2 font-semibold text-base text-white hover:bg-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
-</div>
+<%= turbo_stream_from [ @chatbot, :responses ] %>
+<%= link_to "Skip >", next_wizard_path, class: "underline" %>
+<%= render partial: "after_signup/faqs/responses_list",
+           locals: {
+             chatbot: @chatbot,
+             responses: @responses,
+             pagy: @pagy,
+             is_processing_documents: @is_processing_documents,
+             chatbot_response: @response
+           } %>

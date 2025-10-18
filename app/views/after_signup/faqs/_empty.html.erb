@@ -1,0 +1,10 @@
+<div class="flex flex-col gap-2 text-center mb-4">
+  <h2 class="text-xl font-semibold">Set up your FAQs.</h2>
+  <p class="text-md font-regular">Great! Your chatbot is ready. This is a placeholder for the next step of the onboarding wizard.</p>
+</div>
+<div class="flex justify-center gap-2">
+  <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
+  <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+  <%= render partial: "after_signup/faqs/modal", locals: { chatbot: chatbot, chatbot_response: chatbot_response } %>
+  <%= render partial: "after_signup/faqs/pdf_upload_modal", locals: { chatbot: chatbot } %>
+</div>

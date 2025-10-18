@@ -1,9 +1,8 @@
-<div id="<%= dom_id(document, :processing) %>" class="">
+<div id="<%= dom_id(chatbot, :processing_loader) %>" class="w-full flex flex-col justify-center items-center gap-4">
   <div class="flex items-center gap-3">
     <div class="flex flex-col gap-2">
-
       <h2 class="font-semibold text-base-content text-xl text-center">
-        Processing <%= document&.file&.filename&.to_s || "your document" %>
+        Processing document...
         <span class="loading loading-spinner text-primary"></span>
       </h2>
       <p class="text-sm text-base-content/70">
@@ -11,4 +10,5 @@
       </p>
     </div>
   </div>
+
 </div>

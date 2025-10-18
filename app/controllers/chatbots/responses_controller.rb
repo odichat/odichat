@@ -6,7 +6,7 @@ class Chatbots::ResponsesController < Chatbots::BaseController
   def index
     @pagy, @responses = pagy_countless(
       @faq_agent.responses.order(created_at: :desc),
-      items: 10
+      limit: 10
     )
 
     @response = @faq_agent.responses.build

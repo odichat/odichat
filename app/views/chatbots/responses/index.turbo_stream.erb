@@ -1,3 +1,7 @@
+<%= turbo_stream.append dom_id(@chatbot, :responses_items) do %>
+  <%= render partial: "chatbots/responses/response", collection: @responses, as: :response, locals: { chatbot: @chatbot } %>
+<% end %>
+
 <%= turbo_stream.replace :pagination do %>
-  <%= render "chatbots/responses/load_more", chatbot: @chatbot, pagy: @pagy %>    
+  <%= render "chatbots/responses/load_more", chatbot: @chatbot, pagy: @pagy %>
 <% end %>

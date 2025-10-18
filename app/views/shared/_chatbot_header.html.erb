@@ -8,7 +8,7 @@
       <%= link_to t('shared.chatbot_header.activity'),
           chatbot_conversations_path(@chatbot),
           class: "tab #{current_page?(chatbot_conversations_path(@chatbot)) ? 'tab-active' : ''}" %>
-      <%= link_to t('shared.chatbot_header.sources'), 
+      <%= link_to Flipper.enabled?(:v2, current_user) ? "FAQs" : t('shared.chatbot_header.sources'), 
           chatbot_sources_path(@chatbot), 
           class: "tab #{current_page?(chatbot_sources_path(@chatbot)) || current_page?(chatbot_responses_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to "Products", 

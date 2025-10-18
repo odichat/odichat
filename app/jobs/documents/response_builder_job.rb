@@ -1,4 +1,7 @@
+require "pagy"
+
 class Documents::ResponseBuilderJob < ApplicationJob
+  include Pagy::Backend
   queue_as :default
 
   def perform(document_id, options = {})
@@ -7,6 +10,7 @@ class Documents::ResponseBuilderJob < ApplicationJob
 
     faqs = generate_faqs(document, options)
     create_responses_from_faqs(faqs, document)
+    broadcast_responses_list(document)
   end
 
   private
@@ -31,16 +35,51 @@ class Documents::ResponseBuilderJob < ApplicationJob
   end
 
   def create_responses_from_faqs(faqs, document)
-    faqs.each { |faq| create_response(faq, document) }
+    chatbot = document.chatbot
+
+    faq_role_id = chatbot.scenarios.find_by(roleable_type: "Roleable::Faq")&.roleable_id
+    faqs.each { |faq| create_response(faq, faq_role_id, document.id) } if faq_role_id.present?
   end
 
-  def create_response(faq, document)
+  def create_response(faq, faq_role_id, document_id)
     Response.create!(
       question: faq["question"],
       answer: faq["answer"],
-      roleable_faq_id: document.chatbot.scenarios.find_by(roleable_type: "Roleable::Faq")&.roleable_id
+      roleable_faq_id: faq_role_id
     )
   rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error("Could not create response", error: e.message)
+    Rails.logger.error("Could not create response", error: e.message, document_id: document_id)
+  end
+
+  def broadcast_responses_list(document)
+    return if document.nil?
+    chatbot = document.chatbot
+    faq_agent = chatbot.scenarios.find_by(roleable_type: "Roleable::Faq")&.roleable
+    return if faq_agent.nil?
+    responses_scope = faq_agent.responses.order(created_at: :desc)
+    stream = [ chatbot, :responses ]
+    per_page = 10
+    pagy = Pagy::Countless.new(page: 1, limit: per_page)
+    fetched_responses = responses_scope.limit(pagy.limit + 1).to_a
+    pagy.finalize(fetched_responses.size)
+    paginated_responses = fetched_responses.first(pagy.limit)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream,
+      target: ActionView::RecordIdentifier.dom_id(chatbot, :responses_list),
+      partial: "chatbots/responses/responses_list",
+      locals: {
+        chatbot: chatbot,
+        responses: paginated_responses,
+        pagy: pagy,
+        is_processing_documents: chatbot.documents.pending.any?
+      }
+    )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream,
+      target: "flash",
+      partial: "shared/flash_messages",
+      locals: { flash: { notice: "Document #{document.file.blob.filename} has been processed." } }
+    )
   end
 end

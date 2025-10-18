@@ -15,7 +15,7 @@
 <% end %>
 
 <div class="flex justify-between">
-  <h1 class="text-3xl font-bold mb-8"><%= t('.title') %></h1>
+  <h1 class="text-3xl font-bold mb-8">FAQs</h1>
   <% if @responses.any? %>
     <button class="btn btn-primary" onclick="responses_modal.showModal()"><%= t('.create_faq_button') %></button>
     <%= render partial: "modal" %>  
@@ -28,12 +28,9 @@
   <%#= yield :sidebar %>
 
   <!-- Main content area -->
+  <%= turbo_stream_from [ @chatbot, :responses ] %>
   <div class="flex-1">
-    <%= render "chatbots/responses/responses_list",
-               chatbot: @chatbot,
-               responses: @responses,
-               pagy: @pagy,
-               processing_documents: @processing_documents %>
+    <%= render "responses_list", chatbot: @chatbot, pagy: @pagy, responses: @responses, is_processing_documents: @is_processing_documents %>
   </div>
 
 </div>

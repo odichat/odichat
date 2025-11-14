@@ -36,16 +36,13 @@ class Documents::ResponseBuilderJob < ApplicationJob
 
   def create_responses_from_faqs(faqs, document)
     chatbot = document.chatbot
-
-    faq_role_id = chatbot.scenarios.find_by(roleable_type: "Roleable::Faq")&.roleable_id
-    faqs.each { |faq| create_response(faq, faq_role_id, document.id) } if faq_role_id.present?
+    faqs.each { |faq| create_response(faq, chatbot, document.id) }
   end
 
-  def create_response(faq, faq_role_id, document_id)
-    Response.create!(
+  def create_response(faq, chatbot, document_id)
+    chatbot.responses.create!(
       question: faq["question"],
       answer: faq["answer"],
-      roleable_faq_id: faq_role_id
     )
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error("Could not create response", error: e.message, document_id: document_id)
@@ -54,15 +51,14 @@ class Documents::ResponseBuilderJob < ApplicationJob
   def broadcast_responses_list(document)
     return if document.nil?
     chatbot = document.chatbot
-    faq_agent = chatbot.scenarios.find_by(roleable_type: "Roleable::Faq")&.roleable
-    return if faq_agent.nil?
-    responses_scope = faq_agent.responses.order(created_at: :desc)
+    responses_scope = chatbot.responses.order(created_at: :desc)
     stream = [ chatbot, :responses ]
     per_page = 10
     pagy = Pagy::Countless.new(page: 1, limit: per_page)
     fetched_responses = responses_scope.limit(pagy.limit + 1).to_a
     pagy.finalize(fetched_responses.size)
     paginated_responses = fetched_responses.first(pagy.limit)
+
     Turbo::StreamsChannel.broadcast_replace_to(
       stream,
       target: ActionView::RecordIdentifier.dom_id(chatbot, :responses_list),

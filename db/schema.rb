@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_15_090001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -295,15 +295,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.bigint "roleable_product_inventory_id", null: false
     t.string "name", null: false
     t.text "description"
     t.decimal "price", precision: 10, scale: 2
+    t.bigint "chatbot_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.vector "embedding", limit: 1536
-    t.index ["name"], name: "index_products_on_name"
-    t.index ["roleable_product_inventory_id"], name: "index_products_on_roleable_product_inventory_id"
+    t.index ["chatbot_id"], name: "index_products_on_chatbot_id"
   end
 
   create_table "responses", force: :cascade do |t|
@@ -312,22 +310,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
     t.vector "embedding", limit: 1536
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "roleable_faq_id", null: false
-    t.index ["roleable_faq_id"], name: "index_responses_on_roleable_faq_id"
-  end
-
-  create_table "roleable_faqs", force: :cascade do |t|
     t.bigint "chatbot_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chatbot_id"], name: "index_roleable_faqs_on_chatbot_id"
-  end
-
-  create_table "roleable_product_inventories", force: :cascade do |t|
-    t.bigint "chatbot_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chatbot_id"], name: "index_roleable_product_inventories_on_chatbot_id"
+    t.index ["chatbot_id"], name: "index_responses_on_chatbot_id"
   end
 
   create_table "scenarios", force: :cascade do |t|
@@ -336,10 +320,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "roleable_type"
-    t.bigint "roleable_id"
+    t.string "instruction"
+    t.jsonb "tools", default: []
     t.index ["chatbot_id"], name: "index_scenarios_on_chatbot_id"
-    t.index ["roleable_type", "roleable_id"], name: "index_scenarios_on_roleable"
   end
 
   create_table "shareable_links", force: :cascade do |t|
@@ -419,10 +402,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_16_180500) do
   add_foreign_key "pay_charges", "pay_subscriptions", column: "subscription_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
-  add_foreign_key "products", "roleable_product_inventories"
-  add_foreign_key "responses", "roleable_faqs"
-  add_foreign_key "roleable_faqs", "chatbots"
-  add_foreign_key "roleable_product_inventories", "chatbots"
+  add_foreign_key "products", "chatbots"
+  add_foreign_key "responses", "chatbots"
   add_foreign_key "scenarios", "chatbots"
   add_foreign_key "shareable_links", "chatbots"
   add_foreign_key "vector_stores", "chatbots"

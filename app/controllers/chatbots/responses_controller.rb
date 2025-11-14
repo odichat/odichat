@@ -1,15 +1,14 @@
 class Chatbots::ResponsesController < Chatbots::BaseController
   include Pagy::Backend
-  before_action :set_faq_agent
   before_action :set_response, only: %i[ destroy ]
 
   def index
     @pagy, @responses = pagy_countless(
-      @faq_agent.responses.order(created_at: :desc),
+      @chatbot.responses.order(created_at: :desc),
       limit: 10
     )
 
-    @response = @faq_agent.responses.build
+    @response = @chatbot.responses.build
     @is_processing_documents = @chatbot.documents.pending.any?
 
     respond_to do |format|
@@ -25,7 +24,7 @@ class Chatbots::ResponsesController < Chatbots::BaseController
   end
 
   def create
-    @response = @faq_agent.responses.build(response_params)
+    @response = @chatbot.responses.build(response_params)
 
     respond_to do |format|
       if @response.save
@@ -65,25 +64,11 @@ class Chatbots::ResponsesController < Chatbots::BaseController
 
   private
 
-    def set_faq_agent
-      @faq_agent = Roleable::Faq.find_by(chatbot_id: @chatbot.id)
-
-      return if @faq_agent.present?
-
-      respond_to do |format|
-        format.html { redirect_to chatbot_path(@chatbot), alert: "FAQ agent not found" }
-        format.turbo_stream do
-          flash.now[:alert] = "FAQ agent not found"
-          render turbo_stream: turbo_stream.update("flash", partial: "shared/flash_messages")
-        end
-      end
-    end
-
     def response_params
       params.require(:response).permit(:question, :answer)
     end
 
     def set_response
-      @response = @faq_agent.responses.find(params[:id])
+      @response = @chatbot.responses.find(params[:id])
     end
 end

@@ -1,0 +1,6 @@
+<div>
+  <button class="btn btn-primary" onclick="responses_modal.showModal()"><%= t('.create_faq_button') %></button>
+  <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+  <%= render partial: "chatbots/responses/modal" %>
+  <%= render partial: "chatbots/responses/pdf_upload_modal" %>
+</div>

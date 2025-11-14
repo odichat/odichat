@@ -12,6 +12,8 @@ class Chatbot < ApplicationRecord
   has_many :scenarios, dependent: :destroy
   has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :responses, dependent: :destroy
+  has_many :products, dependent: :destroy
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
   has_many :public_playground_channels, dependent: :destroy, class_name: "Channel::PublicPlayground"
   has_many :whatsapp_channels, dependent: :destroy, class_name: "Channel::Whatsapp"
@@ -25,8 +27,8 @@ class Chatbot < ApplicationRecord
   # after_create :create_vector_store
   after_create :create_playground_resources
   after_create :create_public_playground_resources
-  after_create :create_product_scenario
   after_create :create_faqs_scenario
+  after_create :create_product_scenario
 
   after_destroy :enqueue_cleanup_job
 
@@ -131,8 +133,11 @@ class Chatbot < ApplicationRecord
       )
 
       <<~INSTRUCTIONS
-        You are the Triage Agent for a customer support system. Your role is to greet customers
-        and route them to the appropriate specialists agent based on their needs.
+        # User Instructions
+        #{self.system_instructions}
+
+        # System Instructions
+        Route users to the appropriate specialists agent based on their needs.
 
         **Available specialist agents:**
         #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
@@ -140,14 +145,29 @@ class Chatbot < ApplicationRecord
         **Routing guidelines:**
         - Want availability/price/details about a product → Product Inventory Agent
 
-        Keep responses brief and professional. Use handoff tools to transfer to specialists.
-
-        # Current Context
-        Here's the metadata we have about the current conversation and the contact associated with it:
-
-        ## Contact context
-        #{contact_data}
+        **Current Conversation Context:**
+          **Contact Data:**
+          #{contact_data}
       INSTRUCTIONS
+
+      # <<~INSTRUCTIONS
+      #   You are the Triage Agent for a customer support system. Your role is to greet customers
+      #   and route them to the appropriate specialists agent based on their needs.
+
+      #   **Available specialist agents:**
+      #   #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
+
+      #   **Routing guidelines:**
+      #   - Want availability/price/details about a product → Product Inventory Agent
+
+      #   Keep responses brief and professional. Use handoff tools to transfer to specialists.
+
+      #   # Current Context
+      #   Here's the metadata we have about the current conversation and the contact associated with it:
+
+      #   ## Contact context
+      #   #{contact_data}
+      # INSTRUCTIONS
     end
   end
 
@@ -187,22 +207,39 @@ class Chatbot < ApplicationRecord
   end
 
   def create_product_scenario
-    inventory_role = Roleable::ProductInventory.create!(chatbot: self)
+    instruction = <<~INSTRUCTIONS
+      You are the Product Inventory Agent. Lookup products using the product database.
+      **Your tools:**
+      - [@Product Lookup](tool://product_lookup)
 
-    scenarios.create!(
+      **Instructions:**
+      - Provide concise, helpful product answers that satisfy the user's query.
+      - If the product database is not found, ask clarifying questions, if clarifying questions don't help, aknowledge you the produc is not present in the inventory.
+
+    INSTRUCTIONS
+
+    self.scenarios.create!(
       name: "Product Inventory Agent",
       description: "Given a user query searches the products database using the `product_lookup` tool and formats a response",
-      roleable: inventory_role
+      instruction: instruction
     )
   end
 
   def create_faqs_scenario
-    faq_role = Roleable::Faq.create!(chatbot: self)
+    instruction = <<~INSTRUCTIONS
+        You are the FAQ Agent. Answer frequently asked questions using the curated knowledge base.
+        **Your tools:**
+        - [@FAQ Lookup](tool://faq_lookup)
 
-    scenarios.create!(
+        **Instructions:**
+        - Provide concise, helpful answers.
+        - If the knowledge base does not cover the query, acknowledge the limitation.
+      INSTRUCTIONS
+
+    self.scenarios.create!(
       name: "FAQs Agent",
       description: "Searches the general knowledge base to answer FAQs using the `faq_lookup` tool and formats a response",
-      roleable: faq_role
+      instruction: instruction
     )
   end
 

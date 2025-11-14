@@ -12,16 +12,16 @@ class Llm::Tools::ProductLookupTool < Agents::Tool
 
     log_tool_usage("searching", { query: query })
 
-    product_inventory = Roleable::ProductInventory.find_by(chatbot_id: chatbot_id) if @agent.present?
-    products = product_inventory&.products.search(query)
+    # product_inventory = Roleable::ProductInventory.find_by(chatbot_id: chatbot_id) if @agent.present?
+    # products = product_inventory&.products.search(query)
 
-    if products.present?
-      log_tool_usage("found_results", { query: query, count: products.size })
-      format_products(products)
-    else
-      log_tool_usage("no_results", { query: query })
-      "No relevant products found for #{query}"
-    end
+    # if products.present?
+    #   log_tool_usage("found_results", { query: query, count: products.size })
+    #   format_products(products)
+    # else
+    #   log_tool_usage("no_results", { query: query })
+    #   "No relevant products found for #{query}"
+    # end
   end
 
   private

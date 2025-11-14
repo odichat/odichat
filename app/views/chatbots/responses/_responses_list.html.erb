@@ -6,12 +6,6 @@
           <h2 class="text-xl font-semibold">You don't have any FAQs yet.</h2>
           <p class="text-md font-regular">Add your first FAQs manually or import from a PDF</p>
         </div>
-        <div class="flex justify-center gap-2">
-          <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
-          <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
-          <%= render partial: "modal" %>
-          <%= render partial: "pdf_upload_modal" %>
-        </div>
       </div>
     </div>
   <% elsif !responses.any? && is_processing_documents.present? %>

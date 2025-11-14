@@ -4,8 +4,9 @@ class AfterSignupController < ApplicationController
   include Pagy::Backend
 
   before_action :authenticate_user!
+  helper_method :finish_wizard_path
 
-  steps :create_chatbot, :create_faqs, :create_products, :test_playground, :connect_whatsapp
+  steps :create_chatbot, :create_faqs, :create_products
 
   def show
     @user = current_user
@@ -45,6 +46,13 @@ class AfterSignupController < ApplicationController
   end
 
   private
+
+  def finish_wizard_path
+    last_chatbot = current_user.chatbots.order(created_at: :desc).first
+    return chatbot_playground_path(last_chatbot) if last_chatbot.present?
+
+    chatbots_path
+  end
 
   def handle_document_upload
     @document = @chatbot.documents.build(document_params)
@@ -95,13 +103,13 @@ class AfterSignupController < ApplicationController
   end
 
   def handle_manual_response_submission
-    @response = @faq_agent.responses.build(response_params)
+    @response = @chatbot.responses.build(response_params)
     if @response.save
       respond_to do |format|
         format.html { redirect_to wizard_path(:create_faqs), notice: "FAQ was successfully created." }
       end
     else
-      @pagy, @responses = pagy_countless(@faq_agent.responses.order(created_at: :desc), limit: 10)
+      @pagy, @responses = pagy_countless(@chatbot.responses.order(created_at: :desc), limit: 10)
       render_wizard @response, status: :unprocessable_entity
     end
   end
@@ -125,13 +133,13 @@ class AfterSignupController < ApplicationController
   end
 
   def load_faq_context
-    @chatbot = current_user.chatbots.last
-    @faq_agent = Roleable::Faq.find_by!(chatbot_id: @chatbot.id)
+    @chatbot = current_user.chatbots.includes(:responses).last
+    @responses = @chatbot.responses
     @pagy, @responses = pagy_countless(
-      @faq_agent.responses.order(created_at: :desc),
+      @responses.order(created_at: :desc),
       limit: 10
     )
-    @response ||= @faq_agent.responses.build
+    @response ||= @chatbot.responses.build
     @is_processing_documents = @chatbot.documents.pending.any?
   end
 end

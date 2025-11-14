@@ -25,6 +25,7 @@
     <div class="flex gap-6">
       
       <% if Flipper.enabled?(:v2, current_user) %>
+      <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
         <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
       <% else %>
         <!-- Left sidebar with form -->

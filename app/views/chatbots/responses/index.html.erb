@@ -2,26 +2,10 @@
   <%= render "shared/chatbot_header" %>
 <% end %>
 
-<% content_for :sidebar do %>
-  <div class="w-64 shrink-0">
-    <nav class="menu w-full bg-base-200 rounded-box">
-      <li>
-        <%= link_to chatbot_responses_path(@chatbot), class: "active" do %>
-          FAQs
-        <% end%>
-      </li>
-    </nav>
-  </div>
-<% end %>
-
 <div class="flex justify-between">
   <h1 class="text-3xl font-bold mb-8">FAQs</h1>
-  <% if @responses.any? %>
-    <button class="btn btn-primary" onclick="responses_modal.showModal()"><%= t('.create_faq_button') %></button>
-    <%= render partial: "modal" %>  
-  <% end %>
+  <%= render partial: "chatbots/responses/actions" %>
 </div>
-
 
 <div class="flex gap-6">
   <!-- Left sidebar -->

@@ -1,5 +1,12 @@
 <%= turbo_stream_from [ @chatbot, :responses ] %>
-<%= link_to "Skip >", next_wizard_path, class: "underline" %>
+<div class="flex justify-between">
+  <h1 class="text-3xl font-bold mb-8">FAQs</h1>
+  <%= render partial: "after_signup/faqs/toolbar_actions",
+            locals: {
+              chatbot: @chatbot,
+              chatbot_response: @response
+            } %>
+</div>
 <%= render partial: "after_signup/faqs/responses_list",
            locals: {
              chatbot: @chatbot,

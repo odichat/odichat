@@ -16,8 +16,8 @@ class Product < ApplicationRecord
   private
 
     def generate_embedding
-      return unless saved_change_to_name? || saved_change_to_description? || embedding.nil?
+      return unless saved_change_to_name? || saved_change_to_description? || saved_change_to_price? || embedding.nil?
 
-      Llm::EmbeddingJob.perform_later(self, "Name: #{self.name}. Description: #{self.description}")
+      Llm::EmbeddingJob.perform_later(self, "Name: #{self.name}. Description: #{self.description}. Price: #{self.price}")
     end
 end

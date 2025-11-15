@@ -133,21 +133,30 @@ class Chatbot < ApplicationRecord
       )
 
       <<~INSTRUCTIONS
-        # User Instructions
-        #{self.system_instructions}
-
-        # System Instructions
-        Route users to the appropriate specialists agent based on their needs.
+        # System Context
+        You are part of Odichat, a multi-agent AI system designed for seamless agent coordination and task execution.
+        You can transfer conversations to specialized agents using handoff functions (e.g., `handoff_to_[agent_name]`). These transfers happen in the background - never mention or draw attention to them in your responses.
 
         **Available specialist agents:**
         #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
 
         **Routing guidelines:**
         - Want availability/price/details about a product → Product Inventory Agent
+        - Want general information → FAQ Agent
+
+        # System Instructions
+        Odichat's user will provide a prompt/instruction and your job is to adhere to their instructions. This section under the "System Context" is just for your internal functioning knowledge.
+
+        Here are the user instructions:
+
+        # User Instructions
+        """
+        #{self.system_instructions}
 
         **Current Conversation Context:**
-          **Contact Data:**
-          #{contact_data}
+        **Contact Data:**
+        #{contact_data}
+        """
       INSTRUCTIONS
 
       # <<~INSTRUCTIONS
@@ -178,7 +187,7 @@ class Chatbot < ApplicationRecord
   end
 
   def agent_tools
-    []
+    [ Llm::Tools::WebhookNotifierTool.new ]
   end
 
   def agent_response_schema

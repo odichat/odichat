@@ -10,6 +10,8 @@ class Scenario < ApplicationRecord
 
   belongs_to :chatbot
 
+  before_save :resolve_tool_references
+
   def agent_name
     name
   end

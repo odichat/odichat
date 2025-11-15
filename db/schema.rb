@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_15_090001) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_15_183000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -301,6 +301,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_090001) do
     t.bigint "chatbot_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 1536
     t.index ["chatbot_id"], name: "index_products_on_chatbot_id"
   end
 

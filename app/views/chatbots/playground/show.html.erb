@@ -5,7 +5,7 @@
 <% end %>
 
 <!-- Main playground container -->
-<div class="relative bg-gray-50/80 backdrop-blur-sm py-12">
+<div class="relative bg-gray-50/80 backdrop-blur-sm py-12" data-controller="tour" data-tour-storage-key-value="playground-sidebar-tour-v1" data-tour-steps-value="<%= playground_tour_steps_json %>">
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute -inset-[10px] opacity-50 blur-[10px] [--white-gradient:repeating-linear-gradient(100deg,#fff_0%,#fff_7%,transparent_10%,transparent_12%,#fff_16%)] [--dark-gradient:repeating-linear-gradient(100deg,#000_0%,#000_7%,transparent_10%,transparent_12%,#000_16%)] [--aurora:repeating-linear-gradient(100deg,rgb(156,163,175)_10%,rgb(209,213,219)_15%,rgb(229,231,235)_20%,rgb(243,244,246)_25%,rgb(209,213,219)_30%)] [background-image:var(--white-gradient),var(--aurora)] dark:[background-image:var(--dark-gradient),var(--aurora)] [background-size:300%,_200%] [background-position:50%_50%,50%_50%] invert dark:invert-0 after:content-[''] after:absolute after:inset-0 after:[background-image:var(--white-gradient),var(--aurora)] after:dark:[background-image:var(--dark-gradient),var(--aurora)] after:[background-size:200%,_100%] after:animate-aurora after:[background-attachment:fixed] after:mix-blend-difference [mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]"></div>
   </div>
@@ -23,9 +23,8 @@
   <!-- Main content area with sidebar and chat -->
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="flex gap-6">
-      
       <% if Flipper.enabled?(:v2, current_user) %>
-      <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
+        <%= render "chatbots/playground/sidebar/sidebar", chatbot: @chatbot, models: @models %>
         <%= render "chatbots/playground/chat", chat: @chat, messages: @messages, chatbot: @chatbot %>
       <% else %>
         <!-- Left sidebar with form -->

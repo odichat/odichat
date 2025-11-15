@@ -19,6 +19,16 @@ en:
       form: # Chat input form
         message_placeholder: "Type your message..."
         send_button: "Send"
+      tour:
+        instructions:
+          title: "Set the agent rules"
+          description: "Write clear instructions so the AI knows who it is, its tone, and the jobs it should handle."
+        chat:
+          title: "Try your agent"
+          description: "Send messages here to see how your changes affect the replies and catch any gaps."
+        share_link:
+          title: "Share the playground"
+          description: "Copy this public link to invite teammates to test the agent and give feedback."
   public_playground: # Public Playground
     header:
       default_assistant_name: "Assistant" # Can reuse or be distinct

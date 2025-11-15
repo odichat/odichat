@@ -1,7 +1,7 @@
 <%= form_with(model: chatbot, url: chatbot_playground_path(chatbot), method: :patch, class: "space-y-6", id: "sidebar_form") do |f| %>
 
   <!-- Public URL -->
-  <div class="form-control">
+  <div class="form-control" id="public-url">
     <label class="label">
       <span class="label-text"><%= t('chatbots.playground.sidebar_form.share_link_label') %></span>
     </label>
@@ -32,7 +32,7 @@
   </div>
 
   <!-- System instructions -->
-  <div class="form-control">
+  <div class="form-control" id="prompt-input-container">
     <label class="label">
       <span class="label-text"><%= t('chatbots.playground.sidebar_form.system_instructions_label') %></span>
     </label>

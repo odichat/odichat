@@ -1,16 +1,19 @@
 class Chatbots::ProductsController < Chatbots::BaseController
-  before_action :set_product_inventory, only: %i[index create destroy edit update]
+  include Pagy::Backend
   before_action :set_product, only: %i[destroy edit update]
 
   def index
-    @products = @product_inventory.products
+    @pagy, @products = pagy(
+      @chatbot.products.order(created_at: :asc),
+      limit: 20
+    )
   end
 
   def new
   end
 
   def create
-    @product = @product_inventory.products.build(product_params)
+    @product = @chatbot.products.build(product_params)
 
     respond_to do |format|
       if @product.save
@@ -38,24 +41,41 @@ class Chatbots::ProductsController < Chatbots::BaseController
     return unless @product
 
     if @product.destroy
-      redirect_to chatbot_products_path(@chatbot), notice: "Product was successfully deleted."
+      respond_to do |format|
+        format.html { redirect_to chatbot_products_path(@chatbot), notice: "FAQ successfuly deleted." }
+        format.turbo_stream do
+          if params[:redirect].present?
+            redirect_to params[:redirect], notice: "FAQ successfully deleted.", status: :see_other
+          else
+            @products = @chatbot.products
+            flash.now[:notice] = "FAQ successfuly deleted."
+            render turbo_stream: [
+              turbo_stream.remove(@product),
+              turbo_stream.update(
+                "products_table",
+                partial: "chatbots/products/table_or_empty",
+                locals: { products: @products }
+              ),
+              turbo_stream.update("flash", partial: "shared/flash_messages")
+            ]
+          end
+        end
+      end
     else
-      redirect_to chatbot_products_path(@chatbot), alert: "Product could not be deleted."
+      respond_to do |format|
+        format.html { redirect_to chatbot_products_path(@chatbot), alert: "Product could not be deleted" }
+      end
     end
   end
 
   private
 
-    def set_product_inventory
-      @product_inventory = Roleable::ProductInventory.includes(:products).find_by(chatbot_id: @chatbot.id)
-    end
-
     def set_product
-      if @product_inventory.nil?
+      if @chatbot.nil?
         redirect_to chatbot_products_path(@chatbot), alert: "Product inventory not found." and return
       end
 
-      @product = @product_inventory.products.find(params[:id])
+      @product = @chatbot.products.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       redirect_to chatbot_products_path(@chatbot), alert: "Product not found." and return
     end

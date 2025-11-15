@@ -23,13 +23,13 @@
                     title="Edit <%= product.name %>">
               <%= icon "pencil-square", class: "size-4" %>
             </button>
-            <%= link_to chatbot_product_path(@chatbot, product),
-                        data: { turbo_method: :delete, turbo_confirm: "Delete this product?" },
+            <%= link_to chatbot_product_path(@chatbot, product, redirect: wizard_path(:create_products)),
+                        data: { turbo_method: :delete, turbo_confirm: "Delete this product?", turbo_frame: "_top" },
                         class: "text-error hover:text-red-400",
                         title: "Delete #{product.name}" do %>
               <%= icon "trash", class: "size-4" %>
             <% end %>
-            <%= render partial: "modal",
+            <%= render partial: "after_signup/products/modal",
                        locals: {
                          modal_id: dom_id(product, :modal),
                          product: product,

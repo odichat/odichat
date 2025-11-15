@@ -2,7 +2,7 @@
 <div id="<%= dom_id(chatbot, :responses_list) %>">
   <% if !responses.any? && !is_processing_documents %>
     <div id="<%= dom_id(chatbot, :no_responses_uploaded) %>", class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2" >
-      <%= render "after_signup/faqs/empty", chatbot: chatbot, chatbot_response: chatbot_response %>
+      <%= render "after_signup/faqs/empty" %>
     </div>
   <% elsif !responses.any? && is_processing_documents %>
     <div id="<%= dom_id(chatbot, :processing_wrapper) %>" class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">

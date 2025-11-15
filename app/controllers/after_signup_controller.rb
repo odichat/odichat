@@ -17,8 +17,12 @@ class AfterSignupController < ApplicationController
     when :create_faqs
       load_faq_context
     when :create_products
-    when :test_playground
-    when :connect_whatsapp
+      @chatbot = current_user.chatbots.includes(:products).last
+      @pagy, @products = pagy(
+        @chatbot.products.order(created_at: :asc),
+        limit: 20
+      )
+      @product ||= @chatbot.products.build
     end
 
     render_wizard
@@ -38,6 +42,16 @@ class AfterSignupController < ApplicationController
         handle_document_upload
       else
         handle_manual_response_submission
+      end
+
+    when :create_products
+      @chatbot = current_user.chatbots.includes(:products).last
+      @products = @chatbot.products
+      @product ||= @chatbot.products.build
+
+      if params[:document].present?
+      else
+        handle_manual_product_submission
       end
 
     else
@@ -114,6 +128,27 @@ class AfterSignupController < ApplicationController
     end
   end
 
+  # Handles new product creation, and product update.
+  # If the `:id` is present, means it's a product update
+  # If not present, we then go ahead and create a new product
+  def handle_manual_product_submission
+    if product_params[:id].present?
+      @product = @chatbot.products.find(product_params[:id])
+      success = @product.update(product_params)
+      notice_msg = "Product was successfully updated."
+    else
+      @product = @chatbot.products.build(product_params)
+      success = @product.save
+      notice_msg = "Product was successfully created."
+    end
+
+    if success
+      respond_to { |format| format.html { redirect_to wizard_path(:create_products), notice: notice_msg } }
+    else
+      render_wizard @product, status: :unprocessable_entity
+    end
+  end
+
   def build_chatbot_for(user)
     chatbot = user.chatbots.build(chatbot_params)
     chatbot.save
@@ -130,6 +165,10 @@ class AfterSignupController < ApplicationController
 
   def document_params
     params.require(:document).permit(:file)
+  end
+
+  def product_params
+    params.require(:product).permit(:id, :name, :description, :price)
   end
 
   def load_faq_context

@@ -1,0 +1,10 @@
+<% if products.exists? %>
+  <%= render partial: "table" %>
+<% else %>
+  <div class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+    <div class="flex flex-col gap-2 text-center mb-4">
+      <h2 class="text-xl font-semibold">No products yet</h2>
+      <p class="text-md font-regular">Add your first product manually or import from a CSV</p>
+    </div>
+  </div>
+<% end %>

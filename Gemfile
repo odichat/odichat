@@ -111,7 +111,7 @@ gem "resend", "~> 0.22.0"
 
 gem "discordrb", "~> 3.5"
 
-gem "pagy", "~> 9.3"
+gem "pagy", "~> 9.4.0"
 
 gem "faker", "~> 3.5"
 

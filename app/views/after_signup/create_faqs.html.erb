@@ -1,7 +1,7 @@
 <%= turbo_stream_from [ @chatbot, :responses ] %>
 <div class="flex justify-between">
   <h1 class="text-3xl font-bold mb-8">FAQs</h1>
-  <%= render partial: "after_signup/faqs/toolbar_actions",
+  <%= render partial: "after_signup/faqs/actions",
             locals: {
               chatbot: @chatbot,
               chatbot_response: @response

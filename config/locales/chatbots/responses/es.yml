@@ -2,8 +2,10 @@ es:
   chatbots:
     responses:
       index:
-        title: "Fuentes"
+        title: "Preguntas frecuentes"
+      actions:
         create_faq_button: "Crear FAQ"
+        upload_pdf_button: "Subir PDF"
       modal:
         add_new_faq: "Agregar FAQ"
         description: 'Agrega una pregunta y su respuesta correspondiente a la base de conocimiento de "%{chatbot_name}".'
@@ -11,3 +13,9 @@ es:
         question: "Pregunta"
         answer: "Respuesta"
         save_response: "Guardar FAQ"
+      responses_list:
+        no_faqs_title: "Todavía no tienes preguntas frecuentes."
+        no_faqs_description: "Agrega tus primeras preguntas frecuentes manualmente o importa un PDF"
+      pdf_upload_modal:
+        title: "Subir archivo PDF"
+        description: "Extraeremos y generaremos preguntas frecuentes automáticamente a partir de los documentos PDF de tu empresa."

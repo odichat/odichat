@@ -2,8 +2,10 @@ en:
   chatbots:
     responses:
       index:
-        title: "Sources"
+        title: "FAQs"
+      actions:
         create_faq_button: "Create FAQ"
+        upload_pdf_button: "Upload PDF"
       modal:
         add_new_faq: "Add new FAQ"
         description: 'Add a question and its corresponding answer to the knowledge base for "%{chatbot_name}".'
@@ -11,3 +13,9 @@ en:
         question: "Question"
         answer: "Answer"
         save_response: "Save FAQ"
+      responses_list:
+        no_faqs_title: "You don't have any FAQs yet."
+        no_faqs_description: "Add your first FAQs manually or import from a PDF"
+      pdf_upload_modal:
+        title: "Upload PDF file"
+        description: "We'll extract and generate FAQs automatically from your company PDF documents."

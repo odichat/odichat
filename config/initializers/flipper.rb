@@ -4,14 +4,13 @@ require "flipper/adapters/active_record"
 LEGACY_USER_EMAILS = [
   "soporte.grupopronto@hotmail.com",
   "cryptoversous@gmail.com",
-  "andres@odichat.app",
   "marketingcodizulca@gmail.com",
   "hacobobarich@gmail.com",
   "elimeycosmetics@gmail.com",
   "ferronortehomeventas@gmail.com",
   "farmaexpress@test.com",
   "smdcentroia@gmail.com",
-  "distribuidorakatys@gmail.com",
+  "distribuidorakatys@gmail.com"
 ].freeze
 
 Rails.application.configure do

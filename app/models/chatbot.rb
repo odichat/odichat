@@ -14,6 +14,7 @@ class Chatbot < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :responses, dependent: :destroy
   has_many :products, dependent: :destroy
+  has_many :leads, dependent: :destroy
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
   has_many :public_playground_channels, dependent: :destroy, class_name: "Channel::PublicPlayground"
   has_many :whatsapp_channels, dependent: :destroy, class_name: "Channel::Whatsapp"
@@ -133,30 +134,20 @@ class Chatbot < ApplicationRecord
       )
 
       <<~INSTRUCTIONS
-        # System Context
-        You are part of Odichat, a multi-agent AI system designed for seamless agent coordination and task execution.
-        You can transfer conversations to specialized agents using handoff functions (e.g., `handoff_to_[agent_name]`). These transfers happen in the background - never mention or draw attention to them in your responses.
+        # User Instructions
+        #{self.system_instructions}
 
         **Available specialist agents:**
         #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
 
         **Routing guidelines:**
-        - Want availability/price/details about a product → Product Inventory Agent
+        - Want info such as availability/price/details about a product → Product Inventory Agent
         - Want general information → FAQ Agent
-
-        # System Instructions
-        Odichat's user will provide a prompt/instruction and your job is to adhere to their instructions. This section under the "System Context" is just for your internal functioning knowledge.
-
-        Here are the user instructions:
-
-        # User Instructions
-        """
-        #{self.system_instructions}
+        - Lead creation → Yourself
 
         **Current Conversation Context:**
-        **Contact Data:**
-        #{contact_data}
-        """
+          **Contact Data:**
+          #{contact_data}
       INSTRUCTIONS
 
       # <<~INSTRUCTIONS
@@ -187,7 +178,7 @@ class Chatbot < ApplicationRecord
   end
 
   def agent_tools
-    [ Llm::Tools::WebhookNotifierTool.new ]
+    [Llm::Tools::CreateLeadTool.new]
   end
 
   def agent_response_schema

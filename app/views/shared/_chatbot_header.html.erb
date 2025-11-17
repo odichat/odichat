@@ -14,6 +14,9 @@
       <%= link_to "Products", 
           chatbot_products_path(@chatbot), 
           class: "tab #{current_page?(chatbot_products_path(@chatbot)) ? 'tab-active' : ''}" %>
+      <%= link_to "Leads", 
+          chatbot_leads_path(@chatbot), 
+          class: "tab #{current_page?(chatbot_leads_path(@chatbot)) ? 'tab-active' : ''}" %>
       <%= link_to t('shared.chatbot_header.integrations'), 
           chatbot_integrations_path(@chatbot), 
           class: "tab #{current_page?(chatbot_integrations_path(@chatbot)) || request.path.include?('/integrations/') ? 'tab-active' : ''}" %>

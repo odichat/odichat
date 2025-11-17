@@ -1,0 +1,17 @@
+<% content_for :sub_navigation do %>
+  <%= render "shared/chatbot_header" %>
+<% end %>
+
+<div class="flex justify-between">
+  <h1 class="text-3xl font-bold mb-8">Leads</h1>
+    
+  <%#= render partial: "chatbots/products/modal" %>
+  <%#= render partial: "chatbots/products/import_products_modal" %>
+</div>
+
+<div id="leads-table">
+  <%#= render partial: "table_or_empty", locals: { products: @products } %>
+  <%= render partial: "table_or_empty", locals: { leads: @leads } %>
+</div>
+
+

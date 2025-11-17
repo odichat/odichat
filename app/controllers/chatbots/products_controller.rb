@@ -52,7 +52,7 @@ class Chatbots::ProductsController < Chatbots::BaseController
             render turbo_stream: [
               turbo_stream.remove(@product),
               turbo_stream.update(
-                "products_table",
+                "products-table",
                 partial: "chatbots/products/table_or_empty",
                 locals: { products: @products }
               ),

@@ -1,5 +1,6 @@
 class Chatbot::AgentRunnerService
-  CONTACT_STATE_ATTRIBUTES = %i[ name phone_number ].freeze
+  CONTACT_STATE_ATTRIBUTES = %i[ id name phone_number ].freeze
+  CONVERSATION_STATE_ATTRIBUTES = %i[ id contact_id ]
 
   def initialize(chatbot:, chat:)
     @chatbot = chatbot
@@ -48,6 +49,7 @@ class Chatbot::AgentRunnerService
       }
 
       state[:contact] = @chat.contact&.attributes&.symbolize_keys&.slice(*CONTACT_STATE_ATTRIBUTES)
+      state[:conversation] = @chat.conversation&.attributes&.symbolize_keys&.slice(*CONVERSATION_STATE_ATTRIBUTES)
 
       state
     end

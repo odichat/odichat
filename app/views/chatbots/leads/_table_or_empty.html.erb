@@ -1,0 +1,10 @@
+<% if leads.exists? %>
+  <%= render partial: "table" %>
+<% else %>
+  <div class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2">
+    <div class="flex flex-col gap-2 text-center mb-4">
+      <h2 class="text-xl font-semibold">You don't have any leads yet</h2>
+      <p class="text-md font-regular">We'll automatically create leads for you based on your configuration leads criteria</p>
+    </div>
+  </div>
+<% end %>

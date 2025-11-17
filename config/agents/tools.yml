@@ -10,6 +10,6 @@
   title: 'Handoff to Human'
   description: 'Hand off the conversation to a human agent'
 
-- id: webhook_notifier
-  title: 'Webhook Notifier'
-  description: 'Send a webhook notification'
+- id: create_lead
+  title: 'Create Lead'
+  description: 'Create a Lead record'

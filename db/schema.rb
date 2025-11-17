@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_15_183000) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_16_225138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -170,6 +170,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_183000) do
     t.datetime "updated_at", null: false
     t.index ["channel_type", "channel_id"], name: "index_inboxes_on_channel"
     t.index ["chatbot_id"], name: "index_inboxes_on_chatbot_id"
+  end
+
+  create_table "leads", force: :cascade do |t|
+    t.bigint "chatbot_id", null: false
+    t.bigint "contact_id", null: false
+    t.text "trigger"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatbot_id"], name: "index_leads_on_chatbot_id"
+    t.index ["contact_id"], name: "index_leads_on_contact_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -397,6 +407,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_183000) do
   add_foreign_key "conversations", "contacts"
   add_foreign_key "documents", "chatbots"
   add_foreign_key "inboxes", "chatbots"
+  add_foreign_key "leads", "chatbots"
+  add_foreign_key "leads", "contacts"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "inboxes"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"

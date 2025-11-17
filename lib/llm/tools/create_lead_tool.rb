@@ -11,7 +11,7 @@ class Llm::Tools::CreateLeadTool < Agents::Tool
     contact = tool_context.state.dig(:contact)
 
     # No contact, no conversation in playgrounds, so we halt tool execution.
-    return if contact.nil?
+    return "Lead created" if contact.nil?
 
     @agent = Chatbot.find_by(id: chatbot_id)
 

@@ -30,7 +30,7 @@ class Chatbot::AgentRunnerService
     end
 
     def build_context(message_history)
-      chat_history = message_history.map do |msg|
+      conversation_history = message_history.map do |msg|
         {
           role: msg[:role],
           content: msg[:content]
@@ -38,7 +38,7 @@ class Chatbot::AgentRunnerService
       end
 
       {
-        chat_history: chat_history,
+        conversation_history: conversation_history,
         state: build_state
       }
     end

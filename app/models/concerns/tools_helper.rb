@@ -1,10 +1,6 @@
 module ToolsHelper
   extend ActiveSupport::Concern
 
-  # Regular expression pattern for matching tool references in text.
-  # Matches patterns like [Tool name](tool://tool_id) following markdown link syntax.
-  TOOL_REFERENCE_REGEX = %r{\[[^\]]+\]\(tool://([^/)]+)\)}
-
   class_methods do
     # Returns all available agent tools with their metadata.
     # Only includes tools that have corresponding class files and can be resolved.
@@ -58,17 +54,5 @@ module ToolsHelper
         end
       end
     end
-  end
-
-  # Extracts tool IDs from text containing tool references.
-  # Parses text for (tool://tool_id) patterns and returns unique tool IDs.
-  #
-  # @param text [String] Text to parse for tool references
-  # @return [Array<String>] Array of unique tool IDs found in the text
-  def extract_tool_ids_from_text(text)
-    return [] if text.blank?
-
-    tool_matches = text.scan(TOOL_REFERENCE_REGEX)
-    tool_matches.flatten.uniq
   end
 end

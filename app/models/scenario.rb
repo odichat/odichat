@@ -2,15 +2,15 @@ class Scenario < ApplicationRecord
   include ToolsHelper
   include Agentable
 
+  TOOL_SECTION_HEADER = "**Your tools:**".freeze
+  TOOL_SECTION_REGEX = /(\*\*Your tools:\*\*\n)(.*?)(?=\n\*\*|\z)/m
+
   validates :name, presence: true
   validates :description, presence: true
   validates :instruction, presence: true
   validates :chatbot_id, presence: true
-  validate :validate_instruction_tools
 
   belongs_to :chatbot
-
-  before_save :resolve_tool_references
 
   def agent_name
     name
@@ -47,38 +47,51 @@ class Scenario < ApplicationRecord
     end
   end
 
-  def validate_instruction_tools
-    return if instruction.blank?
-
-    tool_ids = extract_tool_ids_from_text(instruction)
-    return if tool_ids.empty?
-
-    available_tool_ids = self.class.available_tool_ids
-    invalid_tools = tool_ids - available_tool_ids
-
-    return unless invalid_tools.any?
-
-    errors.add(:instruction, "contains invalid tools: #{invalid_tools.join(', ')}")
+  def tool_ids
+    Array.wrap(tools)
   end
 
-  # Resolves tool references from the instruction text into the tools field.
-  # Parses the instruction for tool references and materializes them as
-  # tool IDs stored in the tools JSONB field.
-  #
-  # @return [void]
-  # @api private
-  # @example
-  #   scenario.instruction = "First [@Add Private Note](tool://add_private_note) then [@Update Priority](tool://update_priority)"
-  #   scenario.save!
-  #   scenario.tools # => ["add_private_note", "update_priority"]
-  #
-  #   scenario.instruction = "No tools mentioned here"
-  #   scenario.save!
-  #   scenario.tools # => nil
-  def resolve_tool_references
-    return if instruction.blank?
+  def update_tools!(new_tool_ids)
+    # The `&` single ampersand keeps only elements present in both arrays, each listed once
+    # This ensures only valid tool IDs are assigned
+    # e.g., ["faq_lookup", "invalid_tool"] & ["faq_lookup", "product_lookup"] => ["faq_lookup"]
+    valid_ids = Array.wrap(new_tool_ids).map(&:to_s) & self.class.available_tool_ids
+    self.tools = valid_ids.presence
+    refresh_instruction_tools_section!
+    save!
+  end
 
-    tool_ids = extract_tool_ids_from_text(instruction)
-    self.tools = tool_ids.presence
+  def add_tool!(tool_id)
+    update_tools!(tool_ids | [ tool_id ])
+  end
+
+  def remove_tool!(tool_id)
+    update_tools!(tool_ids - [ tool_id ])
+  end
+
+  def refresh_instruction_tools_section!
+    tool_section = render_tool_section
+    body = instruction.to_s
+
+    if body.match?(TOOL_SECTION_REGEX)
+      self.instruction = body.sub(TOOL_SECTION_REGEX) do
+        if tool_section.present?
+          "#{Regexp.last_match(1)}#{tool_section}\n"
+        else
+          ""
+        end
+      end
+    elsif tool_section.present?
+      insertion = "#{TOOL_SECTION_HEADER}\n#{tool_section}\n\n"
+      self.instruction = body.present? ? "#{body.rstrip}\n\n#{insertion}" : insertion
+    else
+      self.instruction = body
+    end
+  end
+
+  def render_tool_section
+    resolved_tools.map do |tool|
+      "- [@#{tool[:title]}](tool://#{tool[:id]}) — #{tool[:description]}"
+    end.join("\n")
   end
 end

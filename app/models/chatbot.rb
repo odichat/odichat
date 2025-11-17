@@ -28,7 +28,6 @@ class Chatbot < ApplicationRecord
   # after_create :create_vector_store
   after_create :create_playground_resources
   after_create :create_public_playground_resources
-  after_create :create_faqs_scenario
   after_create :create_product_scenario
 
   after_destroy :enqueue_cleanup_job
@@ -134,40 +133,42 @@ class Chatbot < ApplicationRecord
       )
 
       <<~INSTRUCTIONS
+        # System Context
+        You are part of Odichat, a multi-agent AI system designed for seamless agent coordination and task execution. You can transfer conversations to specialized agents using handoff functions (e.g., `handoff_to_[agent_name]`).
+        These transfers happen in the background - never mention or draw attention to them in your responses.
+
         # User Instructions
         #{self.system_instructions}
+
+        # Decision Framework
+        ## 1. Analyze the Request
+        First, understand what the user is asking:
+        - **Intent**: What are they trying to achieve?
+        - **Type**: Is it a question, task, complaint, or request?
+        - **Complexity**: Can you handle it or does it need specialized expertise?
+
+        ## 2. Check for Specialized Agents First
+        Before using any tools, check if the request matches any of these scenarios. If unclear, ask clarifying questions to determine if a scenario applies:
 
         **Available specialist agents:**
         #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
 
-        **Routing guidelines:**
-        - Want info such as availability/price/details about a product → Product Inventory Agent
-        - Want general information → FAQ Agent
-        - Lead creation → Yourself
+        ## 3. Handle the Request
+        If no specialized scenario clearly matches, handle it yourself:
+
+        ### For Questions and Information Requests
+        1. **First, check existing knowledge**: Use `faq_lookup` tool to search for relevant information
+        2. **If not found in FAQs**: Provide your best answer based on available context
+
+        ### For Complex or Unclear Requests
+        1. **Ask clarifying questions**: Gather more information if needed
+        2. **Break down complex tasks**: Handle step by step or hand off if too complex
+        3. **Escalate when necessary**: Use `handoff` tool for issues beyond your capabilities
 
         **Current Conversation Context:**
           **Contact Data:**
           #{contact_data}
       INSTRUCTIONS
-
-      # <<~INSTRUCTIONS
-      #   You are the Triage Agent for a customer support system. Your role is to greet customers
-      #   and route them to the appropriate specialists agent based on their needs.
-
-      #   **Available specialist agents:**
-      #   #{scenarios.map { |s| "- **#{s.name}**: #{s.description}" }.join("\n")}
-
-      #   **Routing guidelines:**
-      #   - Want availability/price/details about a product → Product Inventory Agent
-
-      #   Keep responses brief and professional. Use handoff tools to transfer to specialists.
-
-      #   # Current Context
-      #   Here's the metadata we have about the current conversation and the contact associated with it:
-
-      #   ## Contact context
-      #   #{contact_data}
-      # INSTRUCTIONS
     end
   end
 
@@ -178,7 +179,7 @@ class Chatbot < ApplicationRecord
   end
 
   def agent_tools
-    [Llm::Tools::CreateLeadTool.new]
+    [ Llm::Tools::FaqLookupTool.new ]
   end
 
   def agent_response_schema
@@ -207,40 +208,25 @@ class Chatbot < ApplicationRecord
   end
 
   def create_product_scenario
+    scenario = self.scenarios.build(
+      name: "Sales Agent",
+      description: "Given a user query searches the products database using the `product_lookup` tool and formats a response",
+      tools: [ "product_lookup" ]
+    )
+
     instruction = <<~INSTRUCTIONS
-      You are the Product Inventory Agent. Lookup products using the product database.
+      You are the Sales Agent. You handle information such as name, price, and details about products/services listed in your knowledge base.
+
       **Your tools:**
-      - [@Product Lookup](tool://product_lookup)
+      #{scenario.render_tool_section}
 
       **Instructions:**
       - Provide concise, helpful product answers that satisfy the user's query.
-      - If the product database is not found, ask clarifying questions, if clarifying questions don't help, aknowledge you the produc is not present in the inventory.
-
+      - If the product database is not found, ask clarifying questions, if clarifying questions don't help, aknowledge you the product is not present in the inventory.
     INSTRUCTIONS
 
-    self.scenarios.create!(
-      name: "Product Inventory Agent",
-      description: "Given a user query searches the products database using the `product_lookup` tool and formats a response",
-      instruction: instruction
-    )
-  end
-
-  def create_faqs_scenario
-    instruction = <<~INSTRUCTIONS
-        You are the FAQ Agent. Answer frequently asked questions using the curated knowledge base.
-        **Your tools:**
-        - [@FAQ Lookup](tool://faq_lookup)
-
-        **Instructions:**
-        - Provide concise, helpful answers.
-        - If the knowledge base does not cover the query, acknowledge the limitation.
-      INSTRUCTIONS
-
-    self.scenarios.create!(
-      name: "FAQs Agent",
-      description: "Searches the general knowledge base to answer FAQs using the `faq_lookup` tool and formats a response",
-      instruction: instruction
-    )
+    scenario.instruction = instruction
+    scenario.save!
   end
 
   # **************************************************

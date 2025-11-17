@@ -4,13 +4,13 @@ class Lead < ApplicationRecord
 
   delegate :name, :phone_number, to: :contact
 
-  after_create_commit :generate_intent_summary
+  after_create_commit :send_webhook_notification
 
   private
 
-    def generate_intent_summary
-      puts "*******************"
-      puts "GENERATING INTENT SUMMARY"
-      puts "*******************"
+    def send_webhook_notification
+      # If chatbot.user.email is andres@odichat.app send webhook to https://webhook.site/xxxxxx for testing
+      return unless chatbot.user.email == "andres@odichat.app"
+      LeadWebhookNotificationJob.perform_later(self.id)
     end
 end

@@ -42,6 +42,17 @@
         class: "w-full textarea textarea-bordered focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/20" %>
   </div>
 
+  <% if Flipper.enabled?(:v2, current_user) %>
+    <div class="form-control flex flex-col gap-2">
+      <label class="label" for="lead_qualified">
+        <span class="label-text">Qualify & Create Leads</span>
+      </label>
+      <%= f.check_box :qualified,
+            id: "lead_qualified",
+            class: "toggle self-start" %>
+    </div>
+  <% end %>
+
   <%= f.hidden_field :name, value: chatbot.name %>
 
   <!-- Submit button -->

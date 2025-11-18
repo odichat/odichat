@@ -24,7 +24,7 @@
       </li>
       <li>
          <%= link_to "Delete", chatbot_response_path(chatbot, response),
-                  class: "text-red-500",
+                  class: "text-error",
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                   popovertarget: "popover-#{response.id}",
                   style: "anchor-name:--anchor-#{response.id}" %>

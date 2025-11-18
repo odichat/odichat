@@ -185,7 +185,7 @@ class Chatbot < ApplicationRecord
 
   def agent_tools
     tools = []
-    if self.user.email == "admin@odichat.app"
+    if self.user.email == "andres@odichat.app"
       tools << Llm::Tools::CreateLeadTool.new
     end
     tools << Llm::Tools::FaqLookupTool.new

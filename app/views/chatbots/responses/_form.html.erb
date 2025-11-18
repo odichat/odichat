@@ -1,3 +1,5 @@
+<% submit_label = local_assigns.fetch(:submit_label) { t('.save_response') } %>
+
 <%= form_with(model: [ @chatbot, chatbot_response ], local: true, data: { turbo: false }, class: "flex flex-col gap-2") do |form| %>
   <% if chatbot_response.errors.any? %>
     <div style="color: red">
@@ -30,6 +32,6 @@
   </div>
 
   <div class="flex flex-row justify-end mt-2">
-    <%= form.submit t('.save_response'), class: "btn btn-primary" %>
+    <%= form.submit submit_label, class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -1,3 +1,5 @@
+<% modal_id = dom_id(response, :modal) %>
+
 <%= tag.div class: "card w-full bg-base-100 card-md shadow-sm", id: dom_id(response) do %>
   <div class="flex">
     <%= link_to "#", class: "card-body w-full" do %> 
@@ -14,12 +16,26 @@
     <ul class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
       popover id="popover-<%= response.id %>" style="position-anchor:--anchor-<%= response.id %>">
       <li>
+         <%= link_to "Edit",
+                  "#",
+                  onclick: "document.getElementById('#{modal_id}').showModal(); return false;",
+                  popovertarget: "popover-#{response.id}",
+                  style: "anchor-name:--anchor-#{response.id}" %>
+      </li>
+      <li>
          <%= link_to "Delete", chatbot_response_path(chatbot, response),
-                  class: "bg-error/20 hover:bg-error",
+                  class: "text-red-500",
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
                   popovertarget: "popover-#{response.id}",
                   style: "anchor-name:--anchor-#{response.id}" %>
       </li>
     </ul>
   </div>
+  <%= render partial: "chatbots/responses/modal",
+             locals: {
+               modal_id: modal_id,
+               chatbot_response: response,
+               chatbot: chatbot,
+               submit_label: "Update Product"
+             } %>
 <% end %>

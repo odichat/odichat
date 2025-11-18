@@ -8,7 +8,11 @@ es:
         upload_pdf_button: "Subir PDF"
       modal:
         add_new_faq: "Agregar FAQ"
+        edit_faq: "Editar FAQ"
         description: 'Agrega una pregunta y su respuesta correspondiente a la base de conocimiento de "%{chatbot_name}".'
+        edit_description: "Actualiza la pregunta y la respuesta."
+        create_submit: "Crear FAQ"
+        update_submit: "Actualizar FAQ"
       form:
         question: "Pregunta"
         answer: "Respuesta"

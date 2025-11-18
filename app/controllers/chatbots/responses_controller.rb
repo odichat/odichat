@@ -1,6 +1,6 @@
 class Chatbots::ResponsesController < Chatbots::BaseController
   include Pagy::Backend
-  before_action :set_response, only: %i[ destroy ]
+  before_action :set_response, only: %i[edit update destroy]
 
   def index
     @pagy, @responses = pagy_countless(
@@ -39,6 +39,13 @@ class Chatbots::ResponsesController < Chatbots::BaseController
   end
 
   def update
+    respond_to do |format|
+      if @response.update(response_params)
+        format.html { redirect_to chatbot_responses_path(@chatbot), notice: "FAQ was successfully updated." }
+      else
+        format.html { redirect_to chatbot_responses_path(@chatbot), alert: "FAQ could not be updated." }
+      end
+    end
   end
 
   def destroy

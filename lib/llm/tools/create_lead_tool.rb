@@ -21,6 +21,8 @@ class Llm::Tools::CreateLeadTool < Agents::Tool
       contact_id: contact[:id],
       trigger: trigger
     )
+
+    return "Lead created"
   end
 
   private

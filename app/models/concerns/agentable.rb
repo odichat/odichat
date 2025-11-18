@@ -7,8 +7,7 @@ module Agentable
       instructions: ->(context) { agent_instructions(context) },
       tools: agent_tools,
       model: agent_model,
-      temperature: agent_temperature.to_f,
-      response_schema: agent_response_schema
+      temperature: agent_temperature.to_f
     )
   end
 

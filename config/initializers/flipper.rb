@@ -1,17 +1,5 @@
 require "flipper/adapters/active_record"
-
-# Define the list of users who should NOT see the new features.
-LEGACY_USER_EMAILS = [
-  "soporte.grupopronto@hotmail.com",
-  "cryptoversous@gmail.com",
-  "marketingcodizulca@gmail.com",
-  "hacobobarich@gmail.com",
-  "elimeycosmetics@gmail.com",
-  "ferronortehomeventas@gmail.com",
-  "farmaexpress@test.com",
-  "smdcentroia@gmail.com",
-  "distribuidorakatys@gmail.com"
-].freeze
+require Rails.root.join("app/lib/feature_flags")
 
 Rails.application.configure do
   config.flipper.memoize = true
@@ -25,8 +13,5 @@ Flipper.configure do |config|
   end
 end
 
-# Register a group for users who SHOULD see the V2 features.
-# This is everyone *not* in the legacy list.
-Flipper.register(:v2_users) do |user|
-  user.present? && !LEGACY_USER_EMAILS.include?(user.email)
-end
+# Register a group for users who SHOULD see the V2 features (non legacy users).
+Flipper.register(:v2_users) { |user| FeatureFlags.v2_group_member?(user) }

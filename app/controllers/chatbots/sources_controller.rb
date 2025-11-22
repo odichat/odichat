@@ -1,6 +1,6 @@
 class Chatbots::SourcesController < Chatbots::BaseController
   def show
-    redirect_to chatbot_responses_path(@chatbot) if Flipper.enabled?(:v2, current_user)
+    redirect_to chatbot_responses_path(@chatbot) if FeatureFlags.v2_enabled_for?(current_user)
 
     @documents = @chatbot.documents.map do |document|
       {

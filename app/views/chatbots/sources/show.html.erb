@@ -8,7 +8,7 @@
   <div class="w-64 shrink-0">
     <nav class="menu w-full bg-base-200 rounded-box">
 
-      <% if Flipper.enabled?(:v2, current_user) %>
+      <% if FeatureFlags.v2_enabled_for?(current_user) %>
         <li>
           <%= link_to chatbot_responses_path(@chatbot), class: "" do %>
             FAQs

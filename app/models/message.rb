@@ -90,7 +90,7 @@ class Message < ApplicationRecord
 
   def enqueue_assistant_response_generation_job
     return if chat&.conversation&.intervention_enabled?
-    if Flipper.enabled?(:v2, chat.chatbot.user)
+    if FeatureFlags.v2_enabled_for?(chat.chatbot.user)
       Conversation::ResponseBuilderJob.perform_later(id)
     else
       Llm::AssistantResponseJob.perform_later(id)

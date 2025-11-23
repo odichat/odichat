@@ -1,7 +1,5 @@
 class Chatbots::SourcesController < Chatbots::BaseController
   def show
-    redirect_to chatbot_responses_path(@chatbot) if FeatureFlags.v2_enabled_for?(current_user)
-
     @documents = @chatbot.documents.map do |document|
       {
         id: document.id,

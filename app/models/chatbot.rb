@@ -141,10 +141,20 @@ class Chatbot < ApplicationRecord
 
         ## FAQ Lookup Tool
         ### `faq_lookup` tool guidelines
+        - Use this tool first for all business questions; it gives fast, curated answers.
+        - After calling `faq_lookup`, examine the results:
+          - If the FAQ answer solves the customer's request, respond immediately and you're done.
+          - If the FAQ response is missing, incomplete, or irrelevant, escalate to the `file_search` tool.
         - Use this tool to access the user's business knowledge base
         - Use it to verify facts and information that requieres up-to-date and informed answers on the user's business.
         - Use it when the customer explicitly asks you to search, look up, or find information about the user's business
         - Use it when you are uncertain about information or need to verify your knowledge
+
+        ## Document Search Tool
+        ### `file_search` tool guidelines
+        - Only run this after FAQ lookup failed to resolve the question.
+        - Use it to dig into detailed documents (manuals, policies, contracts, etc.) and ground your answer in the retrieved passages.
+        - When no documents are returned, inform you couldn't find anything rather than speculating.
 
         ## Product Lookup Tool
         ### `product_lookup` tool guidelines
@@ -188,6 +198,7 @@ class Chatbot < ApplicationRecord
     tools << Llm::Tools::CreateLeadTool.new
     tools << Llm::Tools::FaqLookupTool.new
     tools << Llm::Tools::ProductLookupTool.new
+    tools << Llm::Tools::FileSearchTool.new
     tools
   end
 
@@ -197,7 +208,6 @@ class Chatbot < ApplicationRecord
   # Callbacks
   # **************************************************
   def set_default_system_instructions
-    self.system_instructions ||= "You are #{self.name}, a helpful customer support agent for [YOUR_COMPANY]. Your role is to provide accurate information about our business, products and services using your access to the FAQs and products database."
     self.system_instructions ||= <<~INSTRUCTIONS
       Eres un asistente al cliente para [TU_EMPRESA].
       [TU_EMPRESA] es una empresa que vende [TUS_PRODUCTOS_O_SERVICIOS].

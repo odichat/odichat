@@ -8,9 +8,7 @@
       <%= link_to t('shared.chatbot_header.activity'),
           chatbot_conversations_path(@chatbot),
           class: "tab #{current_page?(chatbot_conversations_path(@chatbot)) ? 'tab-active' : ''}" %>
-      <%= link_to FeatureFlags.v2_enabled_for?(current_user) ? "FAQs" : t('shared.chatbot_header.sources'), 
-          chatbot_sources_path(@chatbot), 
-          class: "tab #{current_page?(chatbot_sources_path(@chatbot)) || current_page?(chatbot_responses_path(@chatbot)) ? 'tab-active' : ''}" %>
+      <%= link_to t('shared.chatbot_header.sources'), chatbot_sources_path(@chatbot), class: "tab #{current_page?(chatbot_sources_path(@chatbot)) ? 'tab-active' : ''}" %>
       <% if FeatureFlags.v2_enabled_for?(current_user) %>
         <%= link_to "Products", 
             chatbot_products_path(@chatbot), 

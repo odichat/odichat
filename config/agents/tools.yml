@@ -13,3 +13,7 @@
 - id: create_lead
   title: 'Create Lead'
   description: 'Create a Lead record'
+
+- id: file_search
+  title: 'Document Search'
+  description: 'Search uploaded documents using semantic retrieval'

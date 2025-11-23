@@ -5,37 +5,52 @@ class Products::ImportFromCsvJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, chatbot_id, refresh_path = nil)
-    @file = File.open(file_path)
     @chatbot = Chatbot.find(chatbot_id)
+    refresh_path ||= chatbot_products_path(@chatbot)
+    @file = File.open(file_path)
 
-    return unless @chatbot.present? || @file.present?
+    return unless @chatbot.present? && @file.present?
 
     created_count = @chatbot.products.import_from_csv(@file, @chatbot.id)
 
-    File.delete(file_path) if File.exist?(file_path)
-
-    refresh_path ||= chatbot_products_path(@chatbot)
-
-    Turbo::StreamsChannel.broadcast_replace_to(
-      [ @chatbot, :products ],
-      target: "products-table",
-      html: ApplicationController.render(
-        inline: "<%= turbo_frame_tag 'products-table', src: url %>",
-        locals: { url: refresh_path }
-      )
-    )
-
-    Turbo::StreamsChannel.broadcast_update_to(
-      [ @chatbot, :products ],
-      target: "flash",
-      partial: "shared/flash_messages",
-      locals: { flash: { notice: "#{created_count} products imported successfully." } }
-    )
+    broadcast_products_table(refresh_path)
+    broadcast_flash(:notice, "#{created_count} products imported successfully.")
 
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Chatbot with ID #{chatbot_id} not found. CSV import aborted: #{e.message}"
     puts "Chatbot with ID #{chatbot_id} not found. CSV import aborted: #{e.message}"
+  rescue CSV::MalformedCSVError => e
+    Rails.logger.error "Failed to import CSV for chatbot #{chatbot_id}: #{e.message}"
+    broadcast_products_table(refresh_path)
+    broadcast_flash(:alert, "We couldn't process the CSV file. Please check its format and try again.")
   ensure
     @file.close if @file.present?
+    File.delete(file_path) if file_path.present? && File.exist?(file_path)
   end
+
+  private
+
+    def broadcast_products_table(refresh_path)
+      return unless @chatbot.present?
+
+      Turbo::StreamsChannel.broadcast_replace_to(
+        [ @chatbot, :products ],
+        target: "products-table",
+        html: ApplicationController.render(
+          inline: "<%= turbo_frame_tag 'products-table', src: url %>",
+          locals: { url: refresh_path || chatbot_products_path(@chatbot) }
+        )
+      )
+    end
+
+    def broadcast_flash(type, message)
+      return unless @chatbot.present?
+
+      Turbo::StreamsChannel.broadcast_update_to(
+        [ @chatbot, :products ],
+        target: "flash",
+        partial: "shared/flash_messages",
+        locals: { flash: { type => message } }
+      )
+    end
 end

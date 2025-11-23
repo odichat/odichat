@@ -69,33 +69,43 @@ class Chatbots::ProductsController < Chatbots::BaseController
   end
 
   def import
-    respond_to do |format|
-      if params[:file].present?
-        tempfile = CsvUploadService.new(params[:file]).save_tempfile
-        Products::ImportFromCsvJob.perform_later(
-          tempfile,
-          @chatbot.id,
-          chatbot_products_path(@chatbot)
-        )
+    uploaded_file = params[:file]
 
-        format.html { redirect_to chatbot_products_path(@chatbot), notice: "#{result[:created_count]} products were successfully imported." }
-        format.turbo_stream do
-          flash.now[:notice] = "Processing CSV file... This may take a few minutes depending on the file size."
-          render turbo_stream: [
-            turbo_stream.replace(
-              "import_products_modal",
-              partial: "chatbots/products/import_products_modal"
-            ),
-            turbo_stream.update(
-              "products-table",
-              partial: "chatbots/products/processing_loader",
-              locals: { chatbot: @chatbot }
-            ),
-            turbo_stream.update("flash", partial: "shared/flash_messages")
-          ]
-        end
-      else
-        format.html { redirect_to chatbot_products_path(@chatbot), alert: "Please upload a CSV file." }
+    unless uploaded_file.present?
+      return handle_csv_upload_error("Please upload a CSV file.")
+    end
+
+    unless csv_file?(uploaded_file)
+      return handle_csv_upload_error("We only support CSV files. Please upload a CSV file.")
+    end
+
+    tempfile = CsvUploadService.new(uploaded_file).save_tempfile
+
+    Products::ImportFromCsvJob.perform_later(
+      tempfile,
+      @chatbot.id,
+      chatbot_products_path(@chatbot)
+    )
+
+    respond_to do |format|
+      format.html do
+        redirect_to chatbot_products_path(@chatbot),
+          notice: "Processing CSV file... This may take a few minutes depending on the file size."
+      end
+      format.turbo_stream do
+        flash.now[:notice] = "Processing CSV file... This may take a few minutes depending on the file size."
+        render turbo_stream: [
+          turbo_stream.replace(
+            "import_products_modal",
+            partial: "chatbots/products/import_products_modal"
+          ),
+          turbo_stream.update(
+            "products-table",
+            partial: "chatbots/products/processing_loader",
+            locals: { chatbot: @chatbot }
+          ),
+          turbo_stream.update("flash", partial: "shared/flash_messages")
+        ]
       end
     end
   end
@@ -114,5 +124,28 @@ class Chatbots::ProductsController < Chatbots::BaseController
 
     def product_params
       params.require(:product).permit(:name, :description, :price)
+    end
+
+    def csv_file?(file)
+      mime_type = file.content_type.to_s
+      acceptable_types = %w[text/csv text/plain application/csv application/vnd.ms-excel]
+
+      acceptable_types.include?(mime_type) || File.extname(file.original_filename.to_s).casecmp(".csv").zero?
+    end
+
+    def handle_csv_upload_error(message)
+      respond_to do |format|
+        format.html { redirect_to chatbot_products_path(@chatbot), alert: message }
+        format.turbo_stream do
+          flash.now[:alert] = message
+          render turbo_stream: [
+            turbo_stream.replace(
+              "import_products_modal",
+              partial: "chatbots/products/import_products_modal"
+            ),
+            turbo_stream.update("flash", partial: "shared/flash_messages")
+          ]
+        end
+      end
     end
 end

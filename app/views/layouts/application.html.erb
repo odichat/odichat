@@ -19,14 +19,13 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "driver", "data-turbo-track": "reload" %>
 
     <%= Sentry.get_trace_propagation_meta.html_safe %>
 
     <%= javascript_importmap_tags %>
 
     <script src="https://js.stripe.com/basil/stripe.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css"/>
   </head>
 
   <body class="h-full"

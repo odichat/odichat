@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { driver as createDriver } from "driver.js"
 
 const DEFAULT_STORAGE_KEY = "tour-onboarding"
 
@@ -15,7 +16,7 @@ export default class extends Controller {
   startTour() {
     if (!this.shouldRunTour()) return
 
-    const driverFactory = window?.driver?.js?.driver
+    const driverFactory = createDriver
     if (typeof driverFactory !== "function") return
 
     const steps = this.buildSteps()

@@ -145,6 +145,9 @@ es:
         create_faq: "Crear FAQ"
         upload_pdf: "Subir PDF"
         continue: "Continuar"
+      empty:
+        title: "Configura tus preguntas frecuentes"
+        description: "Crea una FAQ o simplemente sube un PDF y generaremos las preguntas automáticamente por ti."
       modal:
         add_new_faq: "Agregar FAQ"
         edit_faq: "Editar FAQ"

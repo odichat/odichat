@@ -1,3 +1,4 @@
+<% chatbot = local_assigns.fetch(:chatbot) %>
 <%= form_with url: chatbot_documents_path(@chatbot), scope: :document, multipart: true, data: { turbo: true }, class: "flex flex-col gap-2" do |form| %>
   <div class="form-control w-full">
     <div class="flex flex-col gap-1 w-full">

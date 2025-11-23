@@ -1,6 +1,7 @@
+<% chatbot = local_assigns.fetch(:chatbot) %>
 <% submit_label = local_assigns.fetch(:submit_label) { t('.save_response') } %>
 
-<%= form_with(model: [ @chatbot, chatbot_response ], local: true, data: { turbo: false }, class: "flex flex-col gap-2") do |form| %>
+<%= form_with(model: [ chatbot, chatbot_response ], local: true, data: { turbo: false }, class: "flex flex-col gap-2") do |form| %>
   <% if chatbot_response.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(chatbot_response.errors.count, "error") %> prohibited this response from being saved:</h2>

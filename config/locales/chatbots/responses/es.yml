@@ -19,7 +19,7 @@ es:
         save_response: "Guardar FAQ"
       responses_list:
         no_faqs_title: "Todavía no tienes preguntas frecuentes."
-        no_faqs_description: "Agrega tus primeras preguntas frecuentes manualmente o importa un PDF"
+        no_faqs_description: "Agrega tus primeras FAQs manualmente o importa un PDF para extraer FAQs automáticamente."
       pdf_upload_modal:
         title: "Subir archivo PDF"
         description: "Extraeremos y generaremos preguntas frecuentes automáticamente a partir de los documentos PDF de tu empresa."

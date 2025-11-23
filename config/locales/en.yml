@@ -132,6 +132,9 @@ en:
         create_faq: "Create FAQ"
         upload_pdf: "Upload PDF"
         continue: "Continue"
+      empty:
+        title: "Set up your FAQs"
+        description: "Create a FAQ or just upload a PDF and we'll generate FAQs automatically for you."
       modal:
         add_new_faq: "Add new FAQ"
         edit_faq: "Edit FAQ"

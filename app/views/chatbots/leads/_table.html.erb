@@ -17,7 +17,7 @@
           <td><%= lead.name %> </td>
           <td><%= lead.phone_number %></td>
           <td><%= lead.trigger %></td>
-          <td><%= lead.created_at %></td>
+          <td><%= lead_created_at(lead) %></td>
           <td class="flex gap-1">
           <%= button_to chatbot_lead_path(@chatbot, lead),
                         method: :delete,

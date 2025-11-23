@@ -1,3 +1,5 @@
+require "csv"
+
 class Product < ApplicationRecord
   belongs_to :chatbot
 
@@ -11,6 +13,26 @@ class Product < ApplicationRecord
   def self.search(query)
     embedding = Llm::EmbeddingService.new.generate_embedding(query)
     nearest_neighbors(:embedding, embedding, distance: :cosine).limit(3)
+  end
+
+  def self.import_from_csv(file, chatbot_id)
+    created_count = 0
+
+    CSV.foreach(file.path, headers: true) do |row|
+      normalized = row.to_h.transform_keys { |key| key.to_s.strip.downcase }
+
+      product_attributes = {
+        name: normalized["name"],
+        description: normalized["description"],
+        price: normalized["price"],
+        chatbot_id: chatbot_id
+      }
+
+      Product.create!(product_attributes)
+      created_count += 1
+    end
+
+    created_count
   end
 
   private

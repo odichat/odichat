@@ -1,3 +1,5 @@
+<% chatbot = local_assigns.fetch(:chatbot) { @chatbot } %>
+
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
   <table class="table table-zebra">
     <!-- head -->
@@ -10,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @products.each do |product| %>
+      <% products.each do |product| %>
         <% next unless product.persisted? %>
         <tr>
           <td><%= product.name %> </td>
@@ -23,14 +25,15 @@
                     title="Edit <%= product.name %>">
               <%= icon "pencil-square", class: "size-4" %>
             </button>
-            <%= link_to chatbot_product_path(@chatbot, product),
+            <%= link_to chatbot_product_path(chatbot, product),
                         data: { turbo_method: :delete, turbo_confirm: "Delete this product?" },
                         class: "text-error hover:text-red-400",
                         title: "Delete #{product.name}" do %>
               <%= icon "trash", class: "size-4" %>
             <% end %>
-            <%= render partial: "modal",
+            <%= render partial: "chatbots/products/modal",
                        locals: {
+                         chatbot: chatbot,
                          modal_id: dom_id(product, :modal),
                          product: product,
                          title: "Edit Product",
@@ -43,8 +46,8 @@
     </tbody>
   </table>
 </div>
-<% if defined?(@pagy) && @pagy.pages > 1 %>
+<% if defined?(pagy) && pagy.present? && pagy.pages > 1 %>
   <div class="flex justify-end mt-4">
-    <%== pagy_daisy_nav(@pagy) %>
+    <%== pagy_daisy_nav(pagy) %>
   </div>
 <% end %>

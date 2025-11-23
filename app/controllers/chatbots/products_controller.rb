@@ -54,7 +54,7 @@ class Chatbots::ProductsController < Chatbots::BaseController
               turbo_stream.update(
                 "products-table",
                 partial: "chatbots/products/table_or_empty",
-                locals: { products: @products }
+                locals: { chatbot: @chatbot, products: @products, pagy: nil }
               ),
               turbo_stream.update("flash", partial: "shared/flash_messages")
             ]
@@ -64,6 +64,38 @@ class Chatbots::ProductsController < Chatbots::BaseController
     else
       respond_to do |format|
         format.html { redirect_to chatbot_products_path(@chatbot), alert: "Product could not be deleted" }
+      end
+    end
+  end
+
+  def import
+    respond_to do |format|
+      if params[:file].present?
+        tempfile = CsvUploadService.new(params[:file]).save_tempfile
+        Products::ImportFromCsvJob.perform_later(
+          tempfile,
+          @chatbot.id,
+          chatbot_products_path(@chatbot)
+        )
+
+        format.html { redirect_to chatbot_products_path(@chatbot), notice: "#{result[:created_count]} products were successfully imported." }
+        format.turbo_stream do
+          flash.now[:notice] = "Processing CSV file... This may take a few minutes depending on the file size."
+          render turbo_stream: [
+            turbo_stream.replace(
+              "import_products_modal",
+              partial: "chatbots/products/import_products_modal"
+            ),
+            turbo_stream.update(
+              "products-table",
+              partial: "chatbots/products/processing_loader",
+              locals: { chatbot: @chatbot }
+            ),
+            turbo_stream.update("flash", partial: "shared/flash_messages")
+          ]
+        end
+      else
+        format.html { redirect_to chatbot_products_path(@chatbot), alert: "Please upload a CSV file." }
       end
     end
   end

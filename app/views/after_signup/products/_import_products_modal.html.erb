@@ -4,9 +4,9 @@
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
 
-    <h3 class="text-lg font-bold">Upload CSV file</h3>
-    <p class="py-4">We'll extract and bulk create products automatically from your company CSV products data.</p>
+    <h3 class="text-lg font-bold">Import CSV</h3>
+    <p class="py-4">Upload your CSV file to bulk upload products. We only support 3 columns: name, description and price.</p>
 
-    <%#= render partial: "after_signup/faqs/pdf_upload_form", locals: { chatbot: chatbot } %>
+    <%= render "after_signup/products/import_products_modal_form" %>
   </div>
 </dialog>

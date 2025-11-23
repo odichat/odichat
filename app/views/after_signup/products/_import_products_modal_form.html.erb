@@ -1,0 +1,14 @@
+<%= form_with url: wizard_path, scope: :document, method: :put, multipart: true, data: { turbo: false }, class: "flex flex-col gap-2" do |form| %>
+  <div class="form-control w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label class="label text-sm" for="document_file">
+        <span class="label-text">CSV document</span>
+      </label>
+      <%= form.file_field :file, accept: "text/csv", multiple: false, class: "file-input file-input-bordered w-full", required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-end mt-2">
+    <%= form.submit "Import products", data: { turbo_submits_with: "Uploading..." }, class: "btn btn-primary" %>
+  </div>
+<% end %>

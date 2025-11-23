@@ -1,3 +1,5 @@
+<%= turbo_stream_from [@chatbot, :products] %>
+
 <div class="flex justify-between">
   <h1 class="text-3xl font-bold mb-8">Products</h1>
   <%= render partial: "after_signup/products/actions",
@@ -6,11 +8,14 @@
               product: @product
             } %>
 </div>
-<% if @products.exists? %>
-  <%= render partial: "after_signup/products/table" %>
-<% else %>
-  <div id="<%= dom_id(@chatbot, "nop") %>", class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2" >
-    <%= render "after_signup/products/empty" %>
-  </div>
+
+<%= turbo_frame_tag "products-table" do %>
+  <% if @products.exists? %>
+    <%= render partial: "after_signup/products/table" %>
+  <% else %>
+    <div id="<%= dom_id(@chatbot, "nop") %>" class="w-full h-64 border-2 border-dashed border-gray-300 flex flex-col justify-center items-center gap-2" >
+      <%= render "after_signup/products/empty" %>
+    </div>
+  <% end %>
 <% end %>
 

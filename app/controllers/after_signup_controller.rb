@@ -50,6 +50,7 @@ class AfterSignupController < ApplicationController
       @product ||= @chatbot.products.build
 
       if params[:document].present?
+        handle_products_csv_upload
       else
         handle_manual_product_submission
       end
@@ -147,6 +148,46 @@ class AfterSignupController < ApplicationController
     else
       render_wizard @product, status: :unprocessable_entity
     end
+  end
+
+  def handle_products_csv_upload
+    file = params.dig(:document, :file)
+
+    unless file.present?
+      redirect_to wizard_path(:create_products), alert: "Please upload a CSV file." and return
+    end
+
+    tempfile = CsvUploadService.new(file).save_tempfile
+    Products::ImportFromCsvJob.perform_later(
+      tempfile,
+      @chatbot.id,
+      wizard_path(:create_products)
+    )
+
+    notice_message = "Processing CSV file... This may take a few minutes depending on the file size."
+
+    respond_to do |format|
+      format.html { redirect_to wizard_path(:create_products), notice: notice_message }
+      format.turbo_stream do
+        flash.now[:notice] = notice_message
+        render turbo_stream: [
+          turbo_stream.replace(
+            "import_products_modal",
+            partial: "after_signup/products/import_products_modal",
+            locals: { chatbot: @chatbot, product: @product }
+          ),
+          turbo_stream.update(
+            "products-table",
+            partial: "chatbots/products/processing_loader",
+            locals: { chatbot: @chatbot }
+          ),
+          turbo_stream.update("flash", partial: "shared/flash_messages")
+        ]
+      end
+    end
+  rescue StandardError => e
+    Rails.logger.error("CSV upload failed: #{e.message}")
+    redirect_to wizard_path(:create_products), alert: "Unable to process the CSV file. Please try again."
   end
 
   def build_chatbot_for(user)

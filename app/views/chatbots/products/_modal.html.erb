@@ -1,5 +1,6 @@
+<% chatbot     = local_assigns.fetch(:chatbot) { @chatbot } %>
 <% modal_id    = local_assigns.fetch(:modal_id, "product_modal") %>
-<% product     = local_assigns.fetch(:product) { @chatbot.products.build } %>
+<% product     = local_assigns.fetch(:product) { chatbot.products.build } %>
 <% title       = local_assigns.fetch(:title) { product.persisted? ? "Edit Product" : "Create Product" } %>
 <% description = local_assigns.fetch(:description) { product.persisted? ? "Update product details" : "Specify product details" } %>
 <% submit_label = local_assigns.fetch(:submit_label) { product.persisted? ? "Update Product" : "Create Product" } %>
@@ -13,6 +14,6 @@
     <h3 class="text-lg font-bold"><%= title %></h3>
     <p class="py-4"><%= description %></p>
 
-    <%= render "form", product: product, submit_label: submit_label %>
+    <%= render "chatbots/products/form", chatbot: chatbot, product: product, submit_label: submit_label %>
   </div>
 </dialog>

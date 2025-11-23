@@ -18,7 +18,7 @@ module PagyHelper
     link_to(
       "Prev",
       disabled ? "#" : url_for(page: pagy.prev),
-      class: ["join-item btn", ("btn-disabled cursor-not-allowed" if disabled)].compact.join(" "),
+      class: [ "join-item btn", ("btn-disabled cursor-not-allowed" if disabled) ].compact.join(" "),
       aria: { disabled: disabled }
     )
   end
@@ -28,7 +28,7 @@ module PagyHelper
     link_to(
       "Next",
       disabled ? "#" : url_for(page: pagy.next),
-      class: ["join-item btn", ("btn-disabled cursor-not-allowed" if disabled)].compact.join(" "),
+      class: [ "join-item btn", ("btn-disabled cursor-not-allowed" if disabled) ].compact.join(" "),
       aria: { disabled: disabled }
     )
   end
@@ -40,7 +40,7 @@ module PagyHelper
       link_to(
         item,
         active ? "#" : url_for(page: item),
-        class: ["join-item btn", ("btn-active" if active)].compact.join(" "),
+        class: [ "join-item btn", ("btn-active" if active) ].compact.join(" "),
         aria: { current: ("page" if active) }
       )
     when String

@@ -1,7 +1,10 @@
 <div class="flex gap-2 justify-end">
-  <%= link_to "Continue", next_wizard_path, class: "btn btn-primary" %>
-  <button class="btn btn-default btn-soft" onclick="responses_modal.showModal()">Create FAQ</button>
+  <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
   <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+  <%= link_to next_wizard_path, class: "btn btn-default btn-success" do %>
+    <span>Continue</span>
+    <span class=""><%= icon "chevron-double-right", class: "size-4" %></span>
+  <% end %>
   <%= render "after_signup/faqs/modal", chatbot: chatbot, chatbot_response: chatbot_response %>
   <%= render "after_signup/faqs/pdf_upload_modal", chatbot: chatbot %>
 </div>

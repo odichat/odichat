@@ -2,23 +2,22 @@
   <%= render "shared/chatbot_header" %>
 <% end %>
 
+<%= turbo_stream_from [ @chatbot, :products ] %>
+
 <div class="flex justify-between">
   <h1 class="text-3xl font-bold mb-8">Products</h1>
 
-  <div class="dropdown dropdown-end">
-    <div tabindex="0" role="button" class="btn btn-primary m-1">Actions <%= icon "arrow-down", class: "size-4" %></div>
-    <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-      <li><a onclick="product_modal.showModal()">Create Product</a></li>
-      <!-- <li><a onclick="import_products_modal.showModal()">Import CSV</a></li> -->
-    </ul>
+  <div class="flex gap-2">
+    <button class="btn btn-default btn-soft" onclick="product_modal.showModal()">Create Product</button>
+    <button class="btn btn-default btn-soft" onclick="import_products_modal.showModal()">Upload CSV</button>
   </div>
     
-  <%= render partial: "chatbots/products/modal" %>
+  <%= render partial: "chatbots/products/modal", locals: { chatbot: @chatbot } %>
   <%= render partial: "chatbots/products/import_products_modal" %>
 </div>
 
-<div id="products-table">
-  <%= render partial: "table_or_empty", locals: { products: @products } %>
-</div>
 
+<%= turbo_frame_tag "products-table" do %>
+  <%= render partial: "chatbots/products/table_or_empty", locals: { chatbot: @chatbot, products: @products, pagy: @pagy } %>
+<% end %>
 

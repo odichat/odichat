@@ -30,6 +30,6 @@
   </div>
 
   <div class="flex flex-row justify-end mt-2">
-    <%= form.submit t('.save_response'), class: "btn btn-primary" %>
+    <%= form.submit(local_assigns.fetch(:submit_label, t('.save_response')) , class: "btn btn-primary") %>
   </div>
 <% end %>

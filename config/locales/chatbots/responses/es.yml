@@ -9,7 +9,7 @@ es:
       modal:
         add_new_faq: "Agregar FAQ"
         edit_faq: "Editar FAQ"
-        description: 'Agrega una pregunta y su respuesta correspondiente a la base de conocimiento de "%{chatbot_name}".'
+        description: 'Agrega todas las preguntas y respuestas que necesites; el asistente usa esta base de conocimiento para responder las dudas de los clientes sobre "%{chatbot_name}".'
         edit_description: "Actualiza la pregunta y la respuesta."
         create_submit: "Crear FAQ"
         update_submit: "Actualizar FAQ"

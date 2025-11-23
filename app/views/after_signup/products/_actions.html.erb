@@ -1,9 +1,9 @@
 <div class="flex gap-2 justify-end">
 
-  <button class="btn btn-primary" onclick="product_modal.showModal()">Create Product</button>
-  <button class="btn btn-default btn-soft" onclick="import_products_modal.showModal()">Upload CSV</button>
+  <button class="btn btn-primary" onclick="product_modal.showModal()"><%= t("after_signup.products.actions.create_product") %></button>
+  <button class="btn btn-default btn-soft" onclick="import_products_modal.showModal()"><%= t("after_signup.products.actions.upload_csv") %></button>
   <%= link_to finish_wizard_path, class: "btn btn-default btn-success" do %>
-    <span>Finish</span>
+    <span><%= t("after_signup.products.actions.finish") %></span>
     <span><%= icon "check-circle", class: "size-4" %></span>
   <% end %>
   <%= render "after_signup/products/modal", chatbot: chatbot, product: product %>

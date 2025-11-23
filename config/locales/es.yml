@@ -11,6 +11,50 @@ es:
       settings: "Configuración"
       billing: "Facturación"
       logout: "Cerrar sesión"
+  chatbots:
+    products:
+      modal:
+        create_title: "Crear producto"
+        edit_title: "Editar producto"
+        create_button: "Crear producto"
+        update_button: "Actualizar producto"
+        instructions: "Agrega un nombre, descripción y precio claros; la IA usa estos datos para identificar el producto adecuado cuando los clientes preguntan."
+      import_modal:
+        title: "Importar CSV"
+        instructions: "Sube tu archivo CSV para cargar productos en bloque. Solo admitimos 3 columnas: nombre, descripción y precio."
+      index:
+        title: "Productos"
+        create_button: "Crear producto"
+        upload_csv: "Subir CSV"
+      form:
+        name: "Nombre"
+        description: "Descripción"
+        price: "Precio"
+      import_products_modal_form:
+        csv_document: "Documento CSV"
+        submit: "Importar productos"
+        uploading: "Subiendo..."
+      table:
+        headers:
+          name: "Nombre"
+          description: "Descripción"
+          price: "Precio"
+          actions: "Acciones"
+        edit_action: "Editar %{name}"
+        delete_action: "Eliminar %{name}"
+        delete_confirm: "¿Eliminar este producto?"
+      table_or_empty:
+        empty_title: "Aún no hay productos"
+        empty_description: "Agrega tu primer producto manualmente o impórtalo desde un CSV"
+      table:
+        headers:
+          name: "Nombre"
+          description: "Descripción"
+          price: "Precio"
+          actions: "Acciones"
+        edit_action: "Editar %{name}"
+        delete_action: "Eliminar %{name}"
+        delete_confirm: "¿Eliminar este producto?"
   activerecord:
     errors:
       models:
@@ -90,3 +134,59 @@ es:
       - Oct
       - Nov
       - Dic 
+  after_signup:
+    create_chatbot:
+      title: "Crea tu primer chatbot"
+      description: "Ponle un nombre que coincida con tu negocio o marca. Este nombre se usa internamente en Odichat y puedes actualizarlo cuando quieras."
+      name_label: "Nombre"
+      submit: "Continuar"
+    faqs:
+      actions:
+        create_faq: "Crear FAQ"
+        upload_pdf: "Subir PDF"
+        continue: "Continuar"
+      modal:
+        add_new_faq: "Agregar FAQ"
+        edit_faq: "Editar FAQ"
+        description: 'Agrega todas las preguntas y respuestas que necesites; el asistente usa esta base de conocimiento para responder las dudas de los clientes sobre "%{chatbot_name}".'
+        edit_description: "Actualiza la pregunta y la respuesta."
+        create_submit: "Crear FAQ"
+        update_submit: "Actualizar FAQ"
+      form:
+        question: "Pregunta"
+        answer: "Respuesta"
+        save_response: "Guardar FAQ"
+      pdf_upload_modal:
+        title: "Subir archivo PDF"
+        description: "Extraeremos y generaremos preguntas frecuentes automáticamente a partir de los documentos PDF de tu empresa."
+      pdf_upload_form:
+        document_label: "Documento PDF"
+        submit: "Subir documento"
+        uploading: "Subiendo..."
+    products:
+      actions:
+        create_product: "Crear producto"
+        upload_csv: "Subir CSV"
+        finish: "Finalizar"
+      modal:
+        create_title: "Crear producto"
+        edit_title: "Editar producto"
+        create_button: "Crear producto"
+        update_button: "Actualizar producto"
+        instructions: "Agrega un nombre, descripción y precio claros; la IA usa estos datos para identificar el producto adecuado cuando los clientes preguntan."
+      import_modal:
+        title: "Importar CSV"
+        instructions: "Sube tu archivo CSV para cargar productos en bloque. Solo admitimos 3 columnas: nombre, descripción y precio."
+      import_products_modal_form:
+        csv_document: "Documento CSV"
+        submit: "Importar productos"
+        uploading: "Subiendo..."
+      table:
+        headers:
+          name: "Nombre"
+          description: "Descripción"
+          price: "Precio"
+          actions: "Acciones"
+        edit_action: "Editar %{name}"
+        delete_action: "Eliminar %{name}"
+        delete_confirm: "¿Eliminar este producto?"

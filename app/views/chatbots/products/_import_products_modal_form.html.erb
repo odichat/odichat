@@ -2,13 +2,13 @@
   <div class="form-control w-full">
     <div class="flex flex-col gap-1 w-full">
       <label class="label text-sm" for="document_file">
-        <span class="label-text">CSV document</span>
+        <span class="label-text"><%= t(".csv_document") %></span>
       </label>
       <%= form.file_field :file, accept: "text/csv", multiple: false, class: "file-input file-input-bordered w-full", required: true %>
     </div>
   </div>
 
   <div class="flex flex-row justify-end mt-2">
-    <%= form.submit "Import products", data: { turbo_submits_with: "Uploading..." }, class: "btn btn-primary" %>
+    <%= form.submit t(".submit"), data: { turbo_submits_with: t(".uploading") }, class: "btn btn-primary" %>
   </div>
 <% end %>

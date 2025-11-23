@@ -3,10 +3,10 @@
     <!-- head -->
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Actions</th>
+        <th><%= t("after_signup.products.table.headers.name") %></th>
+        <th><%= t("after_signup.products.table.headers.description") %></th>
+        <th><%= t("after_signup.products.table.headers.price") %></th>
+        <th><%= t("after_signup.products.table.headers.actions") %></th>
       </tr>
     </thead>
     <tbody>
@@ -20,22 +20,20 @@
             <button type="button"
                     class="text-primary hover:text-gray-600 hover:cursor-pointer"
                     onclick="document.getElementById('<%= dom_id(product, :modal) %>').showModal()"
-                    title="Edit <%= product.name %>">
+                    title="<%= t("after_signup.products.table.edit_action", name: product.name) %>">
               <%= icon "pencil-square", class: "size-4" %>
             </button>
             <%= link_to chatbot_product_path(@chatbot, product, redirect: wizard_path(:create_products)),
-                        data: { turbo_method: :delete, turbo_confirm: "Delete this product?", turbo_frame: "_top" },
+                        data: { turbo_method: :delete, turbo_confirm: t("after_signup.products.table.delete_confirm"), turbo_frame: "_top" },
                         class: "text-error hover:text-red-400",
-                        title: "Delete #{product.name}" do %>
+                        title: t("after_signup.products.table.delete_action", name: product.name) do %>
               <%= icon "trash", class: "size-4" %>
             <% end %>
             <%= render partial: "after_signup/products/modal",
                        locals: {
                          modal_id: dom_id(product, :modal),
                          product: product,
-                         title: "Edit Product",
-                         description: "Update product details",
-                         submit_label: "Update Product"
+                         chatbot: @chatbot
                        } %>
           </td>
         </tr>

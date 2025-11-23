@@ -5,10 +5,10 @@
     <!-- head -->
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Actions</th>
+        <th><%= t("chatbots.products.table.headers.name") %></th>
+        <th><%= t("chatbots.products.table.headers.description") %></th>
+        <th><%= t("chatbots.products.table.headers.price") %></th>
+        <th><%= t("chatbots.products.table.headers.actions") %></th>
       </tr>
     </thead>
     <tbody>
@@ -22,23 +22,20 @@
             <button type="button"
                     class="text-primary hover:text-gray-600 hover:cursor-pointer"
                     onclick="document.getElementById('<%= dom_id(product, :modal) %>').showModal()"
-                    title="Edit <%= product.name %>">
+                    title="<%= t("chatbots.products.table.edit_action", name: product.name) %>">
               <%= icon "pencil-square", class: "size-4" %>
             </button>
             <%= link_to chatbot_product_path(chatbot, product),
-                        data: { turbo_method: :delete, turbo_confirm: "Delete this product?" },
+                        data: { turbo_method: :delete, turbo_confirm: t("chatbots.products.table.delete_confirm") },
                         class: "text-error hover:text-red-400",
-                        title: "Delete #{product.name}" do %>
+                        title: t("chatbots.products.table.delete_action", name: product.name) do %>
               <%= icon "trash", class: "size-4" %>
             <% end %>
             <%= render partial: "chatbots/products/modal",
                        locals: {
                          chatbot: chatbot,
                          modal_id: dom_id(product, :modal),
-                         product: product,
-                         title: "Edit Product",
-                         description: "Update product details",
-                         submit_label: "Update Product"
+                         product: product
                        } %>
           </td>
         </tr>

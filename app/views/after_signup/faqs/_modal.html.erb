@@ -1,12 +1,29 @@
-<dialog id="responses_modal" class="modal">
+<% modal_id         = local_assigns.fetch(:modal_id, "responses_modal") %>
+<% chatbot_response = local_assigns.fetch(:chatbot_response) { @response || @chatbot.responses.build } %>
+<% chatbot_record   = local_assigns.fetch(:chatbot) { chatbot_response.try(:chatbot) || @chatbot } %>
+<% title            = local_assigns.fetch(:title) do
+                        chatbot_response.persisted? ? t(".edit_faq") : t(".add_new_faq")
+                      end %>
+<% description      = local_assigns.fetch(:description) do
+                        if chatbot_response.persisted?
+                          t(".edit_description")
+                        else
+                          t(".description", chatbot_name: chatbot_record&.agent_name)
+                        end
+                      end %>
+<% submit_label     = local_assigns.fetch(:submit_label) do
+                        chatbot_response.persisted? ? t(".update_submit") : t(".create_submit")
+                      end %>
+
+<dialog id="<%= modal_id %>" class="modal">
   <div class="modal-box">
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
 
-    <h3 class="text-lg font-bold">add</h3>
-    <p class="py-4"><%= t('.description', chatbot_name: chatbot.agent_name) %></p>
+    <h3 class="text-lg font-bold"><%= title %></h3>
+    <p class="py-4 text-sm"><%= description %></p>
 
-    <%= render "after_signup/faqs/form", chatbot_response: chatbot_response, chatbot: chatbot %>
+    <%= render "after_signup/faqs/form", chatbot_response: chatbot_response, chatbot: chatbot_record, submit_label: submit_label %>
   </div>
 </dialog>

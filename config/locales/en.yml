@@ -41,3 +41,139 @@ en:
       settings: "Settings"
       billing: "Billing"
       logout: "Log out"
+  chatbots:
+    products:
+      modal:
+        create_title: "Create Product"
+        edit_title: "Edit Product"
+        create_button: "Create Product"
+        update_button: "Update Product"
+        instructions: "Add a clear name, description, and price — the AI relies on these details to recognize the right product when customers ask about it."
+      import_modal:
+        title: "Import CSV"
+        instructions: "Upload your CSV file to bulk upload products. We only support 3 columns: name, description, and price."
+      index:
+        title: "Products"
+        create_button: "Create Product"
+        upload_csv: "Upload CSV"
+      form:
+        name: "Name"
+        description: "Description"
+        price: "Price"
+      import_products_modal_form:
+        csv_document: "CSV document"
+        submit: "Import Products"
+        uploading: "Uploading..."
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+      table_or_empty:
+        empty_title: "No products yet"
+        empty_description: "Add your first product manually or import from a CSV"
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"
+  after_signup:
+    create_chatbot:
+      title: "Create your first chatbot"
+      description: "Name your chatbot to match your business or brand. This name will be used internally within Odichat, and you can update it anytime."
+      name_label: "Name"
+      submit: "Continue"
+    faqs:
+      actions:
+        create_faq: "Create FAQ"
+        upload_pdf: "Upload PDF"
+        continue: "Continue"
+      modal:
+        add_new_faq: "Add new FAQ"
+        edit_faq: "Edit FAQ"
+        description: 'Add as many question-and-answer pairs as you like—the assistant uses this knowledge base to respond to customer questions about "%{chatbot_name}".'
+        edit_description: "Update the question and answer."
+        create_submit: "Create FAQ"
+        update_submit: "Update FAQ"
+      form:
+        question: "Question"
+        answer: "Answer"
+        save_response: "Save FAQ"
+      pdf_upload_modal:
+        title: "Upload PDF file"
+        description: "We'll extract and generate FAQs automatically from your company PDF documents."
+      pdf_upload_form:
+        document_label: "PDF document"
+        submit: "Upload document"
+        uploading: "Uploading..."
+    products:
+      actions:
+        create_product: "Create Product"
+        upload_csv: "Upload CSV"
+        finish: "Finish"
+      modal:
+        create_title: "Create Product"
+        edit_title: "Edit Product"
+        create_button: "Create Product"
+        update_button: "Update Product"
+        instructions: "Add a clear name, description, and price — the AI relies on these details to recognize the right product when customers ask about it."
+      import_modal:
+        title: "Import CSV"
+        instructions: "Upload your CSV file to bulk upload products. We only support 3 columns: name, description, and price."
+      import_products_modal_form:
+        csv_document: "CSV document"
+        submit: "Import Products"
+        uploading: "Uploading..."
+      table:
+        headers:
+          name: "Name"
+          description: "Description"
+          price: "Price"
+          actions: "Actions"
+        edit_action: "Edit %{name}"
+        delete_action: "Delete %{name}"
+        delete_confirm: "Delete this product?"

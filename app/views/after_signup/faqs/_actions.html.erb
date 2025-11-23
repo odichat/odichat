@@ -1,8 +1,8 @@
 <div class="flex gap-2 justify-end">
-  <button class="btn btn-primary" onclick="responses_modal.showModal()">Create FAQ</button>
-  <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()">Upload PDF</button>
+  <button class="btn btn-primary" onclick="responses_modal.showModal()"><%= t("after_signup.faqs.actions.create_faq") %></button>
+  <button class="btn btn-default btn-soft" onclick="pdf_modal.showModal()"><%= t("after_signup.faqs.actions.upload_pdf") %></button>
   <%= link_to next_wizard_path, class: "btn btn-default btn-success" do %>
-    <span>Continue</span>
+    <span><%= t("after_signup.faqs.actions.continue") %></span>
     <span class=""><%= icon "chevron-double-right", class: "size-4" %></span>
   <% end %>
   <%= render "after_signup/faqs/modal", chatbot: chatbot, chatbot_response: chatbot_response %>

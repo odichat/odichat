@@ -9,7 +9,7 @@ en:
       modal:
         add_new_faq: "Add new FAQ"
         edit_faq: "Edit FAQ"
-        description: 'Add a question and its corresponding answer to the knowledge base for "%{chatbot_name}".'
+        description: 'Add as many question-and-answer pairs as you like—the assistant uses this knowledge base to respond to customer questions about "%{chatbot_name}".'
         edit_description: "Update the question and answer."
         create_submit: "Create FAQ"
         update_submit: "Update FAQ"

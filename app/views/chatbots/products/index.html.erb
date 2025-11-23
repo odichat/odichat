@@ -5,11 +5,11 @@
 <%= turbo_stream_from [ @chatbot, :products ] %>
 
 <div class="flex justify-between">
-  <h1 class="text-3xl font-bold mb-8">Products</h1>
+  <h1 class="text-3xl font-bold mb-8"><%= t("chatbots.products.index.title") %></h1>
 
   <div class="flex gap-2">
-    <button class="btn btn-default btn-soft" onclick="product_modal.showModal()">Create Product</button>
-    <button class="btn btn-default btn-soft" onclick="import_products_modal.showModal()">Upload CSV</button>
+    <button class="btn btn-primary" onclick="product_modal.showModal()"><%= t("chatbots.products.index.create_button") %></button>
+    <button class="btn btn-default btn-soft" onclick="import_products_modal.showModal()"><%= t("chatbots.products.index.upload_csv") %></button>
   </div>
     
   <%= render partial: "chatbots/products/modal", locals: { chatbot: @chatbot } %>
@@ -20,4 +20,3 @@
 <%= turbo_frame_tag "products-table" do %>
   <%= render partial: "chatbots/products/table_or_empty", locals: { chatbot: @chatbot, products: @products, pagy: @pagy } %>
 <% end %>
-

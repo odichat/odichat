@@ -1,8 +1,14 @@
 <% modal_id    = local_assigns.fetch(:modal_id, "product_modal") %>
-<% product     = local_assigns.fetch(:product) { @chatbot.products.build } %>
-<% title       = local_assigns.fetch(:title) { product.persisted? ? "Edit Product" : "Create Product" } %>
-<% description = local_assigns.fetch(:description) { product.persisted? ? "Update product details" : "Specify product details" } %>
-<% submit_label = local_assigns.fetch(:submit_label) { product.persisted? ? "Update Product" : "Create Product" } %>
+<% chatbot     = local_assigns.fetch(:chatbot) { @chatbot } %>
+<% product     = local_assigns.fetch(:product) { chatbot.products.build } %>
+<% title       = local_assigns.fetch(:title) do
+     key = product.persisted? ? "edit_title" : "create_title"
+     t("after_signup.products.modal.#{key}")
+   end %>
+<% submit_label = local_assigns.fetch(:submit_label) do
+     key = product.persisted? ? "update_button" : "create_button"
+     t("after_signup.products.modal.#{key}")
+   end %>
 
 <dialog id="<%= modal_id %>" class="modal">
   <div class="modal-box">
@@ -11,8 +17,8 @@
     </form>
 
     <h3 class="text-lg font-bold"><%= title %></h3>
-    <p class="py-4"><%= description %></p>
+    <p class="py-4 text-sm"><%= t("after_signup.products.modal.instructions") %></p>
 
-    <%= render "after_signup/products/form", product: product, submit_label: submit_label %>
+    <%= render "after_signup/products/form", product: product, chatbot: chatbot, submit_label: submit_label %>
   </div>
 </dialog>

@@ -25,7 +25,7 @@ class Chatbot < ApplicationRecord
   before_create :set_default_temperature
 
   after_create :create_shareable_link
-  # after_create :create_vector_store
+  after_create :create_vector_store
   after_create :create_playground_resources
   after_create :create_public_playground_resources
 
@@ -143,8 +143,8 @@ class Chatbot < ApplicationRecord
         ### `faq_lookup` tool guidelines
         - Use this tool first for all business questions; it gives fast, curated answers.
         - After calling `faq_lookup`, examine the results:
+          - If no relevant FAQ responses are found, call the `file_search` tool.
           - If the FAQ answer solves the customer's request, respond immediately and you're done.
-          - If the FAQ response is missing, incomplete, or irrelevant, escalate to the `file_search` tool.
         - Use this tool to access the user's business knowledge base
         - Use it to verify facts and information that requieres up-to-date and informed answers on the user's business.
         - Use it when the customer explicitly asks you to search, look up, or find information about the user's business
@@ -152,7 +152,6 @@ class Chatbot < ApplicationRecord
 
         ## Document Search Tool
         ### `file_search` tool guidelines
-        - Only run this after FAQ lookup failed to resolve the question.
         - Use it to dig into detailed documents (manuals, policies, contracts, etc.) and ground your answer in the retrieved passages.
         - When no documents are returned, inform you couldn't find anything rather than speculating.
 

@@ -8,8 +8,7 @@ class VectorStore < ApplicationRecord
   def create_vector_store
     vector_store = openai_client.vector_stores.create(
       parameters: {
-        name: self.name,
-        file_ids: []
+        name: self.name
       }
     )
 

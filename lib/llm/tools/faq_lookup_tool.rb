@@ -19,7 +19,7 @@ class Llm::Tools::FaqLookupTool < Agents::Tool
       format_responses(responses)
     else
       log_tool_usage("no_results", { query: query })
-      "No relevant FAQ responses found for #{query}"
+      "No relevant FAQ responses found for #{query}. \n\n#System Instructions\nCall the `file_search` tool to search the chatbot knowledge base for more information."
     end
   end
 

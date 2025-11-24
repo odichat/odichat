@@ -1,5 +1,5 @@
 class Llm::Tools::FileSearchTool < Agents::Tool
-  description "Searches the chatbot knowledge base using OpenAI's file_search tool"
+  description "Searches the chatbot knowledge"
   param :query, type: :string, desc: "Question or topic to search for in the chatbot documents"
 
   def name
@@ -13,7 +13,7 @@ class Llm::Tools::FileSearchTool < Agents::Tool
     vector_store_id = chatbot.vector_store&.vector_store_id
     return "Document search is not configured for this chatbot" if vector_store_id.blank?
 
-    log_tool_usage("searching", query: query)
+    log_tool_usage("searching_file_search_tool", query: query)
 
     response = openai_client.responses.create(parameters: build_parameters(query, vector_store_id))
     text_response = extract_text_response(response)
@@ -67,26 +67,16 @@ class Llm::Tools::FileSearchTool < Agents::Tool
   def developer_message
     {
       role: "developer",
-      content: [
-        {
-          type: "text",
-          text: "You are DocumentSearchGPT. Your only job is to read the user's query," \
-                " use the file_search tool to retrieve relevant passages from the chatbot's documents," \
-                " and return a concise answer grounded in those passages. Do not rely on outside knowledge."
-        }
-      ]
+      content: "You are DocumentSearchGPT. Your only job is to read the user's query," \
+               " use the file_search tool to retrieve relevant passages from the chatbot's documents," \
+               " and return a concise answer grounded in those passages. Do not rely on outside knowledge."
     }
   end
 
   def user_message(query)
     {
       role: "user",
-      content: [
-        {
-          type: "text",
-          text: query
-        }
-      ]
+      content: query
     }
   end
 

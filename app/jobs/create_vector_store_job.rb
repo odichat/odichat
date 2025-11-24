@@ -8,7 +8,7 @@ class CreateVectorStoreJob < ApplicationJob
 
     # If the VectorStore record doesn't exist, it likely means the associated
     # chatbot was deleted. No need to create the vector store in OpenAI.
-    unless vector_store
+    unless vector_store.present?
       Rails.logger.info("VectorStore with ID #{vector_store_id} not found. Skipping vector store creation.")
       return
     end

@@ -6,8 +6,7 @@ module FeatureFlags
     "hacobobarich@gmail.com",
     "ferronortehomeventas@gmail.com",
     "farmaexpress@test.com",
-    "smdcentroia@gmail.com",
-    "distribuidorakatys@gmail.com"
+    "smdcentroia@gmail.com"
   ].freeze
 
   module_function

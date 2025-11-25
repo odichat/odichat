@@ -4,7 +4,6 @@ module FeatureFlags
     "cryptoversous@gmail.com",
     "marketingcodizulca@gmail.com",
     "hacobobarich@gmail.com",
-    "elimeycosmetics@gmail.com",
     "ferronortehomeventas@gmail.com",
     "farmaexpress@test.com",
     "smdcentroia@gmail.com",

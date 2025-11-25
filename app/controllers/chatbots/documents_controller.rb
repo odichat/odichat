@@ -14,7 +14,8 @@ class Chatbots::DocumentsController < Chatbots::BaseController
           render turbo_stream: [
             turbo_stream.replace(
               "pdf_modal",
-              partial: "chatbots/responses/pdf_upload_modal"
+              partial: "chatbots/responses/pdf_upload_modal",
+              locals: { chatbot: @chatbot }
             ),
             turbo_stream.replace(
               ActionView::RecordIdentifier.dom_id(@chatbot, :responses_list),

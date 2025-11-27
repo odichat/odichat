@@ -170,6 +170,7 @@ class Llm::PaginatedFaqGeneratorService
       • DO NOT include page numbers in questions or answers
       • DO NOT reference page numbers at all in the output
       • Focus on the actual content, not pagination
+      • Match the document's original language in the output
 
       ════════════════════════════════════════════════════════
       FAQ GENERATION GUIDELINES

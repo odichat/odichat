@@ -11,10 +11,15 @@ class Products::ImportFromCsvJob < ApplicationJob
 
     return unless @chatbot.present? && @file.present?
 
-    created_count = @chatbot.products.import_from_csv(@file, @chatbot.id)
+    result = @chatbot.products.import_from_csv(@file, @chatbot.id)
+    created_count = result[:created_count]
+    skipped_count = result[:skipped_count]
 
     broadcast_products_table(refresh_path)
     broadcast_flash(:notice, "#{created_count} products imported successfully.")
+    if skipped_count.positive?
+      broadcast_flash(:alert, "#{skipped_count} products were skipped because name and price are required.")
+    end
 
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Chatbot with ID #{chatbot_id} not found. CSV import aborted: #{e.message}"

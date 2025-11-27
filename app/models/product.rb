@@ -17,14 +17,23 @@ class Product < ApplicationRecord
 
   def self.import_from_csv(file, chatbot_id)
     created_count = 0
+    skipped_count = 0
 
     CSV.foreach(file.path, headers: true) do |row|
       normalized = row.to_h.transform_keys { |key| key.to_s.strip.downcase }
+      name = normalized["name"]&.strip
+      raw_price = normalized["price"]
+      price = raw_price.is_a?(String) ? raw_price.strip : raw_price
+
+      if name.blank? || price.to_s.strip.blank?
+        skipped_count += 1
+        next
+      end
 
       product_attributes = {
-        name: normalized["name"],
+        name: name,
         description: normalized["description"],
-        price: normalized["price"],
+        price: price,
         chatbot_id: chatbot_id
       }
 
@@ -32,7 +41,7 @@ class Product < ApplicationRecord
       created_count += 1
     end
 
-    created_count
+    { created_count:, skipped_count: }
   end
 
   private

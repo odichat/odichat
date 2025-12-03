@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   namespace :webhooks do
     get "whatsapp/process_payload", to: "whatsapp#verify"
     post "whatsapp/process_payload", to: "whatsapp#process_payload"
+    get "instagram/process_payload", to: "instagram#verify"
+    post "instagram/process_payload", to: "instagram#process_payload"
   end
 
   # Checkout

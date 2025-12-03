@@ -8,7 +8,7 @@ class Instagram::WebhooksBaseService
   private
 
   def inbox_channel(_instagram_id)
-    @inbox = Inbox.find_by(channelable: @channel)
+    @inbox = Inbox.find_by(channel: @channel)
   end
 
   def find_or_create_contact(user)
@@ -20,7 +20,11 @@ class Instagram::WebhooksBaseService
     # update_instagram_profile_link(user) && return if @contact
     return if @contact.present?
 
-    @contact = Contact.create!(name: user["name"])
+    @contact = Contact.create!(
+      name: user["name"],
+      chatbot: @inbox.chatbot,
+      skip_phone_number_validation: true
+    )
 
     # Contact Inbox will be created in the find_or_create_contact_inbox method
 

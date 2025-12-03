@@ -1,0 +1,2 @@
+module Instagram::CallbacksHelper
+end

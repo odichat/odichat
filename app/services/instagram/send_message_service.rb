@@ -5,7 +5,7 @@ class Instagram::SendMessageService
     @chat = @message.chat
     @inbox = @chat.inbox
     @contact = @chat.contact
-    @channel = @inbox.channelable
+    @channel = @inbox.channel
   end
 
   def send_message

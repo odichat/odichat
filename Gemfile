@@ -128,3 +128,5 @@ gem "ruby_llm-schema", "~> 0.2.1"
 gem "wicked", "~> 2.0"
 
 gem "httparty", "~> 0.23.1"
+
+gem "omniauth-oauth2", "~> 1.8"

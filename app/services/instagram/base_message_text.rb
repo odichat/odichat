@@ -41,7 +41,7 @@ class Instagram::BaseMessageText < Instagram::WebhooksBaseService
   # if contact was present before find out contact_inbox to create message
   def contacts_first_message?(ig_scope_id)
     @contact_inbox = @inbox.contact_inboxes.where(source_id: ig_scope_id).last
-    @contact_inbox.blank? && @inbox.channelable.instagram_id.present?
+    @contact_inbox.blank? && @inbox.channel.instagram_id.present?
   end
 
   def unsend_message

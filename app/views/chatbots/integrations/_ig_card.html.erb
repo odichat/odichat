@@ -1,14 +1,36 @@
-<div class="card bg-base-100 shadow-md cursor-not-allowed">
-  <div class="card-body">
-    <div class="flex items-center mb-4">
-      <div class="w-12 h-12 rounded-lg">
-        <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/ig.svg", class: "w-full h-full object-cover" %>
+<% connected = instagram_connected?(chatbot) %>
+<% instagram_auth_url = "https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=867563675805938&redirect_uri=https://dev-dashboard.odichat.app/instagram/callback&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights&state=#{chatbot.id}" %>
+
+<div id="instagram-card" class="<%= connected ? instagram_card_styles : '' %>">
+  <% if connected %>
+    <div class="<%= instagram_card_gradient_styles %>"></div>
+  <% end %>
+  <div class="relative">
+    <% if connected %>
+      <div class="<%= instagram_background_styles %>"></div>
+    <% end %>
+    <div class="card bg-base-100/70 backdrop-blur-sm shadow-md relative border border-gray-200">
+      <div class="card-body relative z-10">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-lg">
+            <%= image_tag "https://conversalo.nyc3.cdn.digitaloceanspaces.com/ig.svg", class: "w-full h-full object-cover" %>
+          </div>
+          <h2 class="card-title text-stone-600 ml-4">Instagram</h2>
+        </div>
+        <p class="text-stone-600">Connect your chatbot to an Instagram account and let it respond to messages from your customers.</p>
+        <div class="card-actions w-full mt-2">
+          <div class="flex w-full">
+            <%= link_to instagram_auth_url, class: "btn btn-success flex-1", target: "_blank" do %>
+              <%= connected ? "Reconnect" : "Connect" %>
+            <% end %>
+            <% if connected %>
+              <%= link_to chatbot_integrations_path(chatbot), class: "btn btn-soft ml-1", aria: { label: "Instagram settings" } do %>
+                <%= icon "wrench", variant: "mini" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
       </div>
-      <h2 class="card-title text-stone-400 ml-4">Instagram</h2>
-    </div>
-    <p class="text-stone-400">Connect your chatbot to an Instagram account and let it respond to messages from your customers.</p>
-    <div class="card-actions justify-stretch mt-2">
-      <button class="btn btn-neutral btn-disabled w-full">Coming Soon</button>
     </div>
   </div>
 </div>

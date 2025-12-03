@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     sessions: "users/sessions"
   }
 
+  get "instagram/callback", to: "instagram/callbacks#show"
   # Webhooks
   namespace :webhooks do
     get "whatsapp/process_payload", to: "whatsapp#verify"

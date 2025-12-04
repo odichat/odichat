@@ -18,6 +18,7 @@ class Chatbot < ApplicationRecord
   has_many :playground_channels, dependent: :destroy, class_name: "Channel::Playground"
   has_many :public_playground_channels, dependent: :destroy, class_name: "Channel::PublicPlayground"
   has_many :whatsapp_channels, dependent: :destroy, class_name: "Channel::Whatsapp"
+  has_many :instagram_channels, dependent: :destroy, class_name: "Channel::Instagram"
 
   validates :name, presence: true
 
@@ -82,6 +83,10 @@ class Chatbot < ApplicationRecord
 
   def whatsapp_inbox
     whatsapp_channels&.first&.inbox
+  end
+
+  def instagram_inbox
+    instagram_channels&.first&.inbox
   end
 
   def self.timezone_options

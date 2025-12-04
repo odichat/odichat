@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post :subscribe
         post :unsubscribe
       end
+      resource :instagram, only: [ :show, :destroy ], controller: "chatbots/integrations/instagram"
     end
     # get "contacts/:contact_id/conversation", to: "chatbots/conversations#show", as: :contact_conversation
   end

@@ -24,7 +24,7 @@
               <%= connected ? "Reconnect" : "Connect" %>
             <% end %>
             <% if connected %>
-              <%= link_to chatbot_integrations_path(chatbot), class: "btn btn-soft ml-1", aria: { label: "Instagram settings" } do %>
+              <%= link_to chatbot_integrations_instagram_path(chatbot), class: "btn btn-soft ml-1", aria: { label: "Instagram settings" } do %>
                 <%= icon "wrench", variant: "mini" %>
               <% end %>
             <% end %>

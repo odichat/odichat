@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_03_185301) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_04_170431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -128,6 +128,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_185301) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "additional_attributes", default: {}
     t.index ["chatbot_id", "phone_number"], name: "index_contacts_on_chatbot_id_and_phone_number", unique: true
     t.index ["chatbot_id"], name: "index_contacts_on_chatbot_id"
   end

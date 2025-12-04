@@ -6,7 +6,7 @@
           <%= conversation&.contact&.name %>
         </p>
         <p class="flex items-center gap-1 text-gray-500 text-sm">
-          <%= icon "user-circle", variant: "outline", class: "size-5" %> +<%= conversation&.contact&.phone_number %>
+          <%= icon "user-circle", variant: "outline", class: "size-5" %> <%= conversation_contact_identifier(conversation) %>
         </p>
       </div>
       <div>

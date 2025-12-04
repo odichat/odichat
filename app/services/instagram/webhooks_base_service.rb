@@ -17,8 +17,7 @@ class Instagram::WebhooksBaseService
 
     # TODO:
     # this method can be used to store user's profile info in the contact
-    # update_instagram_profile_link(user) && return if @contact
-    return if @contact.present?
+    update_instagram_profile_link(user) && return if @contact.present?
 
     @contact = Contact.create!(
       name: user["name"],
@@ -29,7 +28,7 @@ class Instagram::WebhooksBaseService
     # Contact Inbox will be created in the find_or_create_contact_inbox method
 
     # @contact = @contact_inbox.contact
-    # update_instagram_profile_link(user)
+    update_instagram_profile_link(user)
     # Avatar::AvatarFromUrlJob.perform_later(@contact, user['profile_pic']) if user['profile_pic']
   end
 
@@ -47,7 +46,7 @@ class Instagram::WebhooksBaseService
   end
 
   def update_instagram_profile_link(user)
-    return unless user['username']
+    return unless user["username"]
 
     instagram_attributes = build_instagram_attributes(user)
     @contact.update!(additional_attributes: @contact.additional_attributes.merge(instagram_attributes))
@@ -55,9 +54,7 @@ class Instagram::WebhooksBaseService
 
   def build_instagram_attributes(user)
     attributes = {
-      # TODO: Remove this once we show the social_instagram_user_name in the UI instead of the username
-      'social_profiles': { 'instagram': user['username'] },
-      'social_instagram_user_name': user['username']
+      "social_instagram_user_name": user["username"]
     }
 
     # Add optional attributes if present

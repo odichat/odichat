@@ -8,7 +8,7 @@
       data: { turbo_frame: "_top", turbo_stream: true, turbo_prefetch: "false" } do %>
 
     <div class="flex-grow">
-      <div class="flex gap-1">
+      <div class="flex items-center gap-2">
         <div class="relative" id="chat_interface_chat_list_item_warning_frame">
           <% if conversation.intervention_enabled? %>
             <span class="absolute top-[-8px] left-[-8px] flex size-3">
@@ -17,9 +17,11 @@
             </span>
           <% end %>
           <h3 class="text-lg font-medium">
-            <%= conversation.contact&.name || "+#{conversation.contact&.phone_number}" %>
+            <%= conversation_display_name(conversation) %>
           </h3>
         </div>
+
+        <%= conversation_platform_badge(conversation) %>
       </div>
 
       <div class="flex items-center text-sm text-gray-500">

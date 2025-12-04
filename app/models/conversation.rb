@@ -71,6 +71,25 @@ class Conversation < ApplicationRecord
     save! if changed?
   end
 
+  def whatsapp?
+    latest_channel_source == "whatsapp"
+  end
+
+  def instagram?
+    latest_channel_source == "instagram"
+  end
+
+  def latest_channel_source
+    return @latest_channel_source if instance_variable_defined?(:@latest_channel_source)
+
+    @latest_channel_source =
+      if chats.loaded?
+        chats.max_by(&:created_at)&.source
+      else
+        chats.order(created_at: :desc).limit(1).pick(:source)
+      end
+  end
+
   private
 
   def execute_after_update_callbacks

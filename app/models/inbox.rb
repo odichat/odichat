@@ -10,6 +10,10 @@ class Inbox < ApplicationRecord
     channel.is_a?(Channel::Whatsapp)
   end
 
+  def instagram_channel?
+    channel.is_a?(Channel::Instagram)
+  end
+
   def playground_channel?
     channel.is_a?(Channel::Playground)
   end

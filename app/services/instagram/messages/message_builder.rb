@@ -32,7 +32,7 @@ class Instagram::Messages::MessageBuilder
 
     return if message_content.blank? && all_unsupported_files?
 
-    @message ||= conversation.messages.create!(message_params)
+    @message ||= chat.messages.create!(message_params)
     # save_story_id
 
     # attachments.each do |attachment|
@@ -53,7 +53,8 @@ class Instagram::Messages::MessageBuilder
   def message_params
     {
       inbox: @inbox,
-      sender_type: @outgoing_echo ? "assistant" : "user",
+      sender: @outgoing_echo ? "assistant" : "user",
+      message_type: nil,
       content: message_content,
       source_id: message_identifier
     }
@@ -68,8 +69,24 @@ class Instagram::Messages::MessageBuilder
     contact.conversation || build_conversation
   end
 
+  def chat
+    @chat ||= find_or_create_chat
+  end
+
+  def find_or_create_chat
+    recent_chat = contact_inbox.chats.order(created_at: :desc).first
+    return recent_chat if recent_chat&.created_at&.> 24.hours.ago
+
+    conversation.chats.create!(
+      chatbot: conversation.chatbot,
+      inbox: @inbox,
+      contact_inbox: contact_inbox,
+      contact: contact,
+      source: "instagram"
+    )
+  end
+
   def build_conversation
-    @contact_inbox ||= contact.contact_inboxes.find_by!(source_id: message_source_id)
     Conversation.create!(
       contact: contact,
       chatbot: contact.chatbot
@@ -81,7 +98,11 @@ class Instagram::Messages::MessageBuilder
   end
 
   def contact
-    @contact ||= @inbox.contact_inboxes.find_by(source_id: message_source_id)&.contact
+    @contact ||= contact_inbox.contact
+  end
+
+  def contact_inbox
+    @contact_inbox ||= @inbox.contact_inboxes.find_by!(source_id: message_source_id)
   end
 
   def message_source_id
@@ -131,7 +152,8 @@ class Instagram::Messages::MessageBuilder
   def find_echo_candidate_message
     return unless conversation
 
-    scope = conversation.messages.outgoing.where(source_id: nil)
+    chat_ids = conversation.chats.select(:id)
+    scope = Message.where(chat_id: chat_ids, sender: "assistant", source_id: nil)
     scope = scope.where(content: message_content) if message_content.present?
     scope.order(created_at: :desc).first
   end

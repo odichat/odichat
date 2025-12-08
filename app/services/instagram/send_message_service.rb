@@ -16,12 +16,17 @@ class Instagram::SendMessageService
     access_token = @channel.access_token
     query = { access_token: access_token }
     instagram_id = @channel.instagram_id.presence || "me"
+    endpoint = "https://graph.instagram.com/v22.0/#{instagram_id}/messages"
+
+    log_instagram_message_request(endpoint, message_content, query)
 
     response = HTTParty.post(
-      "https://graph.instagram.com/v22.0/#{instagram_id}/messages",
+      endpoint,
       body: message_content,
       query: query
     )
+
+    log_instagram_message_response(endpoint, response)
 
     process_response(response, message_content)
   end
@@ -76,5 +81,28 @@ class Instagram::SendMessageService
 
   def provider_message_id(parsed_response)
     parsed_response["id"].presence || parsed_response["message_id"]
+  end
+
+  def log_instagram_message_request(endpoint, message_content, query)
+    Rails.logger.info(
+      "[InstagramConnect] Sending Instagram message via #{endpoint} "\
+      "with payload #{message_content} and query #{filter_sensitive_params(query)}"
+    )
+  end
+
+  def log_instagram_message_response(endpoint, response)
+    Rails.logger.info(
+      "[InstagramConnect] Response from #{endpoint} status=#{response.code} body=#{response.body}"
+    )
+  end
+
+  def filter_sensitive_params(params)
+    params.each_with_object({}) do |(key, value), filtered|
+      if key.to_s.match?(/token|secret|code/i)
+        filtered[key] = "[FILTERED]"
+      else
+        filtered[key] = value
+      end
+    end
   end
 end

@@ -48,11 +48,15 @@ module InstagramConcern
   end
 
   def make_api_request(endpoint, params, error_prefix)
+    log_instagram_request(endpoint, params)
+
     response = HTTParty.get(
       endpoint,
       query: params,
       headers: { "Accept" => "application/json" }
     )
+
+    log_instagram_response(endpoint, response)
 
     unless response.success?
       Rails.logger.error "#{error_prefix}. Status: #{response.code}, Body: #{response.body}"
@@ -70,5 +74,24 @@ module InstagramConcern
 
   def base_url
     Rails.application.credentials.dig(:instagram, :base_url)
+  end
+
+  def log_instagram_request(endpoint, params)
+    safe_params = filter_sensitive_params(params)
+    Rails.logger.info("[InstagramConnect] Requesting #{endpoint} with params #{safe_params}")
+  end
+
+  def log_instagram_response(endpoint, response)
+    Rails.logger.info("[InstagramConnect] Response from #{endpoint} status=#{response.code}")
+  end
+
+  def filter_sensitive_params(params)
+    params.each_with_object({}) do |(key, value), filtered|
+      if key.to_s.match?(/token|secret|code/i)
+        filtered[key] = "[FILTERED]"
+      else
+        filtered[key] = value
+      end
+    end
   end
 end

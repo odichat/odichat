@@ -15,13 +15,19 @@ class Instagram::CallbacksController < ApplicationController
   private
 
   def process_successful_authorization
+    Rails.logger.info("[InstagramConnect] Starting OAuth code exchange for chatbot #{chatbot_id}")
+
     @response = instagram_client.auth_code.get_token(
       oauth_code,
       redirect_uri: "#{base_url}/#{provider_name}/callback",
       grant_type: "authorization_code"
     )
 
+    Rails.logger.info("[InstagramConnect] Short-lived token retrieved via https://api.instagram.com/oauth/access_token")
+
     @long_lived_token_response = exchange_for_long_lived_token(@response.token)
+    Rails.logger.info("[InstagramConnect] Long-lived token requested via https://graph.instagram.com/access_token")
+
     _inbox, already_exists = find_or_create_inbox
 
     if already_exists
@@ -33,6 +39,8 @@ class Instagram::CallbacksController < ApplicationController
 
   def find_or_create_inbox
     user_details = fetch_instagram_user_details(@long_lived_token_response["access_token"])
+    Rails.logger.info("[InstagramConnect] Instagram user lookup via https://graph.instagram.com/v22.0/me returned #{user_details['username']} (#{user_details['user_id']})")
+
     channel_instagram = find_channel_by_instagram_id(user_details["user_id"].to_s)
     channel_exists = channel_instagram.present?
 
